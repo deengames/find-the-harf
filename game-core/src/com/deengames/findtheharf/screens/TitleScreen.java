@@ -1,6 +1,11 @@
 package com.deengames.findtheharf.screens;
 
+import com.deengames.radiantwrench.controller.ScreenController;
+import com.deengames.radiantwrench.utils.Action;
+import com.deengames.radiantwrench.utils.ClickListener;
+import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.view.Screen;
+import com.deengames.radiantwrench.view.Sprite;
 
 public class TitleScreen extends Screen {
 	
@@ -9,7 +14,20 @@ public class TitleScreen extends Screen {
 		super.initialize();
 		
 		this.fadeOutImmediately();
-		this.addSprite("content/images/background.png");
+		Sprite background = this.addSprite("content/images/title-screen.png");
+		this.center(background);
+		
 		this.fadeIn();
+		
+		background.setClickListener(new ClickListener() {
+			public void onClick(Clickable clickable) {
+				fadeOut();
+				addFadeOutListener(new Action() {
+					public void invoke() {
+						ScreenController.showScreen(new SplashScreen());
+					}
+				});
+			}			
+		});
 	}
 }

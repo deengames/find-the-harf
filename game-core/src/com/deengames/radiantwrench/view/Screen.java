@@ -3,6 +3,7 @@ package com.deengames.radiantwrench.view;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.deengames.radiantwrench.core.Game;
 import com.deengames.radiantwrench.utils.Action;
 
 public class Screen {
@@ -73,10 +74,14 @@ public class Screen {
 		updateSpriteAlphas(elapsedSeconds);
 	}
 
+	public void center(Sprite s) {
+		s.setX((this.getWidth() - s.getWidth()) / 2);
+		s.setY((this.getHeight() - s.getHeight()) / 2);
+	}
+	
 	public void fadeOutImmediately() {
 		this._blackoutSprite.setAlpha(1);
 	}
-
 	public void fadeOut() {
 		this.fadeOut(0.5f);
 	}
