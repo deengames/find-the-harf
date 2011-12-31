@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.deengames.radiantwrench.controller.ScreenController;
+import com.deengames.radiantwrench.controller.Game;
+
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 
@@ -150,7 +151,7 @@ public class Sprite implements Drawable, Clickable {
 	}
 	
 	public boolean touchDown(float x, float y, int pointer) {
-		int yFromTop = (int)(ScreenController.getCurrentScreen().getHeight() - y);
+		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
 		
 		boolean touchDown = (x >= this.getX() && x <= this.getX() + this.getWidth() && 
 				yFromTop >= this.getY() && yFromTop <= this.getY() + this.getHeight());
@@ -177,7 +178,7 @@ public class Sprite implements Drawable, Clickable {
 	}
 	
 	public void draw(SpriteBatch spriteBatch) {
-		int screenHeight = ScreenController.getCurrentScreen().getHeight();
+		int screenHeight = Game.getCurrentScreen().getHeight();
 		Texture t = this._texture;
 		
 		// Draw at our transparency level

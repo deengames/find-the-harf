@@ -1,4 +1,4 @@
-package com.deengames.radiantwrench.core;
+package com.deengames.radiantwrench.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.deengames.radiantwrench.controller.ScreenController;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 import com.deengames.radiantwrench.utils.ZTypeOrderComparator;
 import com.deengames.radiantwrench.view.Drawable;
@@ -24,6 +23,21 @@ import com.deengames.radiantwrench.view.SpriteSheet;
 import com.deengames.radiantwrench.view.Text;
 
 public class Game implements ApplicationListener, InputProcessor {
+
+	private static Screen _currentScreen;
+	
+	public static void showScreen(Screen s) { //throws RadiantWrenchException {
+		if (_currentScreen != null) {
+			_currentScreen.destroy();
+		}
+		
+		_currentScreen = s;
+		s.initialize();
+	}
+	
+	public static Screen getCurrentScreen() {
+		return _currentScreen;
+	}
 	
 	private SpriteBatch _spriteBatch;
 	private BitmapFont _defaultFont;
@@ -52,7 +66,7 @@ public class Game implements ApplicationListener, InputProcessor {
 		_defaultFont.setColor(Color.WHITE);	
 		
 		// Can't be earlier
-		for (Sprite s : ScreenController.getCurrentScreen().getSprites()) {
+		for (Sprite s : _currentScreen.getSprites()) {
 			if (s.getFileName().endsWith("/blackout.jpg")) {
 				this._blackout = s;
 			}
@@ -77,7 +91,7 @@ public class Game implements ApplicationListener, InputProcessor {
 		int centerX = SCREEN_WIDTH / 2;
 		int centerY = SCREEN_HEIGHT / 2;
 
-		Screen currentScreen = ScreenController.getCurrentScreen();
+		Screen currentScreen = _currentScreen;
 		currentScreen.update(elapsedTime);
 		
 		ArrayList<Drawable> drawables = new ArrayList<Drawable>();
@@ -176,8 +190,8 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) { 
-		int yFromScreenTop = ScreenController.getCurrentScreen().getHeight() - y;
-		Screen currentScreen = ScreenController.getCurrentScreen();
+		int yFromScreenTop = _currentScreen.getHeight() - y;
+		Screen currentScreen = _currentScreen;
 		
 		for (Sprite s : currentScreen.getSprites()) {
 			s.touchDown(x, yFromScreenTop, pointer);
@@ -219,8 +233,8 @@ public class Game implements ApplicationListener, InputProcessor {
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		int yFromScreenTop = ScreenController.getCurrentScreen().getHeight() - y;
-		Screen currentScreen = ScreenController.getCurrentScreen();
+		int yFromScreenTop = _currentScreen.getHeight() - y;
+		Screen currentScreen = _currentScreen;
 		
 		for (Sprite s : currentScreen.getSprites()) {
 			s.touchUp(x, yFromScreenTop, pointer);

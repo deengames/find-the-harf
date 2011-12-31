@@ -1,7 +1,8 @@
 package com.deengames.radiantwrench.view;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.deengames.radiantwrench.controller.ScreenController;
+import com.deengames.radiantwrench.controller.Game;
+
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 
 public class SpriteSheet extends Sprite {
@@ -80,7 +81,7 @@ public class SpriteSheet extends Sprite {
 	public void draw(SpriteBatch spriteBatch) {
 
 		float destX = this._x;
-		float destY = ScreenController.getCurrentScreen().getHeight() - this._y - this.getOriginalHeight();
+		float destY = Game.getCurrentScreen().getHeight() - this._y - this.getOriginalHeight();
 		int srcX = this._frameIndex * this._frameWidth;
 		int srcY = this._frameRow * this._frameHeight;
 				

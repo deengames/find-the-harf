@@ -3,7 +3,8 @@ package com.deengames.findtheharf.screens;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.deengames.radiantwrench.controller.ScreenController;
+import com.deengames.radiantwrench.controller.Game;
+
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
@@ -28,7 +29,7 @@ public class SplashScreen extends Screen {
 		
 		this.addFadeOutListener(new Action() {
 			public void invoke() {
-				ScreenController.showScreen(new TitleScreen());
+				Game.showScreen(new TitleScreen());
 			}
 		});
 		
@@ -39,7 +40,7 @@ public class SplashScreen extends Screen {
 		public FadeOutClass() { }
 		
 		public void run() {
-			ScreenController.getCurrentScreen().fadeOut();
+			Game.getCurrentScreen().fadeOut();
 		}
 	}
 	

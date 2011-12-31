@@ -3,7 +3,7 @@ package com.deengames.radiantwrench.view;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.deengames.radiantwrench.core.Game;
+import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
 
 public class Screen {

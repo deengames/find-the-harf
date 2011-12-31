@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
-import com.deengames.radiantwrench.controller.ScreenController;
+import com.deengames.radiantwrench.controller.Game;
+
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
@@ -60,7 +61,7 @@ public class ImageButton extends Image implements Clickable, Drawable {
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer) {
-		int yFromTop = (int)(ScreenController.getCurrentScreen().getHeight() - y);
+		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
 		
 		boolean touchDown = (x >= this.x && x <= this.x + this.width && 
 				yFromTop >= this.y && yFromTop <= this.y + this.height);
@@ -176,7 +177,7 @@ public class ImageButton extends Image implements Clickable, Drawable {
 		
 		// Calculating Y is complicated (inverted Y). Sigh. Just accept it, it's experimentally derived.
 		spriteBatch.draw(this.region, this.x,
-				ScreenController.getCurrentScreen().getHeight() - this.y - this.height,
+				Game.getCurrentScreen().getHeight() - this.y - this.height,
 				this.scaleX * this.width, this.scaleY * this.height);	
 	}
 }

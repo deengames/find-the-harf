@@ -18,13 +18,13 @@ package com.deengames.findtheharf;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.deengames.findtheharf.screens.SplashScreen;
-import com.deengames.radiantwrench.controller.ScreenController;
-import com.deengames.radiantwrench.core.Game;
+import com.deengames.radiantwrench.controller.Game;
+
 
 public class FindTheHarfGame extends Game implements ApplicationListener {
 	
 	public void create() {
-		ScreenController.showScreen(new SplashScreen());
+		Game.showScreen(new SplashScreen());
 		super.create();
 	}
 }
