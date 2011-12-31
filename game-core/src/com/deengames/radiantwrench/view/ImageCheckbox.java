@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.actors.Image;
-import com.deengames.radiantwrench.controller.ScreenController;
+import com.deengames.radiantwrench.controller.Game;
+
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
@@ -58,7 +59,7 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer) {
-		int yFromTop = (int)(ScreenController.getCurrentScreen().getHeight() - y);
+		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
 		
 		boolean touchDown = (x >= this.x && x <= this.x + this.getScaledWidth() && 
 				yFromTop >= this.y && yFromTop <= this.y + this.getScaledHeight());
@@ -191,7 +192,7 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 		int frameWidth = Math.round(this.width);
 		
 		float destX = this.x;
-		float destY = ScreenController.getCurrentScreen().getHeight() - this.y - this.height;
+		float destY = Game.getCurrentScreen().getHeight() - this.y - this.height;
 		int srcX = frameIndex * frameWidth;		
 		
 		spriteBatch.draw(this._texture, destX, destY, // Draw to

@@ -4,7 +4,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.deengames.radiantwrench.controller.ScreenController;
+import com.deengames.radiantwrench.controller.Game;
+
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
@@ -163,10 +164,10 @@ public class Text implements Drawable, Clickable {
 		if (this._isVisible == true) {
 			if (this._maxWidth == Integer.MAX_VALUE) {
 				this._font.draw(spriteBatch, this._text,
-					this._x, ScreenController.getCurrentScreen().getHeight() - this._y);
+					this._x, Game.getCurrentScreen().getHeight() - this._y);
 			} else {
 				this._font.drawWrapped(spriteBatch, this._text,
-					this._x, ScreenController.getCurrentScreen().getHeight() - this._y, this._maxWidth);
+					this._x, Game.getCurrentScreen().getHeight() - this._y, this._maxWidth);
 			}
 		}
 	}
