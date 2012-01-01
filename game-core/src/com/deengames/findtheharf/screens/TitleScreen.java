@@ -1,5 +1,10 @@
 package com.deengames.findtheharf.screens;
 
+import com.badlogic.gdx.Audio;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.AudioDevice;
+import com.badlogic.gdx.backends.openal.Mp3;
+import com.deengames.findtheharf.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;
@@ -16,6 +21,8 @@ public class TitleScreen extends Screen {
 		this.fadeOutImmediately();
 		Sprite background = this.addSprite("content/images/title-screen.png");
 		this.center(background);
+		
+		AudioController.play("content/audio/speech/find-the-harf-title.mp3");
 		
 		this.fadeIn();
 		
