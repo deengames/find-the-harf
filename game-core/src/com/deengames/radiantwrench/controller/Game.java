@@ -53,7 +53,9 @@ public class Game implements ApplicationListener, InputProcessor {
 	}
 	
 	private void clearScreen() {
-		Gdx.graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT);
+		if (Gdx.graphics.getGL10() != null) {
+			Gdx.graphics.getGL10().glClear(GL10.GL_COLOR_BUFFER_BIT);
+		}
 	}
 	
 	public BitmapFont getDefaultFont() {
