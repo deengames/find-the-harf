@@ -31,7 +31,7 @@ public class TitleScreen extends Screen {
 				fadeOut();
 				addFadeOutListener(new Action() {
 					public void invoke() {
-						Game.showScreen(new SplashScreen());
+						Game.showScreen(new CoreGameScreen());
 					}
 				});
 			}			
