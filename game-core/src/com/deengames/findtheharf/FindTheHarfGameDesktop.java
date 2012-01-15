@@ -20,6 +20,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 
 public class FindTheHarfGameDesktop {
 	public static void main (String[] argv) {
-		new LwjglApplication(new FindTheHarfGame(), "Deen Games", 320, 480, true);
+		new LwjglApplication(new FindTheHarfGame(), "Deen Games", 480, 800, true);
 	}
 }
