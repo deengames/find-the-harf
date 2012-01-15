@@ -20,6 +20,7 @@ public class SplashScreen extends Screen {
 		this.fadeOutImmediately();
 		
 		Sprite s = this.addSprite("content/images/logo-vertical.png");
+		this.center(s);
 		
 		this.addFadeInListener(new Action() {
 			public void invoke() {
