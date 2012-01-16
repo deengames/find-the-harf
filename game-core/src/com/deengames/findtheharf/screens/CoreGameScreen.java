@@ -1,6 +1,6 @@
 package com.deengames.findtheharf.screens;
 
-import com.badlogic.gdx.Audio;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.backends.openal.Mp3;
@@ -21,6 +21,8 @@ public class CoreGameScreen extends Screen {
 			"daad", "taw", "thaw", "ayn", "ghayn", "fa",
 			"qaaf", "kaaf", "laam", "meem", "noon", "ha", "waw", "ya"
 	};
+	
+	private int _targetLetterIndex;
 	
 	@Override
 	public void initialize() {
@@ -49,8 +51,11 @@ public class CoreGameScreen extends Screen {
 				public void onClick(Clickable clickable) {
 					AudioController.play("content/audio/speech/letters/" + letter + ".mp3");
 				}
-			});
+			});			
 		}
+		
+		_targetLetterIndex = MathUtils.random(this._letters.length);		
+		AudioController.playInSerial(new String[] { "content/audio/speech/find-the-letter.mp3", "content/audio/speech/letters/" + this._letters[this._targetLetterIndex] + ".mp3" });
 		
 		this.fadeIn();
 	}
