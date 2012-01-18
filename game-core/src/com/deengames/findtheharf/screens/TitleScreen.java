@@ -4,7 +4,7 @@ import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.backends.openal.Mp3;
-import com.deengames.findtheharf.controller.AudioController;
+import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;

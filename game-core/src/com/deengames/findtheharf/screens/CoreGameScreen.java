@@ -4,14 +4,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.backends.openal.Mp3;
-import com.deengames.findtheharf.controller.AudioController;
+import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
-import com.deengames.findtheharf.controller.AudioController;
 
 public class CoreGameScreen extends Screen {
 	
