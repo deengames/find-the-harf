@@ -31,18 +31,29 @@ public class AudioController {
 		Gdx.audio.newSound(Gdx.files.internal(audioFileName)).play();
 	}
 	
+	// Currently, everything that plays in serial is in one queue.
+	// TODO: allow multiple queues. Should be easy enough.
 	public static void playInSerial(String[] audioFileNames) {
 		if (audioFileNames.length == 0) {
 			return;
 		} else if (audioFileNames.length == 1) {
-			play(audioFileNames[0]);
+			if (_soundQueue.size() == 0) {
+				play(audioFileNames[0]);
+			} else {
+				_soundQueue.add(audioFileNames[0]);
+			}
 		} else {
-			// Play immediately, don't wait for the next tick
-			_currentSound = Gdx.audio.newMusic(Gdx.files.internal(audioFileNames[0]));
-			_currentSound.play();
+			
+			int startIndex = 0;
+			if (_soundQueue.size() == 0) {
+				// Play immediately, don't wait for the next tick.
+				_currentSound = Gdx.audio.newMusic(Gdx.files.internal(audioFileNames[0]));
+				_currentSound.play();
+				startIndex = 1;
+			}
 			
 			// Queue everything else
-			for (int i = 1; i < audioFileNames.length; i++) {
+			for (int i = startIndex; i < audioFileNames.length; i++) {
 				_soundQueue.add(audioFileNames[i]);
 			}
 		}
