@@ -36,16 +36,9 @@ public class AudioController {
 	public static void playInSerial(String[] audioFileNames) {
 		if (audioFileNames.length == 0) {
 			return;
-		} else if (audioFileNames.length == 1) {
-			if (_soundQueue.size() == 0) {
-				play(audioFileNames[0]);
-			} else {
-				_soundQueue.add(audioFileNames[0]);
-			}
-		} else {
-			
+		} else {			
 			int startIndex = 0;
-			if (_soundQueue.size() == 0) {
+			if (_soundQueue.size() == 0 && (_currentSound == null || (_currentSound != null && !_currentSound.isPlaying()))) {
 				// Play immediately, don't wait for the next tick.
 				_currentSound = Gdx.audio.newMusic(Gdx.files.internal(audioFileNames[0]));
 				_currentSound.play();

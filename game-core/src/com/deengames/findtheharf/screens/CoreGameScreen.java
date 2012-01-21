@@ -15,6 +15,7 @@ import com.deengames.radiantwrench.view.Sprite;
 public class CoreGameScreen extends Screen {
 	
 	String _letterToFind = ""; 
+	int _numWrong = 0;
 	
 	private String[] _letters = new String[] {
 			"alif", "ba", "ta", "tha", "jeem", "7a", "kha",
@@ -67,27 +68,34 @@ public class CoreGameScreen extends Screen {
 						
 						findANewLetter();
 					} else {
-						int toFindIndex = getIndex(_letterToFind);
-						int clickedIndex = getIndex(letter);
-						
-						String beforeOrAfter = "";
-						if (toFindIndex < clickedIndex) {
-							beforeOrAfter = "before";
+						if (_numWrong < 2) {
+							int toFindIndex = getIndex(_letterToFind);
+							int clickedIndex = getIndex(letter);
+							
+							String beforeOrAfter = "";
+							if (toFindIndex < clickedIndex) {
+								beforeOrAfter = "before";
+							} else {
+								beforeOrAfter = "after";
+							}
+							
+							AudioController.playInSerial(new String[] {
+								"content/audio/speech/thats-not.mp3",
+								"content/audio/speech/letters/" + _letterToFind + ".mp3",
+								"content/audio/speech/thats.mp3",
+								"content/audio/speech/letters/" + letter + ".mp3",
+								"content/audio/speech/the-letter.mp3",
+								"content/audio/speech/letters/" + _letterToFind + ".mp3",
+								"content/audio/speech/comes.mp3",
+								"content/audio/speech/" + beforeOrAfter + ".mp3",
+								"content/audio/speech/letters/" + letter + ".mp3"
+							});
+							
+							_numWrong++;
 						} else {
-							beforeOrAfter = "after";
+							AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.mp3"});
+							findANewLetter();
 						}
-						
-						AudioController.playInSerial(new String[] {
-							"content/audio/speech/thats-not.mp3",
-							"content/audio/speech/letters/" + _letterToFind + ".mp3",
-							"content/audio/speech/thats.mp3",
-							"content/audio/speech/letters/" + letter + ".mp3",
-							"content/audio/speech/the-letter.mp3",
-							"content/audio/speech/letters/" + _letterToFind + ".mp3",
-							"content/audio/speech/comes.mp3",
-							"content/audio/speech/" + beforeOrAfter + ".mp3",
-							"content/audio/speech/letters/" + letter + ".mp3"
-						});
 					}
 				}
 			});			
@@ -111,5 +119,6 @@ public class CoreGameScreen extends Screen {
 	void findANewLetter() {
 		_letterToFind = _letters[MathUtils.random(this._letters.length)];		
 		AudioController.playInSerial(new String[] { "content/audio/speech/find-the-letter.mp3", "content/audio/speech/letters/" + _letterToFind + ".mp3" });
+		_numWrong = 0;
 	}
 }
