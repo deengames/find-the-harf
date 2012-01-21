@@ -60,11 +60,34 @@ public class CoreGameScreen extends Screen {
 						AudioController.playInSerial(new String[] { 
 								"content/audio/speech/you-found-the-letter.mp3",
 								"content/audio/speech/letters/" + _letterToFind + ".mp3",
-								"content/audio/speech/good-job.mp3"});
+								"content/audio/speech/good-job.mp3",
+								"content/audio/speech/mashaAllah.mp3",
+								"content/audio/speech/now.mp3",
+								});
 						
 						findANewLetter();
 					} else {
-						AudioController.play("content/audio/speech/letters/" + letter + ".mp3");
+						int toFindIndex = getIndex(_letterToFind);
+						int clickedIndex = getIndex(letter);
+						
+						String beforeOrAfter = "";
+						if (toFindIndex < clickedIndex) {
+							beforeOrAfter = "before";
+						} else {
+							beforeOrAfter = "after";
+						}
+						
+						AudioController.playInSerial(new String[] {
+							"content/audio/speech/thats-not.mp3",
+							"content/audio/speech/letters/" + _letterToFind + ".mp3",
+							"content/audio/speech/thats.mp3",
+							"content/audio/speech/letters/" + letter + ".mp3",
+							"content/audio/speech/the-letter.mp3",
+							"content/audio/speech/letters/" + _letterToFind + ".mp3",
+							"content/audio/speech/comes.mp3",
+							"content/audio/speech/" + beforeOrAfter + ".mp3",
+							"content/audio/speech/letters/" + letter + ".mp3"
+						});
 					}
 				}
 			});			
@@ -75,7 +98,17 @@ public class CoreGameScreen extends Screen {
 		this.fadeIn();
 	}
 	
-	private void findANewLetter() {
+	int getIndex(String letter) {
+		for (int i = 0; i < _letters.length; i++) {
+			if (_letters[i].equals(letter)) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	void findANewLetter() {
 		_letterToFind = _letters[MathUtils.random(this._letters.length)];		
 		AudioController.playInSerial(new String[] { "content/audio/speech/find-the-letter.mp3", "content/audio/speech/letters/" + _letterToFind + ".mp3" });
 	}
