@@ -38,6 +38,9 @@ public class AudioController {
 			return;
 		} else {			
 			int startIndex = 0;
+			// No sounds playing, and:
+				// There's no sound playing, or
+				// The current sound is done (not playing)
 			if (_soundQueue.size() == 0 && (_currentSound == null || (_currentSound != null && !_currentSound.isPlaying()))) {
 				// Play immediately, don't wait for the next tick.
 				_currentSound = Gdx.audio.newMusic(Gdx.files.internal(audioFileNames[0]));
