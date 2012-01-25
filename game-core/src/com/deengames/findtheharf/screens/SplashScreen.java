@@ -15,9 +15,10 @@ public class SplashScreen extends Screen {
 	
 	@Override
 	public void initialize() { //throws RadiantWrenchException {
-		super.initialize();
-		
+		super.initialize();		
 		this.fadeOutImmediately();
+		
+		this.addSprite("content/images/background.jpg");
 		
 		Sprite s = this.addSprite("content/images/logo-vertical.png");
 		this.center(s);
