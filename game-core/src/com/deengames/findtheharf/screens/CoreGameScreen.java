@@ -30,7 +30,7 @@ public class CoreGameScreen extends Screen {
 		
 		this.fadeOutImmediately();
 		
-		this.addSprite("content/images/background.png");
+		this.addSprite("content/images/background.jpg");
 		
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
