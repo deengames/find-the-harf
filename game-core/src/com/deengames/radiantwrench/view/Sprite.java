@@ -3,6 +3,7 @@ package com.deengames.radiantwrench.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.deengames.radiantwrench.controller.Game;
 
@@ -34,6 +35,7 @@ public class Sprite implements Drawable, Clickable {
 	public Sprite(String fileName) {
 		this._fileName = fileName;
 		this.loadTexture();
+		this._texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this._orderAdded = nextOrderAdded;
 		nextOrderAdded++;
 	}
