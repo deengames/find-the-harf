@@ -18,10 +18,17 @@ public class CoreGameScreen extends Screen {
 	int _numWrong = 0;
 	
 	private String[] _letters = new String[] {
-			"alif", "ba", "ta", "tha", "jeem", "7a", "kha",
-			"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
-			"daad", "taw", "thaw", "ayn", "ghayn", "fa",
-			"qaaf", "kaaf", "laam", "meem", "noon", "ha", "waw", "ya"
+		"alif", "ba", "ta", "tha", "jeem", "7a", "kha",
+		"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
+		"daad", "taw", "thaw", "ayn", "ghayn", "fa",
+		"qaaf", "kaaf", "laam", "meem", "noon", "ha", "waw", "ya"
+	};
+	
+	private String[] _colours = new String[] {
+		"red", "orange", "yellow", "green", "blue", "purple", "pink",
+		"red", "orange", "yellow", "green", "blue", "purple", "pink",
+		"red", "orange", "yellow", "green", "blue", "purple", "pink",
+		"red", "orange", "yellow", "green", "blue", "purple", "pink"
 	};
 	
 	@Override
@@ -68,7 +75,8 @@ public class CoreGameScreen extends Screen {
 			s.setClickListener(new ClickListener() {
 				public void onClick(Clickable clickable) {
 					if (_letterToFind != "" && _letterToFind == letter) {
-						AudioController.playInSerial(new String[] { 
+						AudioController.playInSerial(new String[] {
+								"content/audio/right-letter.mp3",
 								"content/audio/speech/you-found-the-letter.mp3",
 								"content/audio/speech/letters/" + _letterToFind + ".mp3",
 								"content/audio/speech/good-job.mp3",
@@ -78,30 +86,41 @@ public class CoreGameScreen extends Screen {
 						
 						findANewLetter();
 					} else {
-						if (_numWrong < 2) {
+						_numWrong++;
+						
+						if (_numWrong <= 2) {
 							int toFindIndex = getIndex(_letterToFind);
 							int clickedIndex = getIndex(letter);
-							
-							String beforeOrAfter = "";
-							if (toFindIndex < clickedIndex) {
-								beforeOrAfter = "before";
-							} else {
-								beforeOrAfter = "after";
-							}
 							
 							AudioController.playInSerial(new String[] {
 								"content/audio/speech/thats-not.mp3",
 								"content/audio/speech/letters/" + _letterToFind + ".mp3",
 								"content/audio/speech/thats.mp3",
-								"content/audio/speech/letters/" + letter + ".mp3",
+								"content/audio/speech/letters/" + letter + ".mp3",	
 								"content/audio/speech/the-letter.mp3",
-								"content/audio/speech/letters/" + _letterToFind + ".mp3",
-								"content/audio/speech/comes.mp3",
-								"content/audio/speech/" + beforeOrAfter + ".mp3",
-								"content/audio/speech/letters/" + letter + ".mp3"
+								"content/audio/speech/letters/" + _letterToFind + ".mp3"
 							});
 							
-							_numWrong++;
+							if (_numWrong == 1) {
+								String beforeOrAfter = "";
+								if (toFindIndex < clickedIndex) {
+									beforeOrAfter = "before";
+								} else {
+									beforeOrAfter = "after";
+								}
+																
+								AudioController.playInSerial(new String[] {
+									"content/audio/speech/comes.mp3",
+									"content/audio/speech/" + beforeOrAfter + ".mp3",
+									"content/audio/speech/letters/" + letter + ".mp3"
+								});
+							} else if (_numWrong == 2) {
+								String colour = getColour(_letterToFind);
+								AudioController.playInSerial(new String[] {
+									"content/audio/speech/is.mp3",
+									"content/audio/speech/" + colour + ".mp3",									
+								});
+							}
 						} else {
 							AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.mp3"});
 							findANewLetter();
@@ -126,8 +145,13 @@ public class CoreGameScreen extends Screen {
 		return -1;
 	}
 	
+	String getColour(String letter) {
+		int index = getIndex(letter);
+		return _colours[index];
+	}
+	
 	void findANewLetter() {
-		_letterToFind = _letters[MathUtils.random(this._letters.length)];		
+		_letterToFind = _letters[MathUtils.random(this._letters.length - 1)];		
 		AudioController.playInSerial(new String[] { "content/audio/speech/find-the-letter.mp3", "content/audio/speech/letters/" + _letterToFind + ".mp3" });
 		_numWrong = 0;
 	}
