@@ -78,6 +78,8 @@ public class CoreGameScreen extends Screen {
 			
 			s.setClickListener(new ClickListener() {
 				public void onClick(Clickable clickable) {
+					AudioController.abortAndClearQueue();
+					
 					if (_letterToFind != "" && _letterToFind == letter) {
 						
 						String praise =  _praises[MathUtils.random(_praises.length - 1)];
