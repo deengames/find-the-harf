@@ -3,11 +3,13 @@ package com.deengames.findtheharf.screens;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
+import com.deengames.radiantwrench.controller.AudioController;
 
 public class SplashScreen extends Screen {
 
@@ -25,17 +27,18 @@ public class SplashScreen extends Screen {
 		
 		this.addFadeInListener(new Action() {
 			public void invoke() {
+				AudioController.play("content/audio/giggle.mp3");
 				_timer.schedule(new FadeOutClass(), 3 * 1000); // 3s
 			}
 		});
 		
 		this.addFadeOutListener(new Action() {
-			public void invoke() {
+			public void invoke() {				
 				Game.showScreen(new TitleScreen());
 			}
 		});
 		
-		this.fadeIn();
+		this.fadeIn();		
 	}
 	
 	private class FadeOutClass extends TimerTask {
