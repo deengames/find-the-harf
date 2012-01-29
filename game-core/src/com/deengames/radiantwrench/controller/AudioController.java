@@ -54,5 +54,12 @@ public class AudioController {
 			}
 		}
 	}
+
+	public static void abortAndClearQueue() {
+		if (_currentSound != null) {
+			_currentSound.stop();
+		}
+		_soundQueue.clear();
+	}
 	
 }

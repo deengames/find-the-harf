@@ -26,7 +26,7 @@ public class TitleScreen extends Screen {
 		Sprite text = this.addSprite("content/images/click-to-start.png");
 		this.center(text);
 		
-		AudioController.play("content/audio/speech/find-the-harf-title.mp3");
+		AudioController.play("content/audio/speech/find-the-letters-title.mp3");
 		
 		this.fadeIn();
 		
