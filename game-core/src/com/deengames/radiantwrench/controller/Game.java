@@ -239,7 +239,15 @@ public class Game implements ApplicationListener, InputProcessor {
 		int yFromScreenTop = _currentScreen.getHeight() - y;
 		Screen currentScreen = _currentScreen;
 		
-		for (Sprite s : currentScreen.getSprites()) {
+		// Do everything by copying the old collection. This is because if any
+		// of these objects, say, call removeSprite or addSprite as part of
+		// their click-handler code, we'll get a ConcurrentModificationException
+		// (because we're iterating over it and modifying it in the meanwhile).
+		// What are the implications of this? It's not clear yet.
+		
+		ArrayList<Sprite> sprites = (ArrayList<Sprite>)currentScreen.getSprites().clone();
+		
+		for (Sprite s : sprites) {
 			s.touchUp(x, yFromScreenTop, pointer);
 		}
 		

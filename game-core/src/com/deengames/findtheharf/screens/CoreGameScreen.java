@@ -182,14 +182,19 @@ public class CoreGameScreen extends Screen {
 		
 		_numWrong = 0;
 		
-		_halfBlackout.setAlpha(0.75f);
-		
 		if (this._jumboLetter != null) {
 			this.removeSprite(this._jumboLetter);
+			this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");			
+			this._halfBlackout.setAlphaRate(2);
+			this._jumboLetter.setAlpha(0);
+			this._jumboLetter.setAlphaRate(2);
+		} else {
+			this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");		
+			_halfBlackout.setAlpha(0.75f);
 		}
 		
-		this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");
 		this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
+		
 		float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
 		float scaleH = this.getHeight() * 1.0f / _jumboLetter.getHeight();
 		this._jumboLetter.setScale(Math.min(scaleW, scaleH));
