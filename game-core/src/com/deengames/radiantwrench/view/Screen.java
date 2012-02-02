@@ -61,6 +61,7 @@ public class Screen {
 
 	public void initialize() {
 		this._blackoutSprite = this.addSprite("content/images/blackout.jpg");
+		this._blackoutSprite.setScale(Math.max(this.getWidth(), this.getHeight()));
 		this._blackoutSprite.setZ(Integer.MAX_VALUE);
 		this._blackoutSprite.setAlpha(0);
 	}
