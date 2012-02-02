@@ -149,6 +149,10 @@ public class Screen {
 		return s;
 	}
 	
+	public void removeSprite(Sprite sprite) {
+		this._sprites.remove(sprite);
+	}
+	
 	public SpriteSheet addSpriteSheet(String fileName, int frameWidth, int frameHeight) {
 		SpriteSheet s = new SpriteSheet(fileName, frameWidth, frameHeight);
 		this._spriteSheets.add(s);

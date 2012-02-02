@@ -184,6 +184,10 @@ public class CoreGameScreen extends Screen {
 		
 		_halfBlackout.setAlpha(0.75f);
 		
+		if (this._jumboLetter != null) {
+			this.removeSprite(this._jumboLetter);
+		}
+		
 		this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");
 		this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
 		float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
