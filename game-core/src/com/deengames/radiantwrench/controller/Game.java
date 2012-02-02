@@ -238,7 +238,7 @@ public class Game implements ApplicationListener, InputProcessor {
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		int yFromScreenTop = _currentScreen.getHeight() - y;
 		Screen currentScreen = _currentScreen;
-		
+		// iQ
 		for (Sprite s : currentScreen.getSprites()) {
 			s.touchUp(x, yFromScreenTop, pointer);
 		}

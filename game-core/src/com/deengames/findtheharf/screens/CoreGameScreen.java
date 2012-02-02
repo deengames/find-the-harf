@@ -35,11 +35,21 @@ public class CoreGameScreen extends Screen {
 		"hurray", "awesome", "superb", "great-job"	
 	};
 	
+	Sprite _halfBlackout;
+	Sprite _jumboLetter;
+	
+	private final int HALF_BLACKOUT_Z = 9999;
+	
 	@Override
 	public void initialize() {
 		super.initialize();
 		
 		this.fadeOutImmediately();
+		
+		_halfBlackout = this.addSprite("content/images/1x1.jpg");
+		_halfBlackout.setScale(Math.max(this.getWidth(), this.getHeight()));
+		_halfBlackout.setZ(HALF_BLACKOUT_Z);
+		_halfBlackout.setAlpha(0);
 		
 		this.addSprite("content/images/background.jpg");
 		
@@ -78,61 +88,64 @@ public class CoreGameScreen extends Screen {
 			
 			s.setClickListener(new ClickListener() {
 				public void onClick(Clickable clickable) {
-					AudioController.abortAndClearQueue();
+					if (_halfBlackout.getAlpha() == 0) {
 					
-					if (_letterToFind != "" && _letterToFind == letter) {
+						AudioController.abortAndClearQueue();
 						
-						String praise =  _praises[MathUtils.random(_praises.length - 1)];
-						
-						AudioController.playInSerial(new String[] {
-								"content/audio/right-letter.mp3",
-								"content/audio/speech/" + praise + ".mp3",
-								"content/audio/speech/you-found-the-letter.mp3",
-								"content/audio/speech/letters/" + _letterToFind + ".mp3",
-								"content/audio/speech/mashaAllah.mp3",
-								"content/audio/speech/now.mp3",
-								});
-						
-						findANewLetter();
-					} else {
-						_numWrong++;
-						
-						if (_numWrong <= 2) {
-							int toFindIndex = getIndex(_letterToFind);
-							int clickedIndex = getIndex(letter);
+						if (_letterToFind != "" && _letterToFind == letter) {
+							
+							String praise =  _praises[MathUtils.random(_praises.length - 1)];
 							
 							AudioController.playInSerial(new String[] {
-								"content/audio/speech/thats-not.mp3",
-								"content/audio/speech/letters/" + _letterToFind + ".mp3",
-								"content/audio/speech/thats.mp3",
-								"content/audio/speech/letters/" + letter + ".mp3",	
-								"content/audio/speech/the-letter.mp3",
-								"content/audio/speech/letters/" + _letterToFind + ".mp3"
-							});
+									"content/audio/right-letter.mp3",
+									"content/audio/speech/" + praise + ".mp3",
+									"content/audio/speech/you-found-the-letter.mp3",
+									"content/audio/speech/letters/" + _letterToFind + ".mp3",
+									"content/audio/speech/mashaAllah.mp3",
+									"content/audio/speech/now.mp3",
+									});
 							
-							if (_numWrong == 1) {
-								String beforeOrAfter = "";
-								if (toFindIndex < clickedIndex) {
-									beforeOrAfter = "before";
-								} else {
-									beforeOrAfter = "after";
-								}
-																
-								AudioController.playInSerial(new String[] {
-									"content/audio/speech/comes.mp3",
-									"content/audio/speech/" + beforeOrAfter + ".mp3",
-									"content/audio/speech/letters/" + letter + ".mp3"
-								});
-							} else if (_numWrong == 2) {
-								String colour = getColour(_letterToFind);
-								AudioController.playInSerial(new String[] {
-									"content/audio/speech/is.mp3",
-									"content/audio/speech/" + colour + ".mp3",									
-								});
-							}
-						} else {
-							AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.mp3"});
 							findANewLetter();
+						} else {
+							_numWrong++;
+							
+							if (_numWrong <= 2) {
+								int toFindIndex = getIndex(_letterToFind);
+								int clickedIndex = getIndex(letter);
+								
+								AudioController.playInSerial(new String[] {
+									"content/audio/speech/thats-not.mp3",
+									"content/audio/speech/letters/" + _letterToFind + ".mp3",
+									"content/audio/speech/thats.mp3",
+									"content/audio/speech/letters/" + letter + ".mp3",	
+									"content/audio/speech/the-letter.mp3",
+									"content/audio/speech/letters/" + _letterToFind + ".mp3"
+								});
+								
+								if (_numWrong == 1) {
+									String beforeOrAfter = "";
+									if (toFindIndex < clickedIndex) {
+										beforeOrAfter = "before";
+									} else {
+										beforeOrAfter = "after";
+									}
+																	
+									AudioController.playInSerial(new String[] {
+										"content/audio/speech/comes.mp3",
+										"content/audio/speech/" + beforeOrAfter + ".mp3",
+										"content/audio/speech/letters/" + letter + ".mp3"
+									});
+								} else if (_numWrong == 2) {
+									String colour = getColour(_letterToFind);
+									AudioController.playInSerial(new String[] {
+										"content/audio/speech/is.mp3",
+										"content/audio/speech/" + colour + ".mp3",									
+									});
+								}
+							} else {
+								AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.mp3"});
+								findANewLetter();
+							}
 						}
 					}
 				}
@@ -168,5 +181,23 @@ public class CoreGameScreen extends Screen {
 		});
 		
 		_numWrong = 0;
+		
+		_halfBlackout.setAlpha(0.75f);
+		
+		this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");
+		this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
+		float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
+		float scaleH = this.getHeight() * 1.0f / _jumboLetter.getHeight();
+		this._jumboLetter.setScale(Math.min(scaleW, scaleH));
+		
+		this._halfBlackout.setClickListener(new ClickListener() {
+
+			@Override
+			public void onClick(Clickable clickable) {
+				// TODO Auto-generated method stub
+				_jumboLetter.setAlphaRate(-2);
+				_halfBlackout.setAlphaRate(-2);
+			}
+		});
 	}
 }
