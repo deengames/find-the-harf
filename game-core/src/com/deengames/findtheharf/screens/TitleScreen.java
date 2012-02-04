@@ -30,6 +30,7 @@ public class TitleScreen extends Screen {
 		
 		Sprite optionsIcon = this.addSprite("content/images/options.png");
 		this.center(optionsIcon);
+		optionsIcon.setScale(0.5f);
 		optionsIcon.setX(this.getWidth() - optionsIcon.getWidth() - 8);
 		optionsIcon.setY(this.getHeight() - optionsIcon.getHeight() - 8);
 		optionsIcon.setClickListener(new ClickListener() {
