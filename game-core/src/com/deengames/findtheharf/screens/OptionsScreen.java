@@ -23,6 +23,10 @@ public class OptionsScreen extends Screen {
 		
 		this.center(background);
 		
+		Sprite goIcon = this.addSprite("content/images/go.png");
+		goIcon.setX(this.getWidth() - goIcon.getWidth() - 8);
+		goIcon.setY(this.getHeight() - goIcon.getHeight() - 8);
+		
 		this.fadeIn();
 	}
 }
