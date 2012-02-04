@@ -99,8 +99,6 @@ public class CoreGameScreen extends Screen {
 							AudioController.playInSerial(new String[] {
 									"content/audio/right-letter.mp3",
 									"content/audio/speech/" + praise + ".mp3",
-									"content/audio/speech/you-found-the-letter.mp3",
-									"content/audio/speech/letters/" + _letterToFind + ".mp3",
 									"content/audio/speech/mashaAllah.mp3",
 									"content/audio/speech/now.mp3",
 									});
