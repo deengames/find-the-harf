@@ -28,9 +28,29 @@ public class TitleScreen extends Screen {
 		
 		AudioController.play("content/audio/speech/find-the-letters-title.mp3");
 		
+		Sprite optionsIcon = this.addSprite("content/images/options.png");
+		this.center(optionsIcon);
+		optionsIcon.setX(this.getWidth() - optionsIcon.getWidth() - 8);
+		optionsIcon.setY(this.getHeight() - optionsIcon.getHeight() - 8);
+		optionsIcon.setClickListener(new ClickListener() {
+			@Override
+			public void onClick(Clickable clickable) {
+				fadeOut();
+				addFadeOutListener(new Action() {
+					public void invoke() {
+						Game.showScreen(new OptionsScreen());
+					}
+				});
+			}
+		});
+		
 		this.fadeIn();
 		
-		background.setClickListener(new ClickListener() {
+		Sprite goIcon = this.addSprite("content/images/go.png");
+		this.center(goIcon);
+		goIcon.setY((this.getHeight() - goIcon.getHeight()) / 2);
+		
+		goIcon.setClickListener(new ClickListener() {
 			public void onClick(Clickable clickable) {
 				fadeOut();
 				addFadeOutListener(new Action() {
