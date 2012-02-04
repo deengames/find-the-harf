@@ -27,6 +27,16 @@ public class OptionsScreen extends Screen {
 		goIcon.setX(this.getWidth() - goIcon.getWidth() - 8);
 		goIcon.setY(this.getHeight() - goIcon.getHeight() - 8);
 		
+		goIcon.setClickListener(new ClickListener() {
+			@Override
+			public void onClick(Clickable clickable) {
+				fadeOut();
+				addFadeOutListener(new Action() {
+					public void invoke() {
+						Game.showScreen(new CoreGameScreen());
+					}
+				});
+			}});
 		this.fadeIn();
 	}
 }
