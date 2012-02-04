@@ -23,7 +23,12 @@ public class SplashScreen extends Screen {
 		
 		this.addSprite("content/images/background.jpg");
 		
-		Sprite s = this.addSprite("content/images/logo-vertical.png");
+		Sprite s;
+		if (this.getHeight() > this.getWidth()) {
+			s = this.addSprite("content/images/logo-vertical.png");
+		} else {
+			s = this.addSprite("content/images/logo-horizontal.png");
+		}
 		this.center(s);
 		
 		this.addFadeInListener(new Action() {
