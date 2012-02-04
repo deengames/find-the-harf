@@ -80,6 +80,11 @@ public class Screen {
 		s.setY((this.getHeight() - s.getHeight()) / 2);
 	}
 	
+	public void center(Text t) {
+		t.setX((this.getWidth() - t.getWidth()) / 2);
+		t.setY((this.getHeight() - t.getHeight()) / 2);
+	}
+	
 	public void fadeOutImmediately() {
 		this._blackoutSprite.setAlpha(1);
 	}

@@ -39,6 +39,15 @@ public class Text implements Drawable, Clickable {
 		nextOrderAdded++;
 	}
 	
+	public void setColour(int red, int green, int blue) {
+		Colour c = new Colour(red, green, blue);
+		this.setColour(c);
+	}
+	
+	public void setColour(Colour c) {
+		this._font.setColor(c.getRed() / 255.0f, c.getGreen() / 255.0f, c.getBlue() / 255.0f, 1);
+	}
+	
 	public boolean touchDown(float x, float y, int pointer) {
 		if (this._text == null) { 
 			return true; // processed = true
