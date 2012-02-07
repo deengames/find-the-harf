@@ -17,13 +17,16 @@
 package com.deengames.findtheharf;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.deengames.findtheharf.model.Constants;
 import com.deengames.findtheharf.screens.SplashScreen;
 import com.deengames.radiantwrench.controller.Game;
+import com.deengames.radiantwrench.controller.PersistentStorage;
 
 
 public class FindTheHarfGame extends Game implements ApplicationListener {
 	
 	public void create() {
+		PersistentStorage.setPreferenceFile(Constants.PREF_FILE_NAME);
 		Game.showScreen(new SplashScreen());
 		super.create();
 	}
