@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.backends.openal.Mp3;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
+import com.deengames.radiantwrench.controller.PersistentStorage;
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
@@ -16,6 +17,9 @@ import com.deengames.radiantwrench.view.Sprite;
 import com.deengames.radiantwrench.view.Text;
 
 public class OptionsScreen extends Screen {
+	
+	private static final String PREF_FILE_NAME = "DeenGames-FindTheletters";
+	private static final String SHOW_JUMBO_LETTERS = "ShowJumboLetter";
 	
 	private final int PADDING = 8;
 	boolean _showJumboLetter = true;
@@ -44,10 +48,10 @@ public class OptionsScreen extends Screen {
 	public void initialize() { 
 		super.initialize();
 		
+		_showJumboLetter = new PersistentStorage(PREF_FILE_NAME).getBoolean(SHOW_JUMBO_LETTERS, true);
+			
 		this.fadeOutImmediately();
 		Sprite background = this.addSprite("content/images/title-screen.png");
-		
-		//this.center(background);
 		
 		Sprite goIcon = this.addSprite("content/images/go.png");
 		goIcon.setScale(0.5f);
@@ -99,5 +103,11 @@ public class OptionsScreen extends Screen {
 		_hideCheckbox.setClickListener(radioButtonGroup);
 		
 		this.fadeIn();
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		new PersistentStorage(PREF_FILE_NAME).store(SHOW_JUMBO_LETTERS, _showJumboLetter);
 	}
 }
