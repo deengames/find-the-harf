@@ -18,6 +18,27 @@ import com.deengames.radiantwrench.view.Text;
 public class OptionsScreen extends Screen {
 	
 	private final int PADDING = 8;
+	boolean _showJumboLetter = true;
+	ImageCheckbox _showCheckbox;
+	ImageCheckbox _hideCheckbox;
+	
+	private ClickListener radioButtonGroup = new ClickListener() {
+		
+		@Override
+		public void onClick(Clickable clickable) {
+			_showJumboLetter = !_showJumboLetter;
+			if (_showJumboLetter) {
+				_hideCheckbox.setIsChecked(false);
+			} else {
+				_showCheckbox.setIsChecked(false);
+			}
+			
+			// This is technically possible with the controls ...
+			if (!_showCheckbox.getIsChecked() && !_hideCheckbox.getIsChecked()) {
+				_showCheckbox.setIsChecked(true);
+			}
+		}
+	};
 	
 	@Override
 	public void initialize() { 
@@ -54,20 +75,28 @@ public class OptionsScreen extends Screen {
 		letterText.setX(PADDING);
 		letterText.setY(options.getHeight() + 32);
 		
-		ImageCheckbox o = this.addImageCheckbox();
-		o.setX(32);
-		o.setY(letterText.getY() + letterText.getHeight() + PADDING);
-		
-		ImageCheckbox showCheckbox = this.addImageCheckbox();
-		showCheckbox.setScale(0.5f);
-		showCheckbox.setX(32);
-		showCheckbox.setY(letterText.getY() + letterText.getHeight() + PADDING);
-		
+		_showCheckbox = this.addImageCheckbox(_showJumboLetter);
+		_showCheckbox.setScale(0.5f);
+		_showCheckbox.setX(32);
+		_showCheckbox.setY(letterText.getY());
 		
 		Text show = this.addText("Show");
 		show.setColour(Colour.BLACK);
-		show.setX(showCheckbox.getX() + (2 * PADDING));
-		show.setY(showCheckbox.getY());
+		show.setX(_showCheckbox.getX() + _showCheckbox.getScaledWidth() +  (4 * PADDING));
+		show.setY(_showCheckbox.getY() + (int)(_showCheckbox.getScaledHeight() * .75f));
+		
+		_hideCheckbox = this.addImageCheckbox(!_showJumboLetter);
+		_hideCheckbox.setScale(0.5f);
+		_hideCheckbox.setX(32);
+		_hideCheckbox.setY(_showCheckbox.getY() + 64);
+		
+		Text hide = this.addText("Hide");
+		hide.setColour(Colour.BLACK);
+		hide.setX(_hideCheckbox.getX() + _hideCheckbox.getScaledWidth() +  (4 * PADDING));
+		hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .75f));
+		
+		_showCheckbox.setClickListener(radioButtonGroup);
+		_hideCheckbox.setClickListener(radioButtonGroup);
 		
 		this.fadeIn();
 	}

@@ -61,8 +61,12 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 	public boolean touchDown(float x, float y, int pointer) {
 		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
 		
-		boolean touchDown = (x >= this.x && x <= this.x + this.getScaledWidth() && 
-				yFromTop >= this.y && yFromTop <= this.y + this.getScaledHeight());
+		// Images scale from the center, so "scale" the area accordingly.
+		int scaleXOffset = (this.getWidth() - this.getScaledWidth()) / 2;
+		int scaleYOffset = (this.getHeight() - this.getScaledHeight()) / 2;
+		
+		boolean touchDown = (x >= this.x + scaleXOffset && x <= this.x + scaleXOffset + this.getScaledWidth()  && 
+				yFromTop >= this.y + scaleYOffset && yFromTop <= this.y + scaleYOffset + this.getScaledHeight());
 		
 		if (touchDown) {
 			
