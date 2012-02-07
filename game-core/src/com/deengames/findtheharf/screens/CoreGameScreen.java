@@ -1,10 +1,13 @@
 package com.deengames.findtheharf.screens;
 
 import com.badlogic.gdx.math.MathUtils;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.backends.openal.Mp3;
+import com.deengames.findtheharf.model.Constants;
 import com.deengames.radiantwrench.controller.AudioController;
+import com.deengames.radiantwrench.controller.PersistentStorage;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;
@@ -16,6 +19,8 @@ public class CoreGameScreen extends Screen {
 	
 	String _letterToFind = ""; 
 	int _numWrong = 0;
+	
+	boolean _showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
 	
 	private String[] _letters = new String[] {
 		"alif", "ba", "ta", "tha", "jeem", "7a", "kha",

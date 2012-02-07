@@ -5,20 +5,22 @@ import com.badlogic.gdx.Preferences;
 
 public class PersistentStorage {
 
-	private Preferences prefs;
+	private PersistentStorage() { } // Static class
 	
-	public PersistentStorage(String prefFile) {
-		prefs = Gdx.app.getPreferences(prefFile);
+	private static Preferences _prefs;
+	
+	public static void setPreferenceFile(String prefFile) {
+		_prefs = Gdx.app.getPreferences(prefFile);
 	}
 	
-	public void store(String key, boolean value) {
-		prefs.putBoolean(key, value);
-		prefs.flush();
+	public static void store(String key, boolean value) {
+		_prefs.putBoolean(key, value);
+		_prefs.flush();
 	}
 	
-	public boolean getBoolean(String key, boolean defaultValue) {
-		if (prefs.contains(key)) {
-			return prefs.getBoolean(key);
+	public static boolean getBoolean(String key, boolean defaultValue) {
+		if (_prefs.contains(key)) {
+			return _prefs.getBoolean(key);
 		} else {
 			return defaultValue;
 		}
