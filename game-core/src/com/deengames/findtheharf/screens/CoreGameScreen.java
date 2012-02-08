@@ -20,7 +20,7 @@ public class CoreGameScreen extends Screen {
 	String _letterToFind = ""; 
 	int _numWrong = 0;
 	
-	boolean _showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
+	boolean _showJumboLetters;
 	
 	private String[] _letters = new String[] {
 		"alif", "ba", "ta", "tha", "jeem", "7a", "kha",
@@ -50,6 +50,8 @@ public class CoreGameScreen extends Screen {
 		super.initialize();
 		
 		this.fadeOutImmediately();
+		
+		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
 		
 		_halfBlackout = this.addSprite("content/images/1x1.jpg");
 		_halfBlackout.setScale(Math.max(this.getWidth(), this.getHeight()));
@@ -185,29 +187,32 @@ public class CoreGameScreen extends Screen {
 		
 		_numWrong = 0;
 		
-		if (this._jumboLetter != null) {
-			this.removeSprite(this._jumboLetter);
-			this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");			
-			this._halfBlackout.setAlphaRate(2);
-			this._jumboLetter.setAlpha(0);
-			this._jumboLetter.setAlphaRate(2);
-		} else {
-			this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");		
-			_halfBlackout.setAlpha(0.75f);
+		if (_showJumboLetters) {
+			if (this._jumboLetter != null) {
+				this.removeSprite(this._jumboLetter);
+				this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");			
+				this._halfBlackout.setAlphaRate(2);
+				this._jumboLetter.setAlpha(0);
+				this._jumboLetter.setAlphaRate(2);
+			} else {
+				this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");		
+				_halfBlackout.setAlpha(0.75f);
+			}
+			
+			this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
+			
+			float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
+			float scaleH = this.getHeight() * 1.0f / _jumboLetter.getHeight();
+			this._jumboLetter.setScale(Math.min(scaleW, scaleH));
 		}
-		
-		this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
-		
-		float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
-		float scaleH = this.getHeight() * 1.0f / _jumboLetter.getHeight();
-		this._jumboLetter.setScale(Math.min(scaleW, scaleH));
 		
 		this._halfBlackout.setClickListener(new ClickListener() {
 
 			@Override
 			public void onClick(Clickable clickable) {
-				// TODO Auto-generated method stub
-				_jumboLetter.setAlphaRate(-2);
+				if (_showJumboLetters) {
+					_jumboLetter.setAlphaRate(-2);
+				}
 				_halfBlackout.setAlphaRate(-2);
 			}
 		});
