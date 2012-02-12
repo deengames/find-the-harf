@@ -50,6 +50,7 @@ public class OptionsScreen extends Screen {
 			
 		this.fadeOutImmediately();
 		Sprite background = this.addSprite("content/images/title-screen.png");
+		this.fitToScreen(background);
 		
 		Sprite goIcon = this.addSprite("content/images/go.png");
 		goIcon.setScale(0.5f);

@@ -21,7 +21,8 @@ public class SplashScreen extends Screen {
 		super.initialize();		
 		this.fadeOutImmediately();
 		
-		this.addSprite("content/images/background.jpg");
+		Sprite background = this.addSprite("content/images/background.jpg");
+		this.fitToScreen(background);
 		
 		Sprite s;
 		if (this.getHeight() > this.getWidth()) {

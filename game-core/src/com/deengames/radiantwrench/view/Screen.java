@@ -80,6 +80,16 @@ public class Screen {
 		s.setY((this.getHeight() - s.getHeight()) / 2);
 	}
 	
+	public void fitToScreen(Sprite s) {
+		int targetWidth = this.getWidth();
+		int targetHeight = this.getHeight();
+		
+		float wScale = targetWidth * 1.0f / s.getWidth();
+		float hScale = targetHeight * 1.0f / s.getHeight();
+		
+		s.setScale(Math.max(wScale,  hScale));
+	}
+	
 	public void center(Text t) {
 		t.setX((this.getWidth() - t.getWidth()) / 2);
 		t.setY((this.getHeight() - t.getHeight()) / 2);

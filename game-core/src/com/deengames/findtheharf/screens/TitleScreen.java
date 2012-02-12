@@ -20,8 +20,7 @@ public class TitleScreen extends Screen {
 		
 		this.fadeOutImmediately();
 		Sprite background = this.addSprite("content/images/title-screen.png");
-		
-		this.center(background);
+		this.fitToScreen(background);
 		
 		Sprite text = this.addSprite("content/images/click-to-start.png");
 		this.center(text);
