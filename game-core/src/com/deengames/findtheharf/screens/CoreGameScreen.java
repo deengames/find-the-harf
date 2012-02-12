@@ -58,7 +58,9 @@ public class CoreGameScreen extends Screen {
 		_halfBlackout.setZ(HALF_BLACKOUT_Z);
 		_halfBlackout.setAlpha(0);
 		
-		this.addSprite("content/images/background.jpg");
+		Sprite background = this.addSprite("content/images/background.jpg");
+		this.fitToScreen(background);
+		this.center(background);
 		
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
