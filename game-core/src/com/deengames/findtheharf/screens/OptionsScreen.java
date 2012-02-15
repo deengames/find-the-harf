@@ -49,7 +49,8 @@ public class OptionsScreen extends Screen {
 		_showJumboLetter = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
 			
 		this.fadeOutImmediately();
-		Sprite background = this.addSprite("content/images/title-screen.png");
+		
+		Sprite background = this.addSprite("content/images/background.jpg");
 		this.fitToScreen(background);
 		
 		Sprite goIcon = this.addSprite("content/images/go.png");
@@ -70,13 +71,14 @@ public class OptionsScreen extends Screen {
 		});
 		
 		Text options = this.addText("Options");
-		options.setColour(Colour.BLACK);
 		options.setX((this.getHeight() - options.getHeight()) / 2);
+		options.setY(8);
+		options.setFontSize(36);
 		
 		Text letterText = this.addText("Jumbo Letter:");
-		letterText.setColour(Colour.BLACK);
 		letterText.setX(PADDING);
 		letterText.setY(options.getHeight() + 32);
+		letterText.setFontSize(24);
 		
 		_showCheckbox = this.addImageCheckbox(_showJumboLetter);
 		_showCheckbox.setScale(0.5f);
@@ -84,9 +86,9 @@ public class OptionsScreen extends Screen {
 		_showCheckbox.setY(letterText.getY());
 		
 		Text show = this.addText("Show");
-		show.setColour(Colour.BLACK);
 		show.setX(_showCheckbox.getX() + _showCheckbox.getScaledWidth() +  (4 * PADDING));
 		show.setY(_showCheckbox.getY() + (int)(_showCheckbox.getScaledHeight() * .75f));
+		show.setFontSize(24);
 		
 		_hideCheckbox = this.addImageCheckbox(!_showJumboLetter);
 		_hideCheckbox.setScale(0.5f);
@@ -94,9 +96,9 @@ public class OptionsScreen extends Screen {
 		_hideCheckbox.setY(_showCheckbox.getY() + 64);
 		
 		Text hide = this.addText("Hide");
-		hide.setColour(Colour.BLACK);
 		hide.setX(_hideCheckbox.getX() + _hideCheckbox.getScaledWidth() +  (4 * PADDING));
 		hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .75f));
+		hide.setFontSize(24);
 		
 		_showCheckbox.setClickListener(radioButtonGroup);
 		_hideCheckbox.setClickListener(radioButtonGroup);

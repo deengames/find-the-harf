@@ -21,9 +21,16 @@ public class Text implements Drawable, Clickable {
 	private boolean _wasDown = false;
 	private int _orderAdded = 0;
 	
+	private static String _defaultColour = "white";
+	
+	public static void setDefaultColour(String colour) {
+		_defaultColour = colour;
+	}
+	
 	// Todo: generate somehow? We have files ...
+	// But, this depends on the colour now.
 	private int[] _fontSizes = new int[] { 
-			12, 14, 24, 72
+			12, 14, 24, 36, 72
 	};
 
 	private int _maxWidth = Integer.MAX_VALUE;
@@ -137,9 +144,22 @@ public class Text implements Drawable, Clickable {
 	 * Android only supports LTR. So LibGDX uses bitmap fonts ...
 	 * Given that quality degrades to crap, know about what fonts
 	 * exist in the file-system; choose the closest, and scale.
+	 * This method uses the default colour; to change colour, use the
+	 * other overloaded signature, or call setDefaultColour.
 	 * @param fontSize the target font size
 	 */
 	public void setFontSize(float fontSize) {
+		setFontSize(fontSize, _defaultColour);
+	}
+	
+	/**
+	 * Android only supports LTR. So LibGDX uses bitmap fonts ...
+	 * Given that quality degrades to crap, know about what fonts
+	 * exist in the file-system; choose the closest, and scale.
+	 * @param fontSize the target font size
+	 * @param colour the target font colour.
+	 */
+	public void setFontSize(float fontSize, String colour) {
 		int bestFit = this._fontSizes[0];
 		
 		for (int f : this._fontSizes) {
@@ -150,7 +170,7 @@ public class Text implements Drawable, Clickable {
 		}
 
 		// Load best-fit font
-		this._font = new BitmapFont(new FileHandle("content/fonts/arial-" + bestFit + "pt-white.fnt"), false);
+		this._font = new BitmapFont(new FileHandle("content/fonts/arial-" + bestFit + "pt-" + colour + ".fnt"), false);
 		// Scale
 		if (bestFit != fontSize) {
 			this._font.scale(fontSize / bestFit);

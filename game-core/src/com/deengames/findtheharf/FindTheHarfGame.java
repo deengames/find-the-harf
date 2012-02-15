@@ -21,12 +21,14 @@ import com.deengames.findtheharf.model.Constants;
 import com.deengames.findtheharf.screens.SplashScreen;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.controller.PersistentStorage;
+import com.deengames.radiantwrench.view.Text;
 
 
 public class FindTheHarfGame extends Game implements ApplicationListener {
 	
 	public void create() {
 		PersistentStorage.setPreferenceFile(Constants.PREF_FILE_NAME);
+		Text.setDefaultColour("black");
 		Game.showScreen(new SplashScreen());
 		super.create();
 	}
