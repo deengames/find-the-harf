@@ -1,6 +1,8 @@
 package com.deengames.radiantwrench.view;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -28,6 +30,8 @@ public class Text implements Drawable, Clickable {
 	private String _fontName = "arial";
 	private float _fontSize = 12;
 	private String _colour = _defaultColour;
+	
+	private static HashMap<String, List<Integer>> fontSizes = new HashMap<String, List<Integer>>();
 	
 	public static void setDefaultColour(String colour) {
 		_defaultColour = colour;
@@ -183,16 +187,24 @@ public class Text implements Drawable, Clickable {
 	}
 
 	private List<Integer> getFontSizesFromAvailableFonts() {
-		List<Integer> toReturn = new ArrayList<Integer>();	
-		FileHandle dir = new FileHandle("content/fonts/");
-		for (FileHandle file : dir.list()) {
-			String name = file.name().toLowerCase();
-			if (name.contains(this._fontName.toLowerCase() + "-") && name.contains(this._colour + ".fnt")) {
-				int size = Integer.parseInt(name.substring(name.indexOf("-") + 1, name.lastIndexOf("pt-")));
-				toReturn.add(size);
+		String hashKey = this._fontName.toLowerCase() + "-" + this._colour;
+		
+		if (fontSizes.containsKey(hashKey)) {
+			return fontSizes.get(hashKey);
+		} else {				
+			List<Integer> toReturn = new ArrayList<Integer>();	
+			FileHandle dir = new FileHandle("content/fonts/");
+			for (FileHandle file : dir.list()) {
+				String name = file.name().toLowerCase();
+				if (name.contains(this._fontName.toLowerCase() + "-") && name.contains(this._colour + ".fnt")) {
+					int size = Integer.parseInt(name.substring(name.indexOf("-") + 1, name.lastIndexOf("pt-")));
+					toReturn.add(size);
+				}
 			}
+			
+			fontSizes.put(hashKey, toReturn);
+			return toReturn;
 		}
-		return toReturn;
 	}
 
 	public boolean getIsVisible() {
