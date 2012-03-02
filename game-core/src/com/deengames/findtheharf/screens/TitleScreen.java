@@ -22,9 +22,6 @@ public class TitleScreen extends Screen {
 		Sprite background = this.addSprite("content/images/title-screen.png");
 		this.center(background);
 		
-		//Sprite text = this.addSprite("content/images/click-to-start.png");
-		//this.center(text);
-		
 		AudioController.play("content/audio/speech/find-the-letters-title.mp3");
 		
 		Sprite optionsIcon = this.addSprite("content/images/options.png");

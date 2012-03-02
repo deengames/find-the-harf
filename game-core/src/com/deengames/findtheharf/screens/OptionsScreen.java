@@ -1,5 +1,7 @@
 package com.deengames.findtheharf.screens;
 
+import java.awt.Font;
+
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
@@ -73,32 +75,37 @@ public class OptionsScreen extends Screen {
 		Text options = this.addText("Options");
 		options.setX((this.getHeight() - options.getHeight()) / 2);
 		options.setY(8);
-		options.setFontSize(36);
+		options.setFontSize(48);
+		options.setFont("ElliotSix");	
 		
-		Text letterText = this.addText("Jumbo Letter:");
+		int OFFSET = 32;
+		Text letterText = this.addText("Jumbo Letter:");		
 		letterText.setX(PADDING);
-		letterText.setY(options.getHeight() + 32);
+		letterText.setY(options.getHeight() + OFFSET);
 		letterText.setFontSize(24);
+		letterText.setFont("ElliotSix");
 		
 		_showCheckbox = this.addImageCheckbox(_showJumboLetter);
 		_showCheckbox.setScale(0.5f);
 		_showCheckbox.setX(32);
-		_showCheckbox.setY(letterText.getY());
+		_showCheckbox.setY(letterText.getY() + 16);
 		
-		Text show = this.addText("Show");
+		Text show = this.addText("Show");		
 		show.setX(_showCheckbox.getX() + _showCheckbox.getScaledWidth() +  (4 * PADDING));
-		show.setY(_showCheckbox.getY() + (int)(_showCheckbox.getScaledHeight() * .75f));
+		show.setY(_showCheckbox.getY() + (int)(_showCheckbox.getScaledHeight() * .5f));
 		show.setFontSize(24);
+		show.setFont("ElliotSix");
 		
 		_hideCheckbox = this.addImageCheckbox(!_showJumboLetter);
 		_hideCheckbox.setScale(0.5f);
 		_hideCheckbox.setX(32);
-		_hideCheckbox.setY(_showCheckbox.getY() + 64);
+		_hideCheckbox.setY(_showCheckbox.getY() + (2 * OFFSET));
 		
-		Text hide = this.addText("Hide");
+		Text hide = this.addText("Hide");		
 		hide.setX(_hideCheckbox.getX() + _hideCheckbox.getScaledWidth() +  (4 * PADDING));
-		hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .75f));
+		hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .5f));
 		hide.setFontSize(24);
+		hide.setFont("ElliotSix");
 		
 		_showCheckbox.setClickListener(radioButtonGroup);
 		_hideCheckbox.setClickListener(radioButtonGroup);

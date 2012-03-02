@@ -1,5 +1,8 @@
 package com.deengames.radiantwrench.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -12,6 +15,8 @@ import com.deengames.radiantwrench.utils.RadiantWrenchException;
 
 public class Text implements Drawable, Clickable {
 	
+	private static String _defaultColour = "white";
+	
 	private int _x = 0;
 	private int _y = 0;
 	private int _z = 0;
@@ -20,18 +25,13 @@ public class Text implements Drawable, Clickable {
 	private BitmapFont _font;
 	private boolean _wasDown = false;
 	private int _orderAdded = 0;
-	
-	private static String _defaultColour = "white";
+	private String _fontName = "arial";
+	private float _fontSize = 12;
+	private String _colour = _defaultColour;
 	
 	public static void setDefaultColour(String colour) {
 		_defaultColour = colour;
-	}
-	
-	// Todo: generate somehow? We have files ...
-	// But, this depends on the colour now.
-	private int[] _fontSizes = new int[] { 
-			12, 14, 24, 36, 72
-	};
+	}	
 
 	private int _maxWidth = Integer.MAX_VALUE;
 	
@@ -149,32 +149,50 @@ public class Text implements Drawable, Clickable {
 	 * @param fontSize the target font size
 	 */
 	public void setFontSize(float fontSize) {
-		setFontSize(fontSize, _defaultColour);
+		this._fontSize = fontSize;
+		updateFont();
+	}
+	
+	public void setFont(String fontName) {
+		this._fontName = fontName;
+		updateFont();
 	}
 	
 	/**
 	 * Android only supports LTR. So LibGDX uses bitmap fonts ...
 	 * Given that quality degrades to crap, know about what fonts
 	 * exist in the file-system; choose the closest, and scale.
-	 * @param fontSize the target font size
-	 * @param colour the target font colour.
 	 */
-	public void setFontSize(float fontSize, String colour) {
-		int bestFit = this._fontSizes[0];
+	public void updateFont() {
+		List<Integer> fontSizes = getFontSizesFromAvailableFonts();
+		int bestFit = fontSizes.get(0).intValue();
 		
-		for (int f : this._fontSizes) {
-			if (Math.abs(f - fontSize) < Math.abs(bestFit - fontSize)) {
-				bestFit = f;
-				
+		for (Integer size : fontSizes) {
+			int f = size.intValue();
+			if (Math.abs(f - this._fontSize) < Math.abs(bestFit - this._fontSize)) {
+				bestFit = f;				
 			}
 		}
 
 		// Load best-fit font
-		this._font = new BitmapFont(new FileHandle("content/fonts/arial-" + bestFit + "pt-" + colour + ".fnt"), false);
+		this._font = new BitmapFont(new FileHandle("content/fonts/" + this._fontName + "-" + bestFit + "pt-" + this._colour + ".fnt"), false);
 		// Scale
-		if (bestFit != fontSize) {
-			this._font.scale(fontSize / bestFit);
+		if (bestFit != this._fontSize) {
+			this._font.scale(this._fontSize / bestFit);
 		}
+	}
+
+	private List<Integer> getFontSizesFromAvailableFonts() {
+		List<Integer> toReturn = new ArrayList<Integer>();	
+		FileHandle dir = new FileHandle("content/fonts/");
+		for (FileHandle file : dir.list()) {
+			String name = file.name().toLowerCase();
+			if (name.contains(this._fontName.toLowerCase() + "-") && name.contains(this._colour + ".fnt")) {
+				int size = Integer.parseInt(name.substring(name.indexOf("-") + 1, name.lastIndexOf("pt-")));
+				toReturn.add(size);
+			}
+		}
+		return toReturn;
 	}
 
 	public boolean getIsVisible() {
