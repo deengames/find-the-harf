@@ -20,10 +20,10 @@ public class TitleScreen extends Screen {
 		
 		this.fadeOutImmediately();
 		Sprite background = this.addSprite("content/images/title-screen.png");
-		this.fitToScreen(background);
+		this.center(background);
 		
-		Sprite text = this.addSprite("content/images/click-to-start.png");
-		this.center(text);
+		//Sprite text = this.addSprite("content/images/click-to-start.png");
+		//this.center(text);
 		
 		AudioController.play("content/audio/speech/find-the-letters-title.mp3");
 		
@@ -44,13 +44,9 @@ public class TitleScreen extends Screen {
 			}
 		});
 		
-		this.fadeIn();
+		this.fadeIn();		
 		
-		Sprite goIcon = this.addSprite("content/images/go.png");
-		this.center(goIcon);
-		goIcon.setY((this.getHeight() - goIcon.getHeight()) / 2);
-		
-		goIcon.setClickListener(new ClickListener() {
+		background.setClickListener(new ClickListener() {
 			public void onClick(Clickable clickable) {
 				fadeOut();
 				addFadeOutListener(new Action() {
@@ -59,6 +55,6 @@ public class TitleScreen extends Screen {
 					}
 				});
 			}			
-		});
+		});		
 	}
 }
