@@ -112,8 +112,8 @@ public class Sprite implements Drawable, Clickable {
 		return _alphaRate;
 	}
 
-	public void setAlphaRate(float _alphaRate) {
-		this._alphaRate = _alphaRate;
+	public void setAlphaRate(float alphaRate) {
+		this._alphaRate = alphaRate;
 	}
 
 	/**

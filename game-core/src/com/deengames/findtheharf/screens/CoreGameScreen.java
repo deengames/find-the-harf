@@ -44,6 +44,7 @@ public class CoreGameScreen extends Screen {
 	Sprite _jumboLetter;
 	
 	private final int HALF_BLACKOUT_Z = 9999;
+	private final float HALF_BLACKOUT_ALPHA = 0.75f;
 	
 	@Override
 	public void initialize() {
@@ -164,6 +165,16 @@ public class CoreGameScreen extends Screen {
 		this.fadeIn();
 	}
 	
+	@Override
+	public void update(double elapsedSeconds) {
+		super.update(elapsedSeconds);
+		
+		if (this._halfBlackout.getAlphaRate() > 0 && this._halfBlackout.getAlpha() >= HALF_BLACKOUT_ALPHA) {
+			this._halfBlackout.setAlphaRate(0);
+			this._halfBlackout.setAlpha(HALF_BLACKOUT_ALPHA);			
+		}
+	}
+	
 	int getIndex(String letter) {
 		for (int i = 0; i < _letters.length; i++) {
 			if (_letters[i].equals(letter)) {
@@ -180,7 +191,14 @@ public class CoreGameScreen extends Screen {
 	}
 	
 	void findANewLetter() {
-		_letterToFind = _letters[MathUtils.random(this._letters.length - 1)];		
+		
+		String newLetter = _letterToFind;
+		
+		while (newLetter == _letterToFind) {
+			newLetter = _letters[MathUtils.random(this._letters.length - 1)];
+		}
+		
+		_letterToFind = newLetter;		
 		
 		AudioController.playInSerial(new String[] { 
 			"content/audio/speech/find-the-letter.mp3", 
@@ -198,7 +216,7 @@ public class CoreGameScreen extends Screen {
 				this._jumboLetter.setAlphaRate(2);
 			} else {
 				this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");		
-				_halfBlackout.setAlpha(0.75f);
+				_halfBlackout.setAlpha(HALF_BLACKOUT_ALPHA);
 			}
 			
 			this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);

@@ -17,6 +17,7 @@
 package com.deengames.findtheharf;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.deengames.findtheharf.model.Constants;
 import com.deengames.findtheharf.screens.SplashScreen;
 import com.deengames.radiantwrench.controller.Game;
