@@ -46,7 +46,7 @@ public class SplashScreen extends Screen {
 		
 		this.fadeIn();		
 		
-		AudioController.play("content/audio/giggle.mp3");
+		AudioController.play("content/audio/giggle.ogg");
 	}
 	
 	private class FadeOutClass extends TimerTask {

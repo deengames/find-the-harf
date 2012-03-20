@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2010 Mario Zechner (contact@badlogicgames.com)
+  Copyright 2012 Ashiq Alibhai
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@
   limitations under the License.
 -->
 <resources>
-    <string name="hello">Hello World, GDXHelloWorld!</string>
-    <string name="app_name">GDX Hello World</string>
+    <string name="hello">Hi!</string>
+    <string name="app_name">Find the Harf</string>
 </resources>

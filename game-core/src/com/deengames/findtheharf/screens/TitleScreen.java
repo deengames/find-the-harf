@@ -3,7 +3,6 @@ package com.deengames.findtheharf.screens;
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
-import com.badlogic.gdx.backends.openal.Mp3;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
@@ -22,7 +21,7 @@ public class TitleScreen extends Screen {
 		Sprite background = this.addSprite("content/images/title-screen.png");
 		this.center(background);
 		
-		AudioController.play("content/audio/speech/find-the-letters-title.mp3");
+		AudioController.play("content/audio/speech/find-the-letters-title.ogg");
 		
 		Sprite optionsIcon = this.addSprite("content/images/options.png");
 		this.center(optionsIcon);
