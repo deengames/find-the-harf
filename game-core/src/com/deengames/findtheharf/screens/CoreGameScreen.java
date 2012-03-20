@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
-import com.badlogic.gdx.backends.openal.Mp3;
 import com.deengames.findtheharf.model.Constants;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.PersistentStorage;
@@ -107,10 +106,10 @@ public class CoreGameScreen extends Screen {
 							String praise =  _praises[MathUtils.random(_praises.length - 1)];
 							
 							AudioController.playInSerial(new String[] {
-									"content/audio/right-letter.mp3",
-									"content/audio/speech/" + praise + ".mp3",
-									"content/audio/speech/mashaAllah.mp3",
-									"content/audio/speech/now.mp3",
+									"content/audio/right-letter.ogg",
+									"content/audio/speech/" + praise + ".ogg",
+									"content/audio/speech/mashaAllah.ogg",
+									"content/audio/speech/now.ogg",
 									});
 							
 							findANewLetter();
@@ -122,12 +121,12 @@ public class CoreGameScreen extends Screen {
 								int clickedIndex = getIndex(letter);
 								
 								AudioController.playInSerial(new String[] {
-									"content/audio/speech/thats-not.mp3",
-									"content/audio/speech/letters/" + _letterToFind + ".mp3",
-									"content/audio/speech/thats.mp3",
-									"content/audio/speech/letters/" + letter + ".mp3",	
-									"content/audio/speech/the-letter.mp3",
-									"content/audio/speech/letters/" + _letterToFind + ".mp3"
+									"content/audio/speech/thats-not.ogg",
+									"content/audio/speech/letters/" + _letterToFind + ".ogg",
+									"content/audio/speech/thats.ogg",
+									"content/audio/speech/letters/" + letter + ".ogg",	
+									"content/audio/speech/the-letter.ogg",
+									"content/audio/speech/letters/" + _letterToFind + ".ogg"
 								});
 								
 								if (_numWrong == 1) {
@@ -139,19 +138,19 @@ public class CoreGameScreen extends Screen {
 									}
 																	
 									AudioController.playInSerial(new String[] {
-										"content/audio/speech/comes.mp3",
-										"content/audio/speech/" + beforeOrAfter + ".mp3",
-										"content/audio/speech/letters/" + letter + ".mp3"
+										"content/audio/speech/comes.ogg",
+										"content/audio/speech/" + beforeOrAfter + ".ogg",
+										"content/audio/speech/letters/" + letter + ".ogg"
 									});
 								} else if (_numWrong == 2) {
 									String colour = getColour(_letterToFind);
 									AudioController.playInSerial(new String[] {
-										"content/audio/speech/is.mp3",
-										"content/audio/speech/" + colour + ".mp3",									
+										"content/audio/speech/is.ogg",
+										"content/audio/speech/" + colour + ".ogg",									
 									});
 								}
 							} else {
-								AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.mp3"});
+								AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.ogg"});
 								findANewLetter();
 							}
 						}
@@ -201,8 +200,8 @@ public class CoreGameScreen extends Screen {
 		_letterToFind = newLetter;		
 		
 		AudioController.playInSerial(new String[] { 
-			"content/audio/speech/find-the-letter.mp3", 
-			"content/audio/speech/letters/" + _letterToFind + ".mp3" 
+			"content/audio/speech/find-the-letter.ogg", 
+			"content/audio/speech/letters/" + _letterToFind + ".ogg" 
 		});
 		
 		_numWrong = 0;
