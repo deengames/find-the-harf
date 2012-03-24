@@ -4,6 +4,7 @@ package com.deengames.findtheharf.screens;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.deengames.radiantwrench.audio.Sound;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 
@@ -40,9 +41,16 @@ public class LoadingScreen extends Screen {
 			}
 		});
 		
-		this.fadeIn();		
+		this.fadeIn();
+		preloadSounds();
 	}
 	
+	private void preloadSounds() {
+		// Try to pre-load. Does this work? I dunno bro.
+		//new Sound("content/audio/giggle.ogg");
+		//new Sound("content/audio/speech/find-the-letters-title.ogg");
+	}
+
 	private class FadeOutClass extends TimerTask {
 		public FadeOutClass() { }
 		

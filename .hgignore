@@ -1,3 +1,5 @@
 syntax: glob
 *.class
 */bin/*
+android-specific/gen/com/badlogic/gdx/R.java
+android-specific/project.properties

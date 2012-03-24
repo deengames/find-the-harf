@@ -21,7 +21,7 @@ import com.badlogic.gdx.Gdx;
 import com.deengames.findtheharf.model.Constants;
 import com.deengames.findtheharf.screens.LoadingScreen;
 import com.deengames.radiantwrench.controller.Game;
-import com.deengames.radiantwrench.controller.PersistentStorage;
+import com.deengames.radiantwrench.utils.PersistentStorage;
 import com.deengames.radiantwrench.view.Text;
 
 
