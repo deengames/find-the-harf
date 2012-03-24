@@ -69,10 +69,10 @@ public class Screen {
 	public void update(double elapsedSeconds) {
 		
 		for (Sprite s : this._sprites) {
-			s.update();
+			s.update(elapsedSeconds);
 		}
 
-		updateSpriteAlphas(elapsedSeconds);
+		updateFades(elapsedSeconds);
 	}
 
 	public void center(Sprite s) {
@@ -118,22 +118,7 @@ public class Screen {
 		this._blackoutSprite.setAlphaRate(-1.0f / inSeconds);
 	}
 
-	private void updateSpriteAlphas(double elapsedSeconds) {
-		for (Sprite sprite : this._sprites) {
-			if (sprite.getAlphaRate() != 0) {
-				float alphaDelta = (float) elapsedSeconds
-						* sprite.getAlphaRate();
-
-				if (sprite.getAlpha() + alphaDelta >= 1) {
-					sprite.setAlpha(1);
-				} else if (sprite.getAlpha() + alphaDelta <= 0) {
-					sprite.setAlpha(0);
-				} else {
-					sprite.setAlpha(sprite.getAlpha() + alphaDelta);
-				}
-			}
-		}
-
+	private void updateFades(double elapsedSeconds) {
 		if ((this._fadeInListeners.size() > 0 || this._fadeOutListeners.size() > 0)
 				&& this._blackoutSprite.getAlphaRate() != 0) {
 			if (this._blackoutSprite.getAlphaRate() <= 0
