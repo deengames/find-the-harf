@@ -4,14 +4,13 @@ import java.io.Console;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
+import com.deengames.radiantwrench.audio.Sound;
 
 public class AudioController {
 
 	private static boolean _enabled = true;
 	private static LinkedList<String> _soundQueue = new LinkedList<String>();
-	private static Music _currentSound = null;
+	private static Sound _currentSound = null;
 
 	// static class
 	private AudioController() {
@@ -22,7 +21,7 @@ public class AudioController {
 			if (_currentSound != null && !_currentSound.isPlaying()) {
 				if (_soundQueue.size() > 0) {
 					String next = _soundQueue.removeFirst();
-					_currentSound = Gdx.audio.newMusic(Gdx.files.internal(next));
+					_currentSound = new Sound(next);
 					_currentSound.play();
 				} else {
 					_currentSound = null;
@@ -33,7 +32,7 @@ public class AudioController {
 
 	public static void play(String audioFileName) {
 		if (_enabled) {
-			Gdx.audio.newSound(Gdx.files.internal(audioFileName)).play();
+			new Sound(audioFileName).play();
 		}
 	}
 
@@ -52,8 +51,7 @@ public class AudioController {
 						&& (_currentSound == null || (_currentSound != null && !_currentSound
 								.isPlaying()))) {
 					// Play immediately, don't wait for the next tick.
-					_currentSound = Gdx.audio.newMusic(Gdx.files
-							.internal(audioFileNames[0]));
+					_currentSound = new Sound(audioFileNames[0]);
 					_currentSound.play();
 					startIndex = 1;
 				}
