@@ -22,7 +22,9 @@ public class Sprite implements Drawable, Clickable {
 	protected Texture _texture;
 	private String _fileName = "";
 	
-	protected int _rotationAngle = 0;
+	protected float _rotationAngle = 0;
+	protected int _rotationRate;
+	
 	protected float _alpha = 1;
 	protected float _alphaRate = 0;
 
@@ -87,11 +89,19 @@ public class Sprite implements Drawable, Clickable {
 	}
 
 	public int getRotationAngle() {
-		return _rotationAngle;
+		return (int)_rotationAngle;
 	}
 
-	public void setRotationAngle(int _rotationAngle) {
-		this._rotationAngle = _rotationAngle;
+	public void setRotationAngle(int rotationAngle) {
+		this._rotationAngle = rotationAngle;
+	}
+	
+	public void setRotationRate(int rotationRate) {
+		this._rotationRate = rotationRate;
+	}
+	
+	public int getRotationRate() {
+		return this._rotationRate;
 	}
 
 	public float getAlpha() {
@@ -119,8 +129,23 @@ public class Sprite implements Drawable, Clickable {
 	/**
 	 * Called every frame before rendering.
 	 */
-	public void update() {
+	public void update(double elapsedSeconds) {
+		if (this._alphaRate != 0) {
+			float alphaDelta = (float) elapsedSeconds
+					* this._alphaRate;
+
+			if (this._alpha + alphaDelta >= 1) {
+				this._alpha = 1;
+			} else if (this._alpha + alphaDelta <= 0) {
+				this._alpha = 0;
+			} else {
+				this._alpha += alphaDelta;
+			}
+		}
 		
+		if (this._rotationRate > 0) {
+			this._rotationAngle += (this._rotationRate * elapsedSeconds);
+		}
 	}
 
 	@Override
@@ -188,7 +213,7 @@ public class Sprite implements Drawable, Clickable {
 		spriteBatch.draw(t,  0f + this._x, 0f + screenHeight - this.getHeight() - this._y,
 				this.getWidth() / 2, this.getHeight() / 2, // origin 
 				this.getWidth(), this.getHeight(), // draw scaled
-				1, 1, 0, // Scale to (1, 1), rotation = 0
+				1, 1, this._rotationAngle, // Scale to (1, 1), rotation
 				0, 0, this.getOriginalWidth(), this.getOriginalHeight(),
 				false, false);
 		// Tell spritebatch to raw everything fully opaque
