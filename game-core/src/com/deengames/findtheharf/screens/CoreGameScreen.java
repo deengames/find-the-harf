@@ -91,7 +91,7 @@ public class CoreGameScreen extends Screen {
 			int freeVerticalSpace = this.getHeight() - totalVerticalUsed;
 			
 			s.setX(this.getWidth() - (s.getWidth() * ((i % numHorizontal) + 1)));
-			s.setX(s.getX() + (freeHorizontalSpace / 2));
+			s.setX(s.getX() - (freeHorizontalSpace / 2));
 			s.setY(s.getHeight() * (i / numHorizontal));
 			s.setY(s.getY() + (freeVerticalSpace / 2));			
 			
