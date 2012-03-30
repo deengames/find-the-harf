@@ -20,17 +20,20 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.deengames.findtheharf.model.Constants;
 import com.deengames.findtheharf.screens.LoadingScreen;
+import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.PersistentStorage;
 import com.deengames.radiantwrench.view.Text;
 
-
 public class FindTheHarfGame extends Game implements ApplicationListener {
-	
+
 	public void create() {
 		PersistentStorage.setPreferenceFile(Constants.PREF_FILE_NAME);
 		Text.setDefaultColour("black");
+		AudioController.preloadSounds("content/audio", ".ogg"); // Recurses in
+
 		Game.showScreen(new LoadingScreen());
+
 		super.create();
 	}
 }
