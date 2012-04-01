@@ -20,6 +20,16 @@ public class TitleScreen extends Screen {
 		this.fadeOutImmediately();
 		Sprite background = this.addSprite("content/images/title-screen.png");
 		this.center(background);
+		background.setClickListener(new ClickListener() {
+			public void onClick(Clickable clickable) {
+				fadeOut();
+				addFadeOutListener(new Action() {
+					public void invoke() {
+						Game.showScreen(new CoreGameScreen());
+					}
+				});
+			}			
+		});	
 		
 		AudioController.playSound("content/audio/speech/find-the-letters-title.ogg");
 		
@@ -40,17 +50,6 @@ public class TitleScreen extends Screen {
 			}
 		});
 		
-		this.fadeIn();		
-		
-		background.setClickListener(new ClickListener() {
-			public void onClick(Clickable clickable) {
-				fadeOut();
-				addFadeOutListener(new Action() {
-					public void invoke() {
-						Game.showScreen(new CoreGameScreen());
-					}
-				});
-			}			
-		});		
+		this.fadeIn();			
 	}
 }
