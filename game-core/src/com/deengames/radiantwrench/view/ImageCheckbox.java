@@ -59,6 +59,11 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer) {
+		
+		if (this._clickListener == null) {
+			return false;
+		}
+		
 		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
 		
 		// Images scale from the center, so "scale" the area accordingly.
@@ -206,5 +211,8 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 				srcX, 0, Math.round(this.width), Math.round(this.height),
 				false, false); // No flip
 	}
-
+	
+	public void destroy() {
+		this._texture.dispose();
+	}
 }

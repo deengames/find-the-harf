@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 import com.deengames.radiantwrench.utils.ZTypeOrderComparator;
 import com.deengames.radiantwrench.view.Drawable;
@@ -196,29 +197,32 @@ public class Game implements ApplicationListener, InputProcessor {
 		int yFromScreenTop = _currentScreen.getHeight() - y;
 		Screen currentScreen = _currentScreen;
 		
-		for (Sprite s : currentScreen.getSprites()) {
-			s.touchDown(x, yFromScreenTop, pointer);
+		// We only allow one object to trap touchdown at a time. This allows
+		// the user to put two objects with touch events on top of each 
+		// other, and on touch, only one will have its event triggered.
+		// Start with higher-Z objects and percolate to lower-Z objects.
+		
+		ArrayList<Drawable> drawables = new ArrayList<Drawable>();
+		drawables.addAll(currentScreen.getImageCheckboxes());
+		drawables.addAll(currentScreen.getImageButtons());
+		drawables.addAll(currentScreen.getSprites());
+		drawables.addAll(currentScreen.getSpriteSheets());
+		drawables.addAll(currentScreen.getTexts());
+		
+		Collections.sort(drawables, _zTypeOrderComparator); 
+		
+		boolean wasHandled = false;
+		// Sorted low to high, so apply click handling from high to low
+		for (int i = drawables.size() - 1; i >= 0; i--) {
+			Drawable d = drawables.get(i);
+			wasHandled = ((Clickable)d).touchDown(x, y, pointer);
+			if (wasHandled) {
+				break;
+			}
 		}
 		
-		for (SpriteSheet s : currentScreen.getSpriteSheets()) {
-			s.touchDown(x,  yFromScreenTop, pointer);
-		}
-		
-		for (Text t : currentScreen.getTexts()) {
-			t.touchDown(x, y, pointer);
-		}
-		
-		for (ImageButton b : currentScreen.getImageButtons()) {
-			b.touchDown(x, yFromScreenTop, pointer);			
-		}
-		
-		for (ImageCheckbox c : currentScreen.getImageCheckboxes()) {
-			c.touchDown(x, yFromScreenTop, pointer);
-		}
-		
-		return true;
+		return wasHandled;
 	}
-
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {

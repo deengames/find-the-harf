@@ -178,7 +178,12 @@ public class Sprite implements Drawable, Clickable {
 	}
 	
 	public boolean touchDown(float x, float y, int pointer) {
-		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
+		
+		if (this._clickListener == null || this._alpha == 0) {
+			return false;
+		}
+		
+		int yFromTop = (int)y; // Not sure why only this class gets the real Y value.
 		
 		boolean touchDown = (x >= this.getX() && x <= this.getX() + this.getWidth() && 
 				yFromTop >= this.getY() && yFromTop <= this.getY() + this.getHeight());
@@ -218,5 +223,9 @@ public class Sprite implements Drawable, Clickable {
 				false, false);
 		// Tell spritebatch to raw everything fully opaque
 		spriteBatch.setColor(FULLY_OPAQUE); // Fully opaque
+	}
+	
+	public void destroy() {
+		this._texture.dispose();
 	}
 }

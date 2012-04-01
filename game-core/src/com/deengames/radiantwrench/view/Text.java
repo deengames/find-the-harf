@@ -60,8 +60,9 @@ public class Text implements Drawable, Clickable {
 	}
 	
 	public boolean touchDown(float x, float y, int pointer) {
-		if (this._text == null) { 
-			return true; // processed = true
+		
+		if (this._text == null || this._clickListener == null) { 
+			return false; 
 		}
 		
 		TextBounds bounds = this._font.getBounds(this._text);
@@ -234,5 +235,9 @@ public class Text implements Drawable, Clickable {
 	@Override
 	public String toString() {
 		return "Text: " + this._text;
+	}
+	
+	public void destroy() {
+		this._font.dispose();
 	}
 }

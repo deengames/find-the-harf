@@ -61,6 +61,10 @@ public class ImageButton extends Image implements Clickable, Drawable {
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer) {
+		if (this._clickListener == null) {
+			return false;
+		}
+		
 		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
 		
 		boolean touchDown = (x >= this.x && x <= this.x + this.width && 
@@ -179,5 +183,9 @@ public class ImageButton extends Image implements Clickable, Drawable {
 		spriteBatch.draw(this.region, this.x,
 				Game.getCurrentScreen().getHeight() - this.y - this.height,
 				this.scaleX * this.width, this.scaleY * this.height);	
+	}
+	
+	public void destroy() {
+		this._texture.dispose();
 	}
 }

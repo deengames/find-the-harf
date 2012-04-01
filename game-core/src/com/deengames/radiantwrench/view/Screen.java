@@ -141,7 +141,33 @@ public class Screen {
 	}
 
 	public void destroy() {
+		this._blackoutSprite.destroy();
+		
+		for(Sprite s : this._sprites) {
+			s.destroy();
+		}
+		
+		for(Text t : this._texts) {
+			t.destroy();
+		}
+		
+		for(SpriteSheet s : this._spriteSheets) {
+			s.destroy();
+		}
+		
+		for(ImageButton i : this._imageButtons) {
+			i.destroy();
+		}
+		
+		for(ImageCheckbox i : this._imageCheckBoxes) {
+			i.destroy();
+		}
+		
 		this._sprites.clear();
+		this._texts.clear();
+		this._spriteSheets.clear();
+		this._imageButtons.clear();
+		this._imageCheckBoxes.clear();
 	}
 
 	public Sprite addSprite(String fileName) {
@@ -151,6 +177,7 @@ public class Screen {
 	}
 	
 	public void removeSprite(Sprite sprite) {
+		sprite.destroy();
 		this._sprites.remove(sprite);
 	}
 	
