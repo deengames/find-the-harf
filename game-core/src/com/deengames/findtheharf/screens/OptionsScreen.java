@@ -21,9 +21,17 @@ import com.deengames.radiantwrench.view.Text;
 public class OptionsScreen extends Screen {
 	
 	private final int PADDING = 8;
+	int OFFSET = 32;
 	boolean _showJumboLetter = true;
+	
 	ImageCheckbox _showCheckbox;
 	ImageCheckbox _hideCheckbox;
+	Sprite _background;
+	Sprite _goIcon;
+	Text _options;
+	Text _letterText;
+	Text _show;
+	Text _hide;
 	
 	private ClickListener radioButtonGroup = new ClickListener() {
 		
@@ -51,15 +59,12 @@ public class OptionsScreen extends Screen {
 			
 		this.fadeOutImmediately();
 		
-		Sprite background = this.addSprite("content/images/background.jpg");
-		this.fitToScreen(background);
+		_background = this.addSprite("content/images/background.jpg");
 		
-		Sprite goIcon = this.addSprite("content/images/go.png");
-		goIcon.setScale(0.5f);
-		goIcon.setX(this.getWidth() - goIcon.getWidth() - PADDING);
-		goIcon.setY(this.getHeight() - goIcon.getHeight() - PADDING);
+		_goIcon = this.addSprite("content/images/go.png");
+		_goIcon.setScale(0.5f);
 		
-		goIcon.setClickListener(new ClickListener() {
+		_goIcon.setClickListener(new ClickListener() {
 			@Override
 			public void onClick(Clickable clickable) {
 				fadeOut();
@@ -71,45 +76,62 @@ public class OptionsScreen extends Screen {
 			}
 		});
 		
-		Text options = this.addText("Options");
-		options.setX((this.getHeight() - options.getHeight()) / 2);
-		options.setY(8);
-		options.setFontSize(48);
-		options.setFont("ElliotSix");	
+		_options = this.addText("Options");
+		// Fit as wide as we can
+		_options.setFontSize(48);
+		_options.setFont("ElliotSix");	
 		
-		int OFFSET = 32;
-		Text letterText = this.addText("Jumbo Letter:");		
-		letterText.setX(PADDING);
-		letterText.setY(options.getHeight() + OFFSET);
-		letterText.setFontSize(24);
-		letterText.setFont("ElliotSix");
+		_letterText = this.addText("Jumbo Letter:");		
+
+		_letterText.setFontSize(24);
+		_letterText.setFont("ElliotSix");
 		
 		_showCheckbox = this.addImageCheckbox(_showJumboLetter);
 		_showCheckbox.setScale(0.5f);
-		_showCheckbox.setX(32);
-		_showCheckbox.setY(letterText.getY() + 16);
 		
-		Text show = this.addText("Show");		
-		show.setX(_showCheckbox.getX() + _showCheckbox.getScaledWidth() +  (4 * PADDING));
-		show.setY(_showCheckbox.getY() + (int)(_showCheckbox.getScaledHeight() * .5f));
-		show.setFontSize(24);
-		show.setFont("ElliotSix");
+		_show = this.addText("Show");		
+		_show.setFontSize(24);
+		_show.setFont("ElliotSix");
 		
 		_hideCheckbox = this.addImageCheckbox(!_showJumboLetter);
 		_hideCheckbox.setScale(0.5f);
-		_hideCheckbox.setX(32);
-		_hideCheckbox.setY(_showCheckbox.getY() + (2 * OFFSET));
 		
-		Text hide = this.addText("Hide");		
-		hide.setX(_hideCheckbox.getX() + _hideCheckbox.getScaledWidth() +  (4 * PADDING));
-		hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .5f));
-		hide.setFontSize(24);
-		hide.setFont("ElliotSix");
+		_hide = this.addText("Hide");		
+		_hide.setFontSize(24);
+		_hide.setFont("ElliotSix");
 		
 		_showCheckbox.setClickListener(radioButtonGroup);
 		_hideCheckbox.setClickListener(radioButtonGroup);
 		
+		this.resize();
 		this.fadeIn();
+	}
+	
+	@Override
+	public void resize() {
+		this.fitToScreen(_background);
+		
+		_goIcon.setX(this.getWidth() - _goIcon.getWidth() - PADDING);
+		_goIcon.setY(this.getHeight() - _goIcon.getHeight() - PADDING);
+		
+		_options.setX((this.getWidth() - _options.getWidth()) / 2);
+		_options.setY(8);
+
+		_letterText.setX(PADDING);
+		_letterText.setY(_options.getHeight() + OFFSET);
+		
+		_showCheckbox.setX(32);
+		_showCheckbox.setY(_letterText.getY() + 16);
+		
+		_show.setX(_showCheckbox.getX() + _showCheckbox.getScaledWidth() +  (4 * PADDING));
+		_show.setY(_showCheckbox.getY() + (int)(_showCheckbox.getScaledHeight() * .5f));
+		
+		_hideCheckbox.setX(32);
+		_hideCheckbox.setY(_showCheckbox.getY() + (2 * OFFSET));
+		
+		_hide.setX(_hideCheckbox.getX() + _hideCheckbox.getScaledWidth() +  (4 * PADDING));
+		_hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .5f));
+		
 	}
 	
 	@Override

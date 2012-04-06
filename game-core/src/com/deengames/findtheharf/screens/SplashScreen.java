@@ -15,22 +15,15 @@ import com.deengames.radiantwrench.controller.AudioController;
 public class SplashScreen extends Screen {
 
 	Timer _timer = new Timer();
+	Sprite _background;
+	Sprite _logo;
 	
 	@Override
 	public void initialize() { //throws RadiantWrenchException {
 		super.initialize();		
 		this.fadeOutImmediately();
 		
-		Sprite background = this.addSprite("content/images/background.jpg");
-		this.fitToScreen(background);
-		
-		Sprite s;
-		if (this.getHeight() > this.getWidth()) {
-			s = this.addSprite("content/images/logo-vertical.png");
-		} else {
-			s = this.addSprite("content/images/logo-horizontal.png");
-		}
-		this.center(s);
+		_background = this.addSprite("content/images/background.jpg");
 		
 		this.addFadeInListener(new Action() {
 			public void invoke() {
@@ -44,6 +37,7 @@ public class SplashScreen extends Screen {
 			}
 		});
 		
+		this.resize();
 		this.fadeIn();		
 		
 		AudioController.playSound("content/audio/giggle.ogg");
@@ -55,5 +49,24 @@ public class SplashScreen extends Screen {
 		public void run() {
 			Game.getCurrentScreen().fadeOut();
 		}
+	}
+	
+	@Override
+	public void resize() {
+		_background.setScale(1);
+		this.fitToScreen(_background);
+		//System.out.println("SplashScreen::resize: background is at " + _background.getX() + ", " + _background.getY());
+		
+		if (_logo != null) {
+			_logo.destroy();
+		}
+		
+		if (this.getHeight() > this.getWidth()) {
+			_logo = this.addSprite("content/images/logo-vertical.png");
+		} else {
+			_logo = this.addSprite("content/images/logo-horizontal.png");
+		}
+		
+		this.center(_logo);
 	}
 }

@@ -39,8 +39,11 @@ public class CoreGameScreen extends Screen {
 		"hurray", "awesome", "superb", "great-job"	
 	};
 	
+	private Sprite[] _letterSprites = new Sprite[_letters.length];
+	
 	Sprite _halfBlackout;
 	Sprite _jumboLetter;
+	Sprite _background;
 	
 	private final int HALF_BLACKOUT_Z = 9999;
 	private final float HALF_BLACKOUT_ALPHA = 0.75f;
@@ -58,42 +61,13 @@ public class CoreGameScreen extends Screen {
 		_halfBlackout.setZ(HALF_BLACKOUT_Z);
 		_halfBlackout.setAlpha(0);
 		
-		Sprite background = this.addSprite("content/images/background.jpg");
-		this.fitToScreen(background);
-		this.center(background);
+		_background = this.addSprite("content/images/background.jpg");
 		
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
+			
 			Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
-			
-			
-			int numHorizontal = 4;
-			int numVertical = 7;
-			
-			if (this.getWidth() > this.getHeight()) {
-				numHorizontal = 7;
-				numVertical = 4;
-			}			
-			
-			float maxWidth = this.getWidth() / (numHorizontal * 1.0f);
-			float maxHeight = this.getHeight() / (numVertical * 1.0f);
-			
-			float wScale = maxWidth / s.getWidth();
-			float hScale = maxHeight / s.getHeight();
-			
-			s.setScale(Math.min(wScale, hScale));
-			
-			// Use up any extra horizontal/vertical space
-			int totalHorizontalUsed = s.getWidth() * numHorizontal;
-			int totalVerticalUsed = s.getHeight() * numVertical;
-			
-			int freeHorizontalSpace = this.getWidth() - totalHorizontalUsed;
-			int freeVerticalSpace = this.getHeight() - totalVerticalUsed;
-			
-			s.setX(this.getWidth() - (s.getWidth() * ((i % numHorizontal) + 1)));
-			s.setX(s.getX() - (freeHorizontalSpace / 2));
-			s.setY(s.getHeight() * (i / numHorizontal));
-			s.setY(s.getY() + (freeVerticalSpace / 2));			
+			_letterSprites[i] = s;
 			
 			s.setClickListener(new ClickListener() {
 				public void onClick(Clickable clickable) {
@@ -161,6 +135,7 @@ public class CoreGameScreen extends Screen {
 		
 		findANewLetter();
 		
+		this.resize();
 		this.fadeIn();
 	}
 	
@@ -236,5 +211,45 @@ public class CoreGameScreen extends Screen {
 				_halfBlackout.setAlphaRate(-2);
 			}
 		});
+	}
+	
+	@Override
+	public void resize() {
+		_background.setScale(1); // reset
+		this.fitToScreen(_background);
+		this.center(_background);
+		
+		int numHorizontal = 4;
+		int numVertical = 7;
+		
+		if (this.getWidth() > this.getHeight()) {
+			numHorizontal = 7;
+			numVertical = 4;
+		}			
+		
+		float maxWidth = this.getWidth() / (numHorizontal * 1.0f);
+		float maxHeight = this.getHeight() / (numVertical * 1.0f);
+		
+		for (int i = 0; i < this._letterSprites.length; i++) {
+			Sprite s = this._letterSprites[i];
+			s.setScale(1); // Reset if set, our calcs assume it's 1.0
+			
+			float wScale = maxWidth / s.getWidth();
+			float hScale = maxHeight / s.getHeight();
+			
+			s.setScale(Math.min(wScale, hScale));
+			
+			// Use up any extra horizontal/vertical space
+			int totalHorizontalUsed = s.getWidth() * numHorizontal;
+			int totalVerticalUsed = s.getHeight() * numVertical;
+			
+			int freeHorizontalSpace = this.getWidth() - totalHorizontalUsed;
+			int freeVerticalSpace = this.getHeight() - totalVerticalUsed;
+			
+			s.setX(this.getWidth() - (s.getWidth() * ((i % numHorizontal) + 1)));
+			s.setX(s.getX() - (freeHorizontalSpace / 2));
+			s.setY(s.getHeight() * (i / numHorizontal));
+			s.setY(s.getY() + (freeVerticalSpace / 2));			
+		}
 	}
 }
