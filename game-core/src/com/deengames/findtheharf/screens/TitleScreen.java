@@ -13,13 +13,15 @@ import com.deengames.radiantwrench.view.Sprite;
 
 public class TitleScreen extends Screen {
 	
+	Sprite background;
+	Sprite optionsIcon;
+	
 	@Override
 	public void initialize() { //throws RadiantWrenchException {
 		super.initialize();
 		
 		this.fadeOutImmediately();
-		Sprite background = this.addSprite("content/images/title-screen.png");
-		this.center(background);
+		background = this.addSprite("content/images/title-screen.png");
 		background.setClickListener(new ClickListener() {
 			public void onClick(Clickable clickable) {
 				fadeOut();
@@ -33,11 +35,7 @@ public class TitleScreen extends Screen {
 		
 		AudioController.playSound("content/audio/speech/find-the-letters-title.ogg");
 		
-		Sprite optionsIcon = this.addSprite("content/images/options.png");
-		this.center(optionsIcon);
-		optionsIcon.setScale(0.5f);
-		optionsIcon.setX(this.getWidth() - optionsIcon.getWidth() - 8);
-		optionsIcon.setY(this.getHeight() - optionsIcon.getHeight() - 8);
+		optionsIcon = this.addSprite("content/images/options.png");
 		optionsIcon.setClickListener(new ClickListener() {
 			@Override
 			public void onClick(Clickable clickable) {
@@ -50,6 +48,17 @@ public class TitleScreen extends Screen {
 			}
 		});
 		
+		resize();
+		
 		this.fadeIn();			
+	}
+	
+	@Override
+	public void resize() {
+		this.center(background);
+		this.center(optionsIcon);
+		optionsIcon.setScale(0.5f);
+		optionsIcon.setX(this.getWidth() - optionsIcon.getWidth() - 8);
+		optionsIcon.setY(this.getHeight() - optionsIcon.getHeight() - 8);
 	}
 }

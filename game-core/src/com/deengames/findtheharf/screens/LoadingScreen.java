@@ -20,14 +20,15 @@ import com.deengames.radiantwrench.controller.AudioController;
 public class LoadingScreen extends Screen {
 
 	Timer _timer = new Timer();
+	Sprite _spinner;
 	
 	@Override
-	public void initialize() { //throws RadiantWrenchException {
+	public void initialize() { 
 		super.initialize();		
 		this.fadeOutImmediately();
-		Sprite s = this.addSprite("content/images/loading.png");
-		s.setRotationRate(360);
-		this.center(s);
+		_spinner = this.addSprite("content/images/loading.png");
+		_spinner.setScale(0.5f);
+		_spinner.setRotationRate(720);
 		
 		this.addFadeInListener(new Action() {
 			public void invoke() {
@@ -41,14 +42,8 @@ public class LoadingScreen extends Screen {
 			}
 		});
 		
+		this.resize();
 		this.fadeIn();
-		preloadSounds();
-	}
-	
-	private void preloadSounds() {
-		// Try to pre-load. Does this work? I dunno bro.
-		//new Sound("content/audio/giggle.ogg");
-		//new Sound("content/audio/speech/find-the-letters-title.ogg");
 	}
 
 	private class FadeOutClass extends TimerTask {
@@ -57,5 +52,10 @@ public class LoadingScreen extends Screen {
 		public void run() {
 			Game.getCurrentScreen().fadeOut();
 		}
+	}
+	
+	@Override
+	public void resize() {
+		this.center(_spinner);
 	}
 }

@@ -217,4 +217,8 @@ public class Screen {
 	public int getHeight() {
 		return Gdx.graphics.getHeight();
 	}
+
+	public void resize() {
+		// Don't do anything automatically; the screens will handle this.
+	}
 }

@@ -146,6 +146,7 @@ public class Game implements ApplicationListener, InputProcessor {
 	@Override
 	public void resize (int width, int height) {
 		_spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+		_currentScreen.resize();
 	}
 
 	@Override
