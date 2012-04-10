@@ -57,9 +57,9 @@ public class CoreGameScreen extends Screen {
 		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
 		
 		_halfBlackout = this.addSprite("content/images/1x1.jpg");
+		_halfBlackout.setAlpha(0);
 		_halfBlackout.setScale(Math.max(this.getWidth(), this.getHeight()));
 		_halfBlackout.setZ(HALF_BLACKOUT_Z);
-		_halfBlackout.setAlpha(0);
 		
 		_background = this.addSprite("content/images/background.jpg");
 		
