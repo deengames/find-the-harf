@@ -34,12 +34,18 @@ public class Sprite implements Drawable, Clickable {
 	private static int nextOrderAdded = 0;
 	private static Color FULLY_OPAQUE = new Color(1, 1, 1, 1);
 	
+	private boolean _passThroughClickEvent = false;
+	
 	public Sprite(String fileName) {
 		this._fileName = fileName;
 		this.loadTexture();
 		this._texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this._orderAdded = nextOrderAdded;
 		nextOrderAdded++;
+	}
+	
+	public void setPassThroughClick(boolean value) {
+		this._passThroughClickEvent = value;
 	}
 	
 	public int getX() {
@@ -191,8 +197,12 @@ public class Sprite implements Drawable, Clickable {
 		if (touchDown) {
 			this._wasClicked = true;
 		}
-
-		return touchDown;
+		
+		if (this._passThroughClickEvent == false) {
+			return touchDown;
+		} else {
+			return false; // Pretend we didn't handle this
+		}
 	}
 
 	public void touchUp(float x, float y, int pointer) {

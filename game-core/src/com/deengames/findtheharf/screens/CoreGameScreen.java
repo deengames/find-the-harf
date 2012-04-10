@@ -1,5 +1,7 @@
 package com.deengames.findtheharf.screens;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.math.MathUtils;
 
 import com.badlogic.gdx.Gdx;
@@ -11,6 +13,7 @@ import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.PersistentStorage;
+import com.deengames.radiantwrench.view.ImageButton;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
 
@@ -40,6 +43,7 @@ public class CoreGameScreen extends Screen {
 	};
 	
 	private Sprite[] _letterSprites = new Sprite[_letters.length];
+	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
 	
 	Sprite _halfBlackout;
 	Sprite _jumboLetter;
@@ -67,7 +71,17 @@ public class CoreGameScreen extends Screen {
 			final String letter = this._letters[i];
 			
 			Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
+			s.setZ(s.getZ() + 1); // over overlay
+			s.setPassThroughClick(true); // So the image button gets the click too!
 			_letterSprites[i] = s;
+			
+			ImageButton overlay = this.addImageButton("content/images/onPress.png");
+			
+			overlay.setClickListener(new ClickListener() { 
+				public void onClick(Clickable clickable) { }
+			}); // Prevent event not triggering
+			
+			_letterOverlays.put(letter, overlay);
 			
 			s.setClickListener(new ClickListener() {
 				public void onClick(Clickable clickable) {
@@ -236,8 +250,8 @@ public class CoreGameScreen extends Screen {
 			
 			float wScale = maxWidth / s.getWidth();
 			float hScale = maxHeight / s.getHeight();
-			
-			s.setScale(Math.min(wScale, hScale));
+			float scale = Math.min(wScale, hScale);
+			s.setScale(scale);
 			
 			// Use up any extra horizontal/vertical space
 			int totalHorizontalUsed = s.getWidth() * numHorizontal;
@@ -250,6 +264,11 @@ public class CoreGameScreen extends Screen {
 			s.setX(s.getX() - (freeHorizontalSpace / 2));
 			s.setY(s.getHeight() * (i / numHorizontal));
 			s.setY(s.getY() + (freeVerticalSpace / 2));			
+			
+			ImageButton overlay = _letterOverlays.get(this._letters[i]);
+			overlay.setX(s.getX());
+			overlay.setY(s.getY());
+			overlay.setScale(scale);
 		}
 	}
 }

@@ -65,10 +65,10 @@ public class ImageButton extends Image implements Clickable, Drawable {
 			return false;
 		}
 		
-		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
+		int yFromTop = (int)y;
 		
-		boolean touchDown = (x >= this.x && x <= this.x + this.width && 
-				yFromTop >= this.y && yFromTop <= this.y + this.height);
+		boolean touchDown = (x >= this.x && x <= this.x + this.getWidth() && 
+				yFromTop >= this.y && yFromTop <= this.y + this.getHeight());
 		
 		if (touchDown) {
 			this.region  = this._down;
@@ -163,12 +163,12 @@ public class ImageButton extends Image implements Clickable, Drawable {
 
 	@Override
 	public int getWidth() {
-		return Math.round(this.width);
+		return Math.round(this.width * this.scaleX);
 	}
 
 	@Override
 	public int getHeight() {
-		return Math.round(this.height);
+		return Math.round(this.height * this.scaleY);
 	}
 	
 	public int getOrderAdded() {
@@ -181,8 +181,8 @@ public class ImageButton extends Image implements Clickable, Drawable {
 		
 		// Calculating Y is complicated (inverted Y). Sigh. Just accept it, it's experimentally derived.
 		spriteBatch.draw(this.region, this.x,
-				Game.getCurrentScreen().getHeight() - this.y - this.height,
-				this.scaleX * this.width, this.scaleY * this.height);	
+				Game.getCurrentScreen().getHeight() - this.y - this.getHeight(),
+				this.getWidth(), this.getHeight());	 // Already scaled
 	}
 	
 	public void destroy() {
