@@ -61,9 +61,9 @@ public class Screen {
 
 	public void initialize() {
 		this._blackoutSprite = this.addSprite("content/images/blackout.jpg");
+		this._blackoutSprite.setAlpha(0);
 		this._blackoutSprite.setScale(Math.max(this.getWidth(), this.getHeight()));
 		this._blackoutSprite.setZ(Integer.MAX_VALUE);
-		this._blackoutSprite.setAlpha(0);
 	}
 
 	public void update(double elapsedSeconds) {
@@ -98,6 +98,7 @@ public class Screen {
 	public void fadeOutImmediately() {
 		this._blackoutSprite.setAlpha(1);
 	}
+	
 	public void fadeOut() {
 		this.fadeOut(0.5f);
 	}

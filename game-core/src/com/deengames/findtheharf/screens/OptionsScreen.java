@@ -55,10 +55,10 @@ public class OptionsScreen extends Screen {
 	public void initialize() { 
 		super.initialize();
 		
-		_showJumboLetter = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
-			
 		this.fadeOutImmediately();
 		
+		_showJumboLetter = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
+			
 		_background = this.addSprite("content/images/background.jpg");
 		
 		_goIcon = this.addSprite("content/images/go.png");
