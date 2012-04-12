@@ -13,6 +13,7 @@ import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.PersistentStorage;
 import com.deengames.radiantwrench.view.Colour;
+import com.deengames.radiantwrench.view.ImageButton;
 import com.deengames.radiantwrench.view.ImageCheckbox;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
@@ -27,7 +28,7 @@ public class OptionsScreen extends Screen {
 	ImageCheckbox _showCheckbox;
 	ImageCheckbox _hideCheckbox;
 	Sprite _background;
-	Sprite _goIcon;
+	ImageButton _goButton;
 	Text _options;
 	Text _letterText;
 	Text _show;
@@ -61,10 +62,10 @@ public class OptionsScreen extends Screen {
 			
 		_background = this.addSprite("content/images/background.jpg");
 		
-		_goIcon = this.addSprite("content/images/go.png");
-		_goIcon.setScale(0.5f);
+		_goButton = this.addImageButton("content/images/go.png");
+		_goButton.setScale(0.5f);
 		
-		_goIcon.setClickListener(new ClickListener() {
+		_goButton.setClickListener(new ClickListener() {
 			@Override
 			public void onClick(Clickable clickable) {
 				fadeOut();
@@ -111,8 +112,8 @@ public class OptionsScreen extends Screen {
 	public void resize() {
 		this.fitToScreen(_background);
 		
-		_goIcon.setX(this.getWidth() - _goIcon.getWidth() - PADDING);
-		_goIcon.setY(this.getHeight() - _goIcon.getHeight() - PADDING);
+		_goButton.setX(this.getWidth() - _goButton.getWidth() - PADDING);
+		_goButton.setY(this.getHeight() - _goButton.getHeight() - PADDING);
 		
 		_options.setX((this.getWidth() - _options.getWidth()) / 2);
 		_options.setY(8);
