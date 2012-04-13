@@ -42,8 +42,10 @@ public class CoreGameScreen extends Screen {
 		"hurray", "awesome", "superb", "great-job"	
 	};
 	
-	private Sprite[] _letterSprites = new Sprite[_letters.length];
+	Sprite[] _letterSprites = new Sprite[_letters.length];
+	
 	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
+	HashMap<String, Sprite> _xs = new HashMap<String, Sprite>();
 	
 	Sprite _halfBlackout;
 	Sprite _jumboLetter;
@@ -51,6 +53,13 @@ public class CoreGameScreen extends Screen {
 	
 	private final int HALF_BLACKOUT_Z = 9999;
 	private final float HALF_BLACKOUT_ALPHA = 0.75f;
+	
+	// Used for sprites to trap clicks, but do nothing.
+	ClickListener _emptyClickListener = new ClickListener() {
+		@Override
+		public void onClick(Clickable clickable) {
+		}
+	};
 	
 	@Override
 	public void initialize() {
@@ -77,9 +86,7 @@ public class CoreGameScreen extends Screen {
 			
 			ImageButton overlay = this.addImageButton("content/images/onPress.png");
 			
-			overlay.setClickListener(new ClickListener() { 
-				public void onClick(Clickable clickable) { }
-			}); // Prevent event not triggering
+			overlay.setClickListener(_emptyClickListener); 
 			
 			_letterOverlays.put(letter, overlay);
 			
@@ -104,9 +111,19 @@ public class CoreGameScreen extends Screen {
 						} else {
 							_numWrong++;
 							
-							if (_numWrong <= 2) {
+							if (_numWrong <= 2) {																								
 								int toFindIndex = getIndex(_letterToFind);
 								int clickedIndex = getIndex(letter);
+								
+								Sprite x = addSprite("content/images/x.png");
+								Sprite clickedSprite = _letterSprites[clickedIndex];
+								x.setScale(clickedSprite.getScale());
+								x.setX(clickedSprite.getX());
+								x.setY(clickedSprite.getY());
+								// Be above. Block clicks.
+								x.setZ(clickedSprite.getZ() + 5);
+								x.setClickListener(_emptyClickListener);
+								_xs.put(letter, x);
 								
 								AudioController.playInSerial(new String[] {
 									"content/audio/speech/thats-not.ogg",
@@ -179,6 +196,11 @@ public class CoreGameScreen extends Screen {
 	}
 	
 	void findANewLetter() {
+		
+		for (Sprite s : _xs.values()) {
+			this.removeSprite(s);
+		}		
+		_xs.clear();
 		
 		String newLetter = _letterToFind;
 		
@@ -269,6 +291,14 @@ public class CoreGameScreen extends Screen {
 			overlay.setX(s.getX());
 			overlay.setY(s.getY());
 			overlay.setScale(scale);
+		}
+		
+		// Realign Xs to letters
+		for (String letter : _xs.keySet()) {
+			Sprite x = _xs.get(letter);
+			Sprite harf = _letterSprites[getIndex(letter)];
+			x.setX(harf.getX());
+			x.setY(harf.getY());
 		}
 	}
 }

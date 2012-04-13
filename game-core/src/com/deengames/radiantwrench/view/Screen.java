@@ -179,6 +179,7 @@ public class Screen {
 	
 	public void removeSprite(Sprite sprite) {
 		sprite.destroy();
+		sprite.setClickListener(null);
 		this._sprites.remove(sprite);
 	}
 	
