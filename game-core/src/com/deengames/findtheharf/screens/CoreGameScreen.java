@@ -1,6 +1,8 @@
 package com.deengames.findtheharf.screens;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.badlogic.gdx.math.MathUtils;
 
@@ -23,6 +25,8 @@ public class CoreGameScreen extends Screen {
 	int _numWrong = 0;
 	
 	boolean _showJumboLetters;
+	
+	Timer _timer = new Timer();
 	
 	private String[] _letters = new String[] {
 		"alif", "ba", "ta", "tha", "jeem", "7a", "kha",
@@ -216,6 +220,7 @@ public class CoreGameScreen extends Screen {
 		});
 		
 		_numWrong = 0;
+		int fadeInTime = 6500; // 6.5s
 		
 		if (_showJumboLetters) {
 			if (this._jumboLetter != null) {
@@ -227,9 +232,11 @@ public class CoreGameScreen extends Screen {
 			} else {
 				this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");		
 				_halfBlackout.setAlpha(HALF_BLACKOUT_ALPHA);
+				fadeInTime = 3000; // Less voice playing, fade faster
 			}
 			
 			this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
+			_timer.schedule(new FadeOutJumboLetterClass(), fadeInTime);
 			
 			float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
 			float scaleH = this.getHeight() * 1.0f / _jumboLetter.getHeight();
@@ -241,12 +248,16 @@ public class CoreGameScreen extends Screen {
 
 			@Override
 			public void onClick(Clickable clickable) {
-				if (_showJumboLetters) {
-					_jumboLetter.setAlphaRate(-2);
-				}
-				_halfBlackout.setAlphaRate(-2);
+				fadeOutJumboLetter();
 			}
 		});
+	}
+	
+	void fadeOutJumboLetter() {
+		if (_showJumboLetters) {
+			_jumboLetter.setAlphaRate(-2);
+		}
+		_halfBlackout.setAlphaRate(-2);
 	}
 	
 	@Override
@@ -299,6 +310,15 @@ public class CoreGameScreen extends Screen {
 			Sprite harf = _letterSprites[getIndex(letter)];
 			x.setX(harf.getX());
 			x.setY(harf.getY());
+		}
+	}
+	
+	private class FadeOutJumboLetterClass extends TimerTask {
+		public FadeOutJumboLetterClass() { }
+		
+		@Override
+		public void run() {
+			fadeOutJumboLetter();
 		}
 	}
 }

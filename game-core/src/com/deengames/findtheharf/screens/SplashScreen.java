@@ -43,14 +43,6 @@ public class SplashScreen extends Screen {
 		AudioController.playSound("content/audio/giggle.ogg");
 	}
 	
-	private class FadeOutClass extends TimerTask {
-		public FadeOutClass() { }
-		
-		public void run() {
-			Game.getCurrentScreen().fadeOut();
-		}
-	}
-	
 	@Override
 	public void resize() {
 		_background.setScale(1);
@@ -68,5 +60,13 @@ public class SplashScreen extends Screen {
 		}
 		
 		this.center(_logo);
+	}
+	
+	private class FadeOutClass extends TimerTask {
+		public FadeOutClass() { }
+		
+		public void run() {
+			Game.getCurrentScreen().fadeOut();
+		}
 	}
 }
