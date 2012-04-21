@@ -1,7 +1,6 @@
 package com.deengames.findtheharf.screens;
 
 import java.util.HashMap;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -15,6 +14,7 @@ import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.PersistentStorage;
+import com.deengames.radiantwrench.utils.Timer;
 import com.deengames.radiantwrench.view.ImageButton;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
@@ -242,10 +242,7 @@ public class CoreGameScreen extends Screen {
 			this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
 			
 			// Cancel/purge/reinstantiate to cancel pending execution
-			_timer.cancel();
-			_timer.purge();
-			_timer = new Timer();
-			
+			_timer.stop();			
 			_timer.schedule(new FadeOutJumboLetterClass(), fadeInTime);
 			
 			float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
