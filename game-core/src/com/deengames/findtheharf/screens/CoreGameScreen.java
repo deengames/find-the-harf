@@ -248,7 +248,6 @@ public class CoreGameScreen extends Screen {
 			
 			this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
 			
-			// Cancel/purge/reinstantiate to cancel pending execution
 			_timer.stop();			
 			_timer.schedule(new FadeOutJumboLetterClass(), fadeInTime);
 			
@@ -301,18 +300,19 @@ public class CoreGameScreen extends Screen {
 		float maxHeight = this.getHeight() / (numVertical * 1.0f);
 		
 		this._statusBar.setScale(1);
-		this._statusBar.setScaleWidth(this.getWidth());	
-		
-		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getHeight());
-		this._helpButton.setX(this.getWidth() - this._helpButton.getWidth());
+		this._statusBar.setScaleWidth(this.getWidth());			
+		//int paddingFromStatusBar = (numVertical > numHorizontal ? 16 : 0);
 		
 		// Doesn't work: maxHeight <= this._statusBar.getHeight() (68.75 vs. 64)
 		// So use ... a glorious hack.
 		if (maxHeight - this._statusBar.getHeight() <= 8) {
 			this._statusBar.setScaleHeight(0.5f);
-		} else {
-			maxHeight = (this.getHeight() - this._statusBar.getHeight()) / (numVertical * 1.0f);
-		}
+		} 			
+		
+		maxHeight = (this.getHeight() - this._statusBar.getHeight()) / (numVertical * 1.0f);
+		
+		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getHeight());
+		this._helpButton.setX(this.getWidth() - this._helpButton.getWidth());
 		
 		for (int i = 0; i < this._letterSprites.length; i++) {
 			Sprite s = this._letterSprites[i];
@@ -335,7 +335,7 @@ public class CoreGameScreen extends Screen {
 			s.setY(s.getHeight() * (i / numHorizontal));
 			s.setY(s.getY() + (freeVerticalSpace / 2));
 			
-			// Wierdly derived from experimentation
+			// Weirdly derived from experimentation
 			if (numHorizontal > numVertical) {
 				s.setY(s.getY() + this._statusBar.getHeight() / 2);
 			} else {

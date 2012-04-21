@@ -9,9 +9,11 @@ public class Timer {
 	private long _interval = 0;
 	
 	public void stop() {
+		// Cancel/purge/reinstantiate to cancel pending execution
 		_timer.cancel();
 		_timer.purge();
 		_timer = new java.util.Timer();
+		
 		_tickHandler = null;
 	}
 	
