@@ -240,6 +240,12 @@ public class CoreGameScreen extends Screen {
 			}
 			
 			this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
+			
+			// Cancel/purge/reinstantiate to cancel pending execution
+			_timer.cancel();
+			_timer.purge();
+			_timer = new Timer();
+			
 			_timer.schedule(new FadeOutJumboLetterClass(), fadeInTime);
 			
 			float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
