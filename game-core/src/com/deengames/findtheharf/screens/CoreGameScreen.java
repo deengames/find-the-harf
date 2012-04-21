@@ -47,6 +47,7 @@ public class CoreGameScreen extends Screen {
 	};
 	
 	Sprite[] _letterSprites = new Sprite[_letters.length];
+	ImageButton _helpButton;
 	
 	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
 	HashMap<String, Sprite> _xs = new HashMap<String, Sprite>();
@@ -83,6 +84,15 @@ public class CoreGameScreen extends Screen {
 		_background = this.addSprite("content/images/background.jpg");
 		
 		_statusBar = this.addSprite("content/images/status-bar.png");
+		
+		_helpButton = this.addImageButton("content/images/help.png");
+		_helpButton.setClickListener(new ClickListener() {
+
+			@Override
+			public void onClick(Clickable clickable) {
+				tellMeWhatToFind();				
+			}
+		});
 		
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
@@ -218,10 +228,7 @@ public class CoreGameScreen extends Screen {
 		
 		_letterToFind = newLetter;		
 		
-		AudioController.playInSerial(new String[] { 
-			"content/audio/speech/find-the-letter.ogg", 
-			"content/audio/speech/letters/" + _letterToFind + ".ogg" 
-		});
+		tellMeWhatToFind();
 		
 		_numWrong = 0;
 		int fadeInTime = 6500; // 6.5s
@@ -260,6 +267,15 @@ public class CoreGameScreen extends Screen {
 		});
 	}
 	
+	void tellMeWhatToFind() {
+		AudioController.abortAndClearQueue();
+		
+		AudioController.playInSerial(new String[] { 
+			"content/audio/speech/find-the-letter.ogg", 
+			"content/audio/speech/letters/" + _letterToFind + ".ogg" 
+		});
+	}
+
 	void fadeOutJumboLetter() {
 		if (_showJumboLetters) {
 			_jumboLetter.setAlphaRate(-2);
@@ -286,6 +302,9 @@ public class CoreGameScreen extends Screen {
 		
 		this._statusBar.setScale(1);
 		this._statusBar.setScaleWidth(this.getWidth());	
+		
+		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getHeight());
+		this._helpButton.setX(this.getWidth() - this._helpButton.getWidth());
 		
 		// Doesn't work: maxHeight <= this._statusBar.getHeight() (68.75 vs. 64)
 		// So use ... a glorious hack.
