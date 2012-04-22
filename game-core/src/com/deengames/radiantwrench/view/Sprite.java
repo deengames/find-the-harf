@@ -238,4 +238,8 @@ public class Sprite implements Drawable, Clickable {
 	public void destroy() {
 		this._texture.dispose();
 	}
+
+	public void disableTextureFiltering() {
+		this._texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+	}
 }
