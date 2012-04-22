@@ -1,7 +1,6 @@
 package com.deengames.findtheharf.screens;
 
 import java.util.HashMap;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -15,6 +14,7 @@ import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.PersistentStorage;
+import com.deengames.radiantwrench.utils.Timer;
 import com.deengames.radiantwrench.view.ImageButton;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
@@ -47,6 +47,7 @@ public class CoreGameScreen extends Screen {
 	};
 	
 	Sprite[] _letterSprites = new Sprite[_letters.length];
+	ImageButton _helpButton;
 	
 	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
 	HashMap<String, Sprite> _xs = new HashMap<String, Sprite>();
@@ -54,6 +55,8 @@ public class CoreGameScreen extends Screen {
 	Sprite _halfBlackout;
 	Sprite _jumboLetter;
 	Sprite _background;
+	
+	Sprite _statusBar;
 	
 	private final int HALF_BLACKOUT_Z = 9999;
 	private final float HALF_BLACKOUT_ALPHA = 0.75f;
@@ -77,8 +80,22 @@ public class CoreGameScreen extends Screen {
 		_halfBlackout.setAlpha(0);
 		_halfBlackout.setScale(Math.max(this.getWidth(), this.getHeight()));
 		_halfBlackout.setZ(HALF_BLACKOUT_Z);
+		_halfBlackout.disableTextureFiltering();
 		
 		_background = this.addSprite("content/images/background.jpg");
+		
+		_statusBar = this.addSprite("content/images/status-bar.png");
+		_statusBar.disableTextureFiltering();
+		
+		_helpButton = this.addImageButton("content/images/help.png");
+		_helpButton.setClickListener(new ClickListener() {
+
+			@Override
+			public void onClick(Clickable clickable) {
+				AudioController.abortAndClearQueue();
+				tellMeWhatToFind();				
+			}
+		});
 		
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
@@ -214,10 +231,7 @@ public class CoreGameScreen extends Screen {
 		
 		_letterToFind = newLetter;		
 		
-		AudioController.playInSerial(new String[] { 
-			"content/audio/speech/find-the-letter.ogg", 
-			"content/audio/speech/letters/" + _letterToFind + ".ogg" 
-		});
+		tellMeWhatToFind();
 		
 		_numWrong = 0;
 		int fadeInTime = 6500; // 6.5s
@@ -236,6 +250,8 @@ public class CoreGameScreen extends Screen {
 			}
 			
 			this._jumboLetter.setZ(HALF_BLACKOUT_Z + 1);
+			
+			_timer.stop();			
 			_timer.schedule(new FadeOutJumboLetterClass(), fadeInTime);
 			
 			float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
@@ -253,6 +269,13 @@ public class CoreGameScreen extends Screen {
 		});
 	}
 	
+	void tellMeWhatToFind() {
+		AudioController.playInSerial(new String[] { 
+			"content/audio/speech/find-the-letter.ogg", 
+			"content/audio/speech/letters/" + _letterToFind + ".ogg" 
+		});
+	}
+
 	void fadeOutJumboLetter() {
 		if (_showJumboLetters) {
 			_jumboLetter.setAlphaRate(-2);
@@ -265,17 +288,32 @@ public class CoreGameScreen extends Screen {
 		_background.setScale(1); // reset
 		this.fitToScreen(_background);
 		this.center(_background);
-		
+			
 		int numHorizontal = 4;
 		int numVertical = 7;
 		
 		if (this.getWidth() > this.getHeight()) {
 			numHorizontal = 7;
 			numVertical = 4;
-		}			
+		}
 		
 		float maxWidth = this.getWidth() / (numHorizontal * 1.0f);
 		float maxHeight = this.getHeight() / (numVertical * 1.0f);
+		
+		this._statusBar.setScale(1);
+		this._statusBar.setScaleWidth(this.getWidth());			
+		
+		// Doesn't work: maxHeight <= this._statusBar.getHeight() (68.75 vs. 64)
+		// So use ... a glorious hack.
+		if (maxHeight - this._statusBar.getHeight() <= 16) {
+			this._statusBar.setScaleHeight(0.5f);
+		} 			
+		
+		maxHeight = (this.getHeight() - this._statusBar.getHeight()) / (numVertical * 1.0f);
+		
+		this._helpButton.setScale(1); // reset
+		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getHeight());
+		this._helpButton.setX(this.getWidth() - this._helpButton.getWidth());
 		
 		for (int i = 0; i < this._letterSprites.length; i++) {
 			Sprite s = this._letterSprites[i];
@@ -291,12 +329,19 @@ public class CoreGameScreen extends Screen {
 			int totalVerticalUsed = s.getHeight() * numVertical;
 			
 			int freeHorizontalSpace = this.getWidth() - totalHorizontalUsed;
-			int freeVerticalSpace = this.getHeight() - totalVerticalUsed;
+			int freeVerticalSpace = this.getHeight() - totalVerticalUsed - _statusBar.getHeight();
 			
 			s.setX(this.getWidth() - (s.getWidth() * ((i % numHorizontal) + 1)));
 			s.setX(s.getX() - (freeHorizontalSpace / 2));
 			s.setY(s.getHeight() * (i / numHorizontal));
-			s.setY(s.getY() + (freeVerticalSpace / 2));			
+			s.setY(s.getY() + (freeVerticalSpace / 2));
+			
+			// Weirdly derived from experimentation
+			if (numHorizontal > numVertical) {
+				s.setY(s.getY() + this._statusBar.getHeight() * 3 / 4);
+			} else {
+				s.setY(s.getY() + this._statusBar.getHeight());
+			}
 			
 			ImageButton overlay = _letterOverlays.get(this._letters[i]);
 			overlay.setX(s.getX());
