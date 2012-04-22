@@ -311,7 +311,8 @@ public class CoreGameScreen extends Screen {
 		
 		maxHeight = (this.getHeight() - this._statusBar.getHeight()) / (numVertical * 1.0f);
 		
-		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getScaledHeight());
+		this._helpButton.setScale(1); // reset
+		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getHeight());
 		this._helpButton.setX(this.getWidth() - this._helpButton.getWidth());
 		
 		for (int i = 0; i < this._letterSprites.length; i++) {
@@ -334,14 +335,10 @@ public class CoreGameScreen extends Screen {
 			s.setX(s.getX() - (freeHorizontalSpace / 2));
 			s.setY(s.getHeight() * (i / numHorizontal));
 			s.setY(s.getY() + (freeVerticalSpace / 2));
-			if (numHorizontal > numVertical) {
-				// Pad a bit.
-				s.setY(s.getY() + s.getHeight() / 4);
-			}
 			
 			// Weirdly derived from experimentation
 			if (numHorizontal > numVertical) {
-				s.setY(s.getY() + this._statusBar.getHeight() / 2);
+				s.setY(s.getY() + this._statusBar.getHeight() * 3 / 4);
 			} else {
 				s.setY(s.getY() + this._statusBar.getHeight());
 			}
