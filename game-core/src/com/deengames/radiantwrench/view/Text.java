@@ -5,6 +5,7 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -89,7 +90,7 @@ public class Text implements Drawable, Clickable {
 		}
 	}
 	
-	public void setMaxWidth(int value) { // throws RadiantWrenchException {
+	public void setMaxWidth(int value) {
 		if (this._maxWidth < 1) {
 			throw new RadiantWrenchException("MaxWidth must be at least 1.");
 		}
@@ -180,7 +181,7 @@ public class Text implements Drawable, Clickable {
 		}
 
 		// Load best-fit font
-		this._font = new BitmapFont(new FileHandle("content/fonts/" + this._fontName + "-" + bestFit + "pt-" + this._colour + ".fnt"), false);
+		this._font = new BitmapFont(Gdx.files.internal("content/fonts/" + this._fontName + "-" + bestFit + "pt-" + this._colour + ".fnt"), false);
 		// Scale
 		if (bestFit != this._fontSize) {
 			this._font.scale(this._fontSize / bestFit);
@@ -189,12 +190,12 @@ public class Text implements Drawable, Clickable {
 
 	private List<Integer> getFontSizesFromAvailableFonts() {
 		String hashKey = this._fontName.toLowerCase() + "-" + this._colour;
-		
+
 		if (fontSizes.containsKey(hashKey)) {
 			return fontSizes.get(hashKey);
-		} else {				
+		} else {			
 			List<Integer> toReturn = new ArrayList<Integer>();	
-			FileHandle dir = new FileHandle("content/fonts/");
+			FileHandle dir = Gdx.files.internal("content/fonts/");
 			for (FileHandle file : dir.list()) {
 				String name = file.name().toLowerCase();
 				if (name.contains(this._fontName.toLowerCase() + "-") && name.contains(this._colour + ".fnt")) {

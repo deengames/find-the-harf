@@ -47,7 +47,6 @@ public class SplashScreen extends Screen {
 	public void resize() {
 		_background.setScale(1);
 		this.fitToScreen(_background);
-		//System.out.println("SplashScreen::resize: background is at " + _background.getX() + ", " + _background.getY());
 		
 		if (_logo != null) {
 			_logo.destroy();

@@ -80,26 +80,26 @@ public class OptionsScreen extends Screen {
 		_options = this.addText("Options");
 		// Fit as wide as we can
 		_options.setFontSize(48);
-		_options.setFont("ElliotSix");	
+		_options.setFont("elliotsix");	
 		
 		_letterText = this.addText("Jumbo Letter:");		
 
 		_letterText.setFontSize(24);
-		_letterText.setFont("ElliotSix");
+		_letterText.setFont("elliotsix");
 		
 		_showCheckbox = this.addImageCheckbox(_showJumboLetter);
 		_showCheckbox.setScale(0.5f);
 		
 		_show = this.addText("Show");		
 		_show.setFontSize(24);
-		_show.setFont("ElliotSix");
+		_show.setFont("elliotsix");
 		
 		_hideCheckbox = this.addImageCheckbox(!_showJumboLetter);
 		_hideCheckbox.setScale(0.5f);
 		
 		_hide = this.addText("Hide");		
 		_hide.setFontSize(24);
-		_hide.setFont("ElliotSix");
+		_hide.setFont("elliotsix");
 		
 		_showCheckbox.setClickListener(radioButtonGroup);
 		_hideCheckbox.setClickListener(radioButtonGroup);
