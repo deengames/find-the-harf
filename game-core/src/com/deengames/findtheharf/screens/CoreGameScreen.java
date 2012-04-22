@@ -80,16 +80,19 @@ public class CoreGameScreen extends Screen {
 		_halfBlackout.setAlpha(0);
 		_halfBlackout.setScale(Math.max(this.getWidth(), this.getHeight()));
 		_halfBlackout.setZ(HALF_BLACKOUT_Z);
+		_halfBlackout.disableTextureFiltering();
 		
 		_background = this.addSprite("content/images/background.jpg");
 		
 		_statusBar = this.addSprite("content/images/status-bar.png");
+		_statusBar.disableTextureFiltering();
 		
 		_helpButton = this.addImageButton("content/images/help.png");
 		_helpButton.setClickListener(new ClickListener() {
 
 			@Override
 			public void onClick(Clickable clickable) {
+				AudioController.abortAndClearQueue();
 				tellMeWhatToFind();				
 			}
 		});
@@ -267,8 +270,6 @@ public class CoreGameScreen extends Screen {
 	}
 	
 	void tellMeWhatToFind() {
-		AudioController.abortAndClearQueue();
-		
 		AudioController.playInSerial(new String[] { 
 			"content/audio/speech/find-the-letter.ogg", 
 			"content/audio/speech/letters/" + _letterToFind + ".ogg" 
@@ -301,17 +302,16 @@ public class CoreGameScreen extends Screen {
 		
 		this._statusBar.setScale(1);
 		this._statusBar.setScaleWidth(this.getWidth());			
-		//int paddingFromStatusBar = (numVertical > numHorizontal ? 16 : 0);
 		
 		// Doesn't work: maxHeight <= this._statusBar.getHeight() (68.75 vs. 64)
 		// So use ... a glorious hack.
-		if (maxHeight - this._statusBar.getHeight() <= 8) {
+		if (maxHeight - this._statusBar.getHeight() <= 16) {
 			this._statusBar.setScaleHeight(0.5f);
 		} 			
 		
 		maxHeight = (this.getHeight() - this._statusBar.getHeight()) / (numVertical * 1.0f);
 		
-		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getHeight());
+		this._helpButton.setScale(1.0f * this._statusBar.getHeight() / this._helpButton.getScaledHeight());
 		this._helpButton.setX(this.getWidth() - this._helpButton.getWidth());
 		
 		for (int i = 0; i < this._letterSprites.length; i++) {
@@ -334,6 +334,10 @@ public class CoreGameScreen extends Screen {
 			s.setX(s.getX() - (freeHorizontalSpace / 2));
 			s.setY(s.getHeight() * (i / numHorizontal));
 			s.setY(s.getY() + (freeVerticalSpace / 2));
+			if (numHorizontal > numVertical) {
+				// Pad a bit.
+				s.setY(s.getY() + s.getHeight() / 4);
+			}
 			
 			// Weirdly derived from experimentation
 			if (numHorizontal > numVertical) {
