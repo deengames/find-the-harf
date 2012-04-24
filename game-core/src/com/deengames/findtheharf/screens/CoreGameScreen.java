@@ -239,10 +239,10 @@ public class CoreGameScreen extends Screen {
 		if (_showJumboLetters) {
 			if (this._jumboLetter != null) {
 				this.removeSprite(this._jumboLetter);
-				this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");				
-				this._halfBlackout.setAlphaRate(2);
+				this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");								
 				this._jumboLetter.setAlpha(0);
 				this._jumboLetter.setAlphaRate(2);
+				this._halfBlackout.setAlphaRate(2);
 			} else {
 				this._jumboLetter = this.addSprite("content/images/letters/" + _letterToFind + ".png");		
 				_halfBlackout.setAlpha(HALF_BLACKOUT_ALPHA);
@@ -254,10 +254,7 @@ public class CoreGameScreen extends Screen {
 			_timer.stop();			
 			_timer.schedule(new FadeOutJumboLetterClass(), fadeInTime);
 			
-			float scaleW = this.getWidth() * 1.0f / _jumboLetter.getWidth();
-			float scaleH = this.getHeight() * 1.0f / _jumboLetter.getHeight();
-			this._jumboLetter.setScale(Math.min(scaleW, scaleH));
-			this.center(_jumboLetter);
+			scaleJumboLetter();
 		}
 		
 		this._halfBlackout.setClickListener(new ClickListener() {
@@ -269,6 +266,13 @@ public class CoreGameScreen extends Screen {
 		});
 	}
 	
+	private void scaleJumboLetter() {
+		float scaleW = this.getWidth() * 1.0f / _jumboLetter.getOriginalWidth();
+		float scaleH = this.getHeight() * 1.0f / _jumboLetter.getOriginalHeight();
+		this._jumboLetter.setScale(Math.min(scaleW, scaleH));
+		this.center(_jumboLetter);
+	}
+
 	void tellMeWhatToFind() {
 		AudioController.playInSerial(new String[] { 
 			"content/audio/speech/find-the-letter.ogg", 
@@ -355,6 +359,10 @@ public class CoreGameScreen extends Screen {
 			Sprite harf = _letterSprites[getIndex(letter)];
 			x.setX(harf.getX());
 			x.setY(harf.getY());
+		}
+		
+		if (this._jumboLetter != null) {
+			scaleJumboLetter();
 		}
 	}
 	
