@@ -25,6 +25,9 @@ public class OptionsScreen extends Screen {
 	int OFFSET = 32;
 	boolean _showJumboLetter = true;
 	
+	int _firstLetter = 0;
+	int _lastLetter = 27;
+	
 	ImageCheckbox _showCheckbox;
 	ImageCheckbox _hideCheckbox;
 	Sprite _background;
@@ -59,6 +62,8 @@ public class OptionsScreen extends Screen {
 		this.fadeOutImmediately();
 		
 		_showJumboLetter = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
+		_firstLetter = PersistentStorage.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
+		_lastLetter = PersistentStorage.getInt(Constants.LAST_HARF_TO_SHOW, 27);
 			
 		_background = this.addSprite("content/images/background.jpg");
 		
@@ -138,6 +143,10 @@ public class OptionsScreen extends Screen {
 	@Override
 	public void destroy() {
 		super.destroy();
+		
+		// Save options
 		PersistentStorage.store(Constants.SHOW_JUMBO_LETTERS, _showJumboLetter);
+		PersistentStorage.store(Constants.FIRST_HARF_TO_SHOW, _firstLetter);
+		PersistentStorage.store(Constants.LAST_HARF_TO_SHOW, _lastLetter);
 	}
 }
