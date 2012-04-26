@@ -307,11 +307,14 @@ public class CoreGameScreen extends Screen {
 		this.center(_background);
 			
 		int numHorizontal = 4;
-		int numVertical = 7;
 		
 		if (this.getWidth() > this.getHeight()) {
 			numHorizontal = 7;
-			numVertical = 4;
+		}
+		
+		int numVertical = _letters.length / numHorizontal;
+		if (numVertical == 0) {
+			numVertical = 1;
 		}
 		
 		float maxWidth = this.getWidth() / (numHorizontal * 1.0f);
