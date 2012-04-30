@@ -42,6 +42,8 @@ public class Sprite implements Drawable, Clickable {
 		this._texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		this._orderAdded = nextOrderAdded;
 		nextOrderAdded++;
+		
+		
 	}
 	
 	public void setPassThroughClick(boolean value) {
