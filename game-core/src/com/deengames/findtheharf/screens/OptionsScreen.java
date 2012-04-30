@@ -1,10 +1,12 @@
 package com.deengames.findtheharf.screens;
 
 import java.awt.Font;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
+import com.badlogic.gdx.math.MathUtils;
 import com.deengames.findtheharf.model.Constants;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
@@ -36,6 +38,22 @@ public class OptionsScreen extends Screen {
 	Text _letterText;
 	Text _show;
 	Text _hide;
+	
+	Text _showLettersBetween;
+	Text _and;
+	
+	private final int HALF_BLACKOUT_Z = 999;
+	
+	private String[] _letters = new String[] {
+		"alif", "ba", "ta", "tha", "jeem", "7a", "kha",
+		"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
+		"daad", "taw", "thaw", "ayn", "ghayn", "fa",
+		"qaaf", "kaaf", "laam", "meem", "noon", "ha", "waw", "ya"
+	};
+	
+	Sprite[] _letterSprites = new Sprite[_letters.length];
+	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
+	Sprite _halfBlackout;
 	
 	private ClickListener radioButtonGroup = new ClickListener() {
 		
@@ -109,6 +127,48 @@ public class OptionsScreen extends Screen {
 		_showCheckbox.setClickListener(radioButtonGroup);
 		_hideCheckbox.setClickListener(radioButtonGroup);
 		
+		_showLettersBetween = this.addText("Show Letters:");
+		_showLettersBetween.setFontSize(24);
+		_showLettersBetween.setFont("elliotsix");
+		
+		_and = this.addText("and:");
+		_and.setFontSize(24);
+		_and.setFont("elliotsix");
+		
+		_halfBlackout = this.addSprite("content/images/1x1.jpg");
+		_halfBlackout.setAlpha(1);
+		_halfBlackout.setZ(HALF_BLACKOUT_Z);
+		_halfBlackout.disableTextureFiltering();
+		
+		for (int i = 0; i < this._letters.length; i++) {
+			final String letter = this._letters[i];
+			
+			Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
+			s.setPassThroughClick(true); // So the image button gets the click too!
+			s.setZ(HALF_BLACKOUT_Z + 2);
+			_letterSprites[i] = s;
+			
+			ImageButton overlay = this.addImageButton("content/images/onPress.png");
+			overlay.setZ(s.getZ() - 1);
+			
+			overlay.setClickListener(new ClickListener() {
+				@Override
+				public void onClick(Clickable clickable) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+				
+			_letterOverlays.put(letter, overlay);
+			
+			s.setClickListener(new ClickListener() {
+				public void onClick(Clickable clickable) {
+					if (_halfBlackout.getAlpha() > 0) {
+					}
+				}
+			});			
+		}
+		
 		this.resize();
 		this.fadeIn();
 	}
@@ -136,8 +196,53 @@ public class OptionsScreen extends Screen {
 		_hideCheckbox.setY(_showCheckbox.getY() + (2 * OFFSET));
 		
 		_hide.setX(_hideCheckbox.getX() + _hideCheckbox.getScaledWidth() +  (4 * PADDING));
-		_hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .5f));
+		_hide.setY(_hideCheckbox.getY() + (int)(_hideCheckbox.getScaledHeight() * .5f));		
 		
+		_showLettersBetween.setX(PADDING);
+		_showLettersBetween.setY(_hide.getY() + _hide.getHeight() + OFFSET);
+		
+		_and.setX((this.getWidth() - _and.getWidth()) / 2);
+		_and.setY(_showLettersBetween.getY() + _showLettersBetween.getHeight() + OFFSET);
+		
+		this.fitToScreen(_halfBlackout);
+		
+		int numHorizontal = 4;
+		
+		if (this.getWidth() > this.getHeight()) {
+			numHorizontal = 7;
+		}
+		
+		int numVertical = _letters.length / numHorizontal;
+		
+		float maxWidth = this.getWidth() / (numHorizontal * 1.0f);
+		float maxHeight = this.getHeight() / (numVertical * 1.0f);
+		
+		for (int i = 0; i < this._letterSprites.length; i++) {
+			Sprite s = this._letterSprites[i];
+			s.setScale(1); // Reset if set, our calcs assume it's 1.0
+			
+			float wScale = maxWidth / s.getWidth();
+			float hScale = maxHeight / s.getHeight();
+			float scale = Math.min(wScale, hScale);
+			s.setScale(scale);
+			
+			// Use up any extra horizontal/vertical space
+			int totalHorizontalUsed = s.getWidth() * numHorizontal;
+			int totalVerticalUsed = s.getHeight() * numVertical;
+			
+			int freeHorizontalSpace = this.getWidth() - totalHorizontalUsed;
+			int freeVerticalSpace = this.getHeight() - totalVerticalUsed;
+			
+			s.setX(this.getWidth() - (s.getWidth() * ((i % numHorizontal) + 1)));
+			s.setX(s.getX() - (freeHorizontalSpace / 2));
+			s.setY(s.getHeight() * (i / numHorizontal));
+			s.setY(s.getY() + (freeVerticalSpace / 2));			
+			
+			ImageButton overlay = _letterOverlays.get(this._letters[i]);
+			overlay.setX(s.getX());
+			overlay.setY(s.getY());
+			overlay.setScale(scale);
+		}
 	}
 	
 	@Override
