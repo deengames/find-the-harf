@@ -18,9 +18,22 @@ public class PersistentStorage {
 		_prefs.flush();
 	}
 	
+	public static void store(String key, int value) {
+		_prefs.putInteger(key, value);
+		_prefs.flush();
+	}
+	
 	public static boolean getBoolean(String key, boolean defaultValue) {
 		if (_prefs.contains(key)) {
 			return _prefs.getBoolean(key);
+		} else {
+			return defaultValue;
+		}
+	}
+	
+	public static int getInt(String key, int defaultValue) {
+		if (_prefs.contains(key)) {
+			return _prefs.getInteger(key);
 		} else {
 			return defaultValue;
 		}
