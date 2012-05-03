@@ -40,11 +40,17 @@ public class OptionsScreen extends Screen {
 	Text _hide;
 	
 	Text _showLettersBetween;
-	Text _and;
+	Text _to;
+	
+	Sprite _firstLetterSprite;
+	Sprite _lastLetterSprite;
 	
 	private final int HALF_BLACKOUT_Z = 999;
+	final int LETTER_FADE_RATE = 2;
 	
-	private String[] _letters = new String[] {
+	LetterToPick _letterToPick = null;
+	
+	String[] _letters = new String[] {
 		"alif", "ba", "ta", "tha", "jeem", "7a", "kha",
 		"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
 		"daad", "taw", "thaw", "ayn", "ghayn", "fa",
@@ -71,6 +77,12 @@ public class OptionsScreen extends Screen {
 				_showCheckbox.setIsChecked(true);
 			}
 		}
+	};
+	
+	// Allows overlays to trap clicks
+	private ClickListener emptyClickListener = new ClickListener() {
+		@Override
+		public void onClick(Clickable clickable) { }
 	};
 	
 	@Override
@@ -131,39 +143,89 @@ public class OptionsScreen extends Screen {
 		_showLettersBetween.setFontSize(24);
 		_showLettersBetween.setFont("elliotsix");
 		
-		_and = this.addText("and:");
-		_and.setFontSize(24);
-		_and.setFont("elliotsix");
+		_to = this.addText("to");
+		_to.setFontSize(24);
+		_to.setFont("elliotsix");
+		
+		_firstLetterSprite = this.addSprite("content/images/letters/" + _letters[_firstLetter] + ".png");
+		_firstLetterSprite.setScale(96f / _firstLetterSprite.getWidth());
+		_firstLetterSprite.setClickListener(new ClickListener() {			
+			@Override
+			public void onClick(Clickable clickable) {
+				pickLetter(LetterToPick.From);
+			}
+		});
+		
+		_lastLetterSprite = this.addSprite("content/images/letters/" + _letters[_lastLetter] + ".png");
+		_lastLetterSprite.setScale(_firstLetterSprite.getScale());
+		_lastLetterSprite.setClickListener(new ClickListener() {			
+			@Override
+			public void onClick(Clickable clickable) {
+				pickLetter(LetterToPick.To);
+			}
+		});
+		
+		// Start: stuff for the letter picking
 		
 		_halfBlackout = this.addSprite("content/images/1x1.jpg");
-		_halfBlackout.setAlpha(1);
+		_halfBlackout.setAlpha(0);
 		_halfBlackout.setZ(HALF_BLACKOUT_Z);
 		_halfBlackout.disableTextureFiltering();
 		
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
 			
-			Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
+			final Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
 			s.setPassThroughClick(true); // So the image button gets the click too!
 			s.setZ(HALF_BLACKOUT_Z + 2);
 			_letterSprites[i] = s;
+			s.setAlpha(0);
 			
 			ImageButton overlay = this.addImageButton("content/images/onPress.png");
 			overlay.setZ(s.getZ() - 1);
-			
-			overlay.setClickListener(new ClickListener() {
-				@Override
-				public void onClick(Clickable clickable) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
 				
 			_letterOverlays.put(letter, overlay);
 			
 			s.setClickListener(new ClickListener() {
 				public void onClick(Clickable clickable) {
-					if (_halfBlackout.getAlpha() > 0) {
+					// Sanity check
+					if (_halfBlackout.getAlpha() > 0 && s.getAlpha() > 0) {
+						
+						_halfBlackout.setAlphaRate(-LETTER_FADE_RATE);
+						
+						for (int i = 0; i < _letterSprites.length; i++) {
+							_letterSprites[i].setAlphaRate(-LETTER_FADE_RATE);
+							_letterOverlays.get(_letters[i]).setClickListener(null);
+						}
+						
+						// Find out index of letter we clicked on
+						int clickedIndex = -1;
+						for (int i = 0 ; i < _letters.length; i++) {
+							String l = _letters[i];
+							String letterFileName = l + ".png";
+							if (s.getFileName().endsWith(letterFileName)) {
+								clickedIndex = i;
+								break;
+							}
+						}
+						
+						// More sanity checking
+						if (clickedIndex == -1) {
+							throw new RuntimeException("Can't find index of the letter for " + s.getFileName());
+						}
+						
+						if (_letterToPick == null) {
+							throw new RuntimeException("Picking a letter when _letterToPick is null");
+						}
+						
+						// Pick the letter
+						if (_letterToPick == LetterToPick.From) {
+							_firstLetter = clickedIndex;
+							_firstLetterSprite.setImage("content/images/letters/" + _letters[clickedIndex] + ".png");
+						} else {
+							_lastLetter = clickedIndex;
+							_lastLetterSprite.setImage("content/images/letters/" + _letters[clickedIndex] + ".png");
+						}
 					}
 				}
 			});			
@@ -201,8 +263,14 @@ public class OptionsScreen extends Screen {
 		_showLettersBetween.setX(PADDING);
 		_showLettersBetween.setY(_hide.getY() + _hide.getHeight() + OFFSET);
 		
-		_and.setX((this.getWidth() - _and.getWidth()) / 2);
-		_and.setY(_showLettersBetween.getY() + _showLettersBetween.getHeight() + OFFSET);
+		_to.setX((this.getWidth() - _to.getWidth()) / 2);
+		_to.setY(_showLettersBetween.getY() + _showLettersBetween.getHeight() + OFFSET);
+		
+		_firstLetterSprite.setX(_to.getX() - _firstLetterSprite.getWidth() - 8);
+		_firstLetterSprite.setY(_to.getY()- (_firstLetterSprite.getHeight() / 4));
+
+		_lastLetterSprite.setX(_to.getX() + _to.getWidth() + 8);
+		_lastLetterSprite.setY(_to.getY() - (_lastLetterSprite.getHeight() / 4));
 		
 		this.fitToScreen(_halfBlackout);
 		
@@ -253,5 +321,23 @@ public class OptionsScreen extends Screen {
 		PersistentStorage.store(Constants.SHOW_JUMBO_LETTERS, _showJumboLetter);
 		PersistentStorage.store(Constants.FIRST_HARF_TO_SHOW, _firstLetter);
 		PersistentStorage.store(Constants.LAST_HARF_TO_SHOW, _lastLetter);
+	}
+	
+	void pickLetter(LetterToPick target) {
+		this._halfBlackout.setAlphaRate(LETTER_FADE_RATE);
+		this._letterToPick = target;
+		
+		for (Sprite s : this._letterSprites) {
+			s.setAlphaRate(LETTER_FADE_RATE);			
+		}
+		
+		for (String letter : this._letters) {
+			// Enable click-trapping
+			this._letterOverlays.get(letter).setClickListener(emptyClickListener);
+		}
+	}
+	
+	private enum LetterToPick {
+		From, To
 	}
 }
