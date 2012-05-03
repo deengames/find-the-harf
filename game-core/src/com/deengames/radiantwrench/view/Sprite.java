@@ -37,13 +37,9 @@ public class Sprite implements Drawable, Clickable {
 	private boolean _passThroughClickEvent = false;
 	
 	public Sprite(String fileName) {
-		this._fileName = fileName;
-		this.loadTexture();
-		this._texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		setImage(fileName);
 		this._orderAdded = nextOrderAdded;
 		nextOrderAdded++;
-		
-		
 	}
 	
 	public void setPassThroughClick(boolean value) {
@@ -90,6 +86,15 @@ public class Sprite implements Drawable, Clickable {
 	
 	private void loadTexture() {
 		_texture = new Texture(Gdx.files.internal(this._fileName));
+	}
+	
+	public void setImage(String fileName) {
+		if (this._texture != null) {
+			this.destroy();
+		}
+		this._fileName = fileName;
+		this.loadTexture();
+		this._texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	}
 	
 	public Texture getTexture() {
