@@ -11,6 +11,7 @@ import com.deengames.findtheharf.model.Constants;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
+import com.deengames.radiantwrench.utils.ArrayTools;
 import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.PersistentStorage;
@@ -25,6 +26,8 @@ public class CoreGameScreen extends Screen {
 	int _numWrong = 0;
 	
 	boolean _showJumboLetters;
+	int _firstLetter;
+	int _lastLetter;
 	
 	Timer _timer = new Timer();
 	
@@ -46,7 +49,7 @@ public class CoreGameScreen extends Screen {
 		"hurray", "awesome", "superb", "great-job"	
 	};
 	
-	Sprite[] _letterSprites = new Sprite[_letters.length];
+	Sprite[] _letterSprites;
 	ImageButton _helpButton;
 	
 	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
@@ -75,6 +78,16 @@ public class CoreGameScreen extends Screen {
 		this.fadeOutImmediately();
 		
 		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
+		
+		_firstLetter = PersistentStorage.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
+		_lastLetter = PersistentStorage.getInt(Constants.LAST_HARF_TO_SHOW, 27);
+		
+		// Show only letters in the range [_firstLetter, _lastLetter]
+		// Easiest solution: hack up the arrays (letters/colours)
+		_letters = ArrayTools.slice(_letters, _firstLetter, _lastLetter);
+		_colours = ArrayTools.slice(_colours, _firstLetter, _lastLetter);
+		
+		_letterSprites = new Sprite[_letters.length];
 		
 		_halfBlackout = this.addSprite("content/images/1x1.jpg");
 		_halfBlackout.setAlpha(0);
@@ -294,11 +307,14 @@ public class CoreGameScreen extends Screen {
 		this.center(_background);
 			
 		int numHorizontal = 4;
-		int numVertical = 7;
 		
 		if (this.getWidth() > this.getHeight()) {
 			numHorizontal = 7;
-			numVertical = 4;
+		}
+		
+		int numVertical = _letters.length / numHorizontal;
+		if (numVertical == 0) {
+			numVertical = 1;
 		}
 		
 		float maxWidth = this.getWidth() / (numHorizontal * 1.0f);

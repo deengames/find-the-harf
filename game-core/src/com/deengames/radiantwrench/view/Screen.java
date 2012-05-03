@@ -84,8 +84,8 @@ public class Screen {
 		int targetWidth = this.getWidth();
 		int targetHeight = this.getHeight();
 		
-		float wScale = targetWidth * 1.0f / s.getWidth();
-		float hScale = targetHeight * 1.0f / s.getHeight();
+		float wScale = targetWidth * 1.0f / s.getOriginalWidth();
+		float hScale = targetHeight * 1.0f / s.getOriginalHeight();
 		
 		s.setScale(Math.max(wScale,  hScale));
 	}
