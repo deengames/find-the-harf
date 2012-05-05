@@ -84,8 +84,11 @@ public class CoreGameScreen extends Screen {
 		
 		// Show only letters in the range [_firstLetter, _lastLetter]
 		// Easiest solution: hack up the arrays (letters/colours)
-		_letters = ArrayTools.slice(_letters, _firstLetter, _lastLetter);
-		_colours = ArrayTools.slice(_colours, _firstLetter, _lastLetter);
+		int startIndex = Math.min(_firstLetter, _lastLetter);
+		int endIndex = Math.max(_firstLetter, _lastLetter);
+		
+		_letters = ArrayTools.slice(_letters, startIndex, endIndex);
+		_colours = ArrayTools.slice(_colours, startIndex, endIndex);
 		
 		_letterSprites = new Sprite[_letters.length];
 		
@@ -238,11 +241,16 @@ public class CoreGameScreen extends Screen {
 		
 		String newLetter = _letterToFind;
 		
-		while (newLetter == _letterToFind) {
-			newLetter = _letters[MathUtils.random(this._letters.length - 1)];
+		// Edge case: picked only one letter? Suit yourself, mate.
+		if (_letters.length > 1) {
+			while (newLetter == _letterToFind) {
+				newLetter = _letters[MathUtils.random(this._letters.length - 1)];
+			}
+			
+			_letterToFind = newLetter;	
+		} else {
+			_letterToFind = _letters[0];
 		}
-		
-		_letterToFind = newLetter;		
 		
 		tellMeWhatToFind();
 		
