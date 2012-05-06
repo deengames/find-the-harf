@@ -64,14 +64,12 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 			return false;
 		}
 		
-		int yFromTop = (int)(Game.getCurrentScreen().getHeight() - y);
-		
 		// Images scale from the center, so "scale" the area accordingly.
 		int scaleXOffset = (this.getWidth() - this.getScaledWidth()) / 2;
 		int scaleYOffset = (this.getHeight() - this.getScaledHeight()) / 2;
 		
 		boolean touchDown = (x >= this.x + scaleXOffset && x <= this.x + scaleXOffset + this.getScaledWidth()  && 
-				yFromTop >= this.y + scaleYOffset && yFromTop <= this.y + scaleYOffset + this.getScaledHeight());
+				y >= this.y + scaleYOffset && y <= this.y + scaleYOffset + this.getScaledHeight());
 		
 		if (touchDown) {
 			
