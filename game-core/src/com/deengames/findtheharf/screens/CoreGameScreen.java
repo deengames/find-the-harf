@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.AudioDevice;
 import com.deengames.findtheharf.model.Constants;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
+import com.deengames.radiantwrench.thirdparty.FlurryHelper;
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ArrayTools;
 import com.deengames.radiantwrench.utils.ClickListener;
@@ -19,6 +20,7 @@ import com.deengames.radiantwrench.utils.Timer;
 import com.deengames.radiantwrench.view.ImageButton;
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
+import com.flurry.android.FlurryAgent;
 
 public class CoreGameScreen extends Screen {
 	
@@ -73,14 +75,14 @@ public class CoreGameScreen extends Screen {
 	
 	@Override
 	public void initialize() {
-		super.initialize();
-		
+		super.initialize();			
 		this.fadeOutImmediately();
 		
-		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
-		
+		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);		
 		_firstLetter = PersistentStorage.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
 		_lastLetter = PersistentStorage.getInt(Constants.LAST_HARF_TO_SHOW, 27);
+		
+		FlurryHelper.logEvent("Core Game Screen", "Show Jumbo Letters", Boolean.toString(_showJumboLetters));
 		
 		// Show only letters in the range [_firstLetter, _lastLetter]
 		// Easiest solution: hack up the arrays (letters/colours)
@@ -135,6 +137,7 @@ public class CoreGameScreen extends Screen {
 						
 						if (_letterToFind != "" && _letterToFind == letter) {
 							
+							FlurryHelper.logEvent("Correct Letter", "letter", _letterToFind);
 							String praise =  _praises[MathUtils.random(_praises.length - 1)];
 							
 							AudioController.playInSerial(new String[] {
@@ -151,6 +154,8 @@ public class CoreGameScreen extends Screen {
 							if (_numWrong <= 2) {																								
 								int toFindIndex = getIndex(_letterToFind);
 								int clickedIndex = getIndex(letter);
+								
+								FlurryHelper.logEvent("Wrong Letter " + _numWrong, "clickedLetter", letter, "targetLetter", _letterToFind);
 								
 								Sprite x = addSprite("content/images/x.png");
 								Sprite clickedSprite = _letterSprites[clickedIndex];
@@ -313,7 +318,10 @@ public class CoreGameScreen extends Screen {
 		_background.setScale(1); // reset
 		this.fitToScreen(_background);
 		this.center(_background);
-			
+		
+		String orientation = (this.getWidth() >= this.getHeight() ? "Horizontal" : "Vertical");
+		FlurryHelper.logEvent("Orient Screen", "Orientation", orientation);
+		
 		int numHorizontal = 4;
 		
 		if (this.getWidth() > this.getHeight()) {

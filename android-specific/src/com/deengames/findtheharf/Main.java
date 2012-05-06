@@ -31,11 +31,19 @@ package com.deengames.findtheharf;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.flurry.android.FlurryAgent;
 
 public class Main extends AndroidApplication {
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		FlurryAgent.onStartSession(this, "PHVUG9HX49QW3KD8FXAG");
 		initialize(new FindTheHarfGame(), false);
+	}
+	
+	@Override
+	public void onDestroy() {
+		FlurryAgent.onEndSession(this);
+		super.onDestroy();		
 	}
 }

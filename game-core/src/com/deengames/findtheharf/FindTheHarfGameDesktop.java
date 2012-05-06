@@ -17,9 +17,11 @@
 package com.deengames.findtheharf;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.deengames.radiantwrench.thirdparty.FlurryHelper;
 
 public class FindTheHarfGameDesktop {
 	public static void main (String[] argv) {
+		FlurryHelper.SetIsDesktopApp();
 		new LwjglApplication(new FindTheHarfGame(), "Deen Games", 320, 480, false);
 	}
 }
