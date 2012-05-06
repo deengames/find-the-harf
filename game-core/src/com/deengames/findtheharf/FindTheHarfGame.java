@@ -27,7 +27,8 @@ import com.deengames.radiantwrench.view.Text;
 
 public class FindTheHarfGame extends Game implements ApplicationListener {
 
-	public void create() {
+	public void create() {		
+		
 		PersistentStorage.setPreferenceFile(Constants.PREF_FILE_NAME);
 		Text.setDefaultColour("black");
 		AudioController.preloadSounds("content/audio", ".ogg"); // Recurses in
@@ -35,5 +36,5 @@ public class FindTheHarfGame extends Game implements ApplicationListener {
 		Game.showScreen(new LoadingScreen());
 
 		super.create();
-	}
+	}	
 }

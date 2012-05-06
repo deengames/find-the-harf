@@ -18,7 +18,7 @@ public class TitleScreen extends Screen {
 	
 	@Override
 	public void initialize() { //throws RadiantWrenchException {
-		super.initialize();
+		super.initialize();				
 		
 		this.fadeOutImmediately();
 		_background = this.addSprite("content/images/title-screen.png");
