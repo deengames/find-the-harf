@@ -65,16 +65,22 @@ public class OptionsScreen extends Screen {
 		
 		@Override
 		public void onClick(Clickable clickable) {
-			_showJumboLetter = !_showJumboLetter;
-			if (_showJumboLetter) {
-				_hideCheckbox.setIsChecked(false);
-			} else {
-				_showCheckbox.setIsChecked(false);
-			}
 			
-			// This is technically possible with the controls ...
-			if (!_showCheckbox.getIsChecked() && !_hideCheckbox.getIsChecked()) {
-				_showCheckbox.setIsChecked(true);
+			// Only change state if we clicked on the other checkbox.
+			if ((clickable == _showCheckbox && !_showJumboLetter) ||
+			(clickable == _hideCheckbox && _showJumboLetter)) {
+				_showJumboLetter = !_showJumboLetter;
+				
+				if (_showJumboLetter) {
+					_hideCheckbox.setIsChecked(false);
+					
+				} else {
+					_showCheckbox.setIsChecked(false);
+				}
+			} else {
+				// Possible both are unchecked. Blah.
+				_showCheckbox.setIsChecked(_showJumboLetter);
+				_hideCheckbox.setIsChecked(!_showJumboLetter);
 			}
 		}
 	};
