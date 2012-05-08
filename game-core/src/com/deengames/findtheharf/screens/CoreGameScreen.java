@@ -82,7 +82,11 @@ public class CoreGameScreen extends Screen {
 		_firstLetter = PersistentStorage.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
 		_lastLetter = PersistentStorage.getInt(Constants.LAST_HARF_TO_SHOW, 27);
 		
-		FlurryHelper.logEvent("Core Game Screen", "Show Jumbo Letters", Boolean.toString(_showJumboLetters));
+		int screenWidth = Math.max(this.getWidth(), this.getHeight());
+		int screenHeight = Math.min(this.getWidth(), this.getHeight());
+		String screenSize = screenWidth + "x" + screenHeight;
+		
+		FlurryHelper.logEvent("Core Game Screen", "Screen Size", screenSize, "Show Jumbo Letters", Boolean.toString(_showJumboLetters));
 		
 		// Show only letters in the range [_firstLetter, _lastLetter]
 		// Easiest solution: hack up the arrays (letters/colours)
@@ -197,6 +201,7 @@ public class CoreGameScreen extends Screen {
 									});
 								}
 							} else {
+								FlurryHelper.logEvent("Failed to Find Letter", "letter", _letterToFind);
 								AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.ogg"});
 								findANewLetter();
 							}
