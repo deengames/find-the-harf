@@ -94,7 +94,7 @@ public class OptionsScreen extends Screen {
 
 	@Override
 	public void initialize() {
-		super.initialize();
+		super.initialize();		
 		FlurryHelper.logEvent("Options Screen");
 
 		this.fadeOutImmediately();
