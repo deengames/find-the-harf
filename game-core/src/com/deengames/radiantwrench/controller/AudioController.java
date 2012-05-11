@@ -7,6 +7,7 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.deengames.radiantwrench.audio.Sound;
+import com.deengames.radiantwrench.thirdparty.FlurryHelper;
 import com.deengames.radiantwrench.utils.FileHelper;
 import com.deengames.radiantwrench.utils.FileOrDirectory;
 
@@ -37,7 +38,12 @@ public class AudioController {
 		if (_enabled) {
 			// Check if it's preloaded. If not, load it now.
 			if (!_sounds.containsKey(audioFileName)) {
-				_sounds.put(audioFileName, new Sound(audioFileName));
+				try {
+					_sounds.put(audioFileName, new Sound(audioFileName));
+				} catch (Exception e) {
+					FlurryHelper.logEvent("Audio Crashed", "Audio File", audioFileName, "Exception", e.getMessage());
+					disable();
+				}
 			}
 			
 			_currentSound = _sounds.get(audioFileName);
@@ -103,6 +109,7 @@ public class AudioController {
 
 	public static void disable() {
 		_enabled = false;
+		FlurryHelper.logEvent("Audio Disabled");
 	}
 	
 	public static boolean isEnabled() {
