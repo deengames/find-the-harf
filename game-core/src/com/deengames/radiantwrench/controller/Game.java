@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.deengames.radiantwrench.thirdparty.FlurryHelper;
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 import com.deengames.radiantwrench.utils.ZTypeOrderComparator;
@@ -98,9 +99,10 @@ public class Game implements ApplicationListener, InputProcessor {
 		currentScreen.update(elapsedTime);
 		
 		try {
-			AudioController.tick();
+			AudioController.tick();			
 		} catch (NullPointerException e) {
 			AudioController.disable();
+			FlurryHelper.logEvent("Audio Disabled");
 		}
 		
 		ArrayList<Drawable> drawables = new ArrayList<Drawable>();
