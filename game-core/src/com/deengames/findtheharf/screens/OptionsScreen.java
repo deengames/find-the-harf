@@ -37,7 +37,7 @@ public class OptionsScreen extends Screen {
 	Sprite _background;
 	ImageButton _goButton;
 	Text _options;
-	Text _letterText;
+	Text _showJumboLetters;
 	Text _show;
 	Text _hide;
 
@@ -127,10 +127,9 @@ public class OptionsScreen extends Screen {
 		_options.setFontSize(48);
 		_options.setFont("elliotsix");
 
-		_letterText = this.addText("Jumbo Letter:");
-
-		_letterText.setFontSize(24);
-		_letterText.setFont("elliotsix");
+		_showJumboLetters = this.addText("Jumbo Letter:");
+		_showJumboLetters.setFontSize(24);
+		_showJumboLetters.setFont("elliotsix");
 
 		_showCheckbox = this.addImageCheckbox(_showJumboLetter);
 		_showCheckbox.setScale(0.5f);
@@ -274,11 +273,11 @@ public class OptionsScreen extends Screen {
 		_options.setX((this.getWidth() - _options.getWidth()) / 2);
 		_options.setY(8);
 
-		_letterText.setX(PADDING);
-		_letterText.setY(_options.getHeight() + OFFSET);
+		_showJumboLetters.setX(PADDING);
+		_showJumboLetters.setY(_options.getHeight() + OFFSET);
 
 		_showCheckbox.setX(32);
-		_showCheckbox.setY(_letterText.getY() + 16);
+		_showCheckbox.setY(_showJumboLetters.getY() + 16);
 
 		_show.setX(_showCheckbox.getX() + _showCheckbox.getScaledWidth()
 				+ (4 * PADDING));
@@ -293,21 +292,25 @@ public class OptionsScreen extends Screen {
 		_hide.setY(_hideCheckbox.getY()
 				+ (int) (_hideCheckbox.getScaledHeight() * .5f));
 
-		_showLettersBetween.setX(PADDING);
-		_showLettersBetween.setY(_hide.getY() + _hide.getHeight() + OFFSET);
-
-		_to.setX((this.getWidth() - _to.getWidth()) / 2);
-		_to.setY(_showLettersBetween.getY() + _showLettersBetween.getHeight()
-				+ OFFSET);
+		if (this.getHeight() <= 320) {
+			_showJumboLetters.setFontSize(24);
+			_showLettersBetween.setFontSize(24);
+			_showLettersBetween.setX(this.getWidth() - (int)(1.5 * _showLettersBetween.getWidth()) - PADDING);
+			_showLettersBetween.setY(_showJumboLetters.getY());
+		} else {
+			_showLettersBetween.setX(PADDING);
+			_showLettersBetween.setY(_hide.getY() + _hide.getHeight() + 2 * OFFSET);
+		}
+	
+		_to.setX(_showLettersBetween.getX() + (_showLettersBetween.getWidth()) / 2);
+		_to.setY(_showLettersBetween.getY() + _showLettersBetween.getHeight() + OFFSET);
 
 		_firstLetterSprite.setX(_to.getX() - _firstLetterSprite.getWidth() - 8);
-		_firstLetterSprite.setY(_to.getY()
-				- (_firstLetterSprite.getHeight() / 4));
+		_firstLetterSprite.setY(_to.getY() - (_firstLetterSprite.getHeight() / 4));
 
 		_lastLetterSprite.setX(_to.getX() + _to.getWidth() + 8);
-		_lastLetterSprite
-				.setY(_to.getY() - (_lastLetterSprite.getHeight() / 4));
-
+		_lastLetterSprite.setY(_to.getY() - (_lastLetterSprite.getHeight() / 4));
+		
 		this.fitToScreen(_halfBlackout);
 
 		int numHorizontal = 4;
