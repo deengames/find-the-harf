@@ -15,6 +15,7 @@ public class TitleScreen extends Screen {
 	
 	Sprite _background;
 	Sprite _optionsIcon;
+	Sprite _audioError;
 	
 	@Override
 	public void initialize() { //throws RadiantWrenchException {
@@ -48,6 +49,18 @@ public class TitleScreen extends Screen {
 			}
 		});
 		
+		_audioError = this.addSprite("content/images/audio-error.png");
+		if (AudioController.isEnabled()) {
+			_audioError.setAlpha(0);
+		} else {
+			_audioError.setClickListener(new ClickListener() {
+				@Override
+				public void onClick(Clickable clickable) {
+					_audioError.setAlphaRate(-2);
+				}
+			});
+		}
+		
 		resize();
 		
 		this.fadeIn();			
@@ -57,6 +70,8 @@ public class TitleScreen extends Screen {
 	public void resize() {
 		this.center(_background);
 		this.center(_optionsIcon);
+		this.center(_audioError);
+		
 		_optionsIcon.setScale(0.5f);
 		_optionsIcon.setX(this.getWidth() - _optionsIcon.getWidth() - 8);
 		_optionsIcon.setY(this.getHeight() - _optionsIcon.getHeight() - 8);
