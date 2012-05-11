@@ -96,7 +96,12 @@ public class Game implements ApplicationListener, InputProcessor {
 
 		Screen currentScreen = _currentScreen;
 		currentScreen.update(elapsedTime);
-		AudioController.tick();
+		
+		try {
+			AudioController.tick();
+		} catch (NullPointerException e) {
+			AudioController.disable();
+		}
 		
 		ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 		drawables.addAll(currentScreen.getSprites());

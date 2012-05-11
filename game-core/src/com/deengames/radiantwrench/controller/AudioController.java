@@ -18,8 +18,7 @@ public class AudioController {
 	private static Map<String, Sound> _sounds = new HashMap<String, Sound>();
 
 	// static class
-	private AudioController() {
-	}
+	private AudioController() {	}
 
 	public static void tick() {
 		if (_enabled) {
@@ -33,7 +32,7 @@ public class AudioController {
 			}
 		}
 	}
-
+	
 	public static void playSound(String audioFileName) {
 		if (_enabled) {
 			// Check if it's preloaded. If not, load it now.
@@ -73,29 +72,41 @@ public class AudioController {
 	}
 
 	public static void abortAndClearQueue() {
-		if (_currentSound != null) {
-			_currentSound.stop();
+		if (_enabled) {
+			if (_currentSound != null) {
+				_currentSound.stop();
+			}
+			_soundQueue.clear();
 		}
-		_soundQueue.clear();
 	}
 	
 	public static void preloadSounds(String rootDirectory, String fileExtension) {
-		// Breaks underlying abstraction of files, but does so to make easy recursion
-		LinkedList<FileOrDirectory> files = FileHelper.listFiles(rootDirectory);
-		
-		while (!files.isEmpty()) {
+		if (_enabled) {
+			// Breaks underlying abstraction of files, but does so to make easy recursion
+			LinkedList<FileOrDirectory> files = FileHelper.listFiles(rootDirectory);
 			
-			FileOrDirectory file = files.remove(0);
-			String fileName = file.getFullPath();
-			
-			if (!file.isDirectory() && fileName.toUpperCase().endsWith(fileExtension.toUpperCase())) {
-				_sounds.put(fileName, new Sound(fileName));
-			} else if (file.isDirectory()) {
-				// Recurse. But add directory tree.
-				LinkedList<FileOrDirectory> toAdd = FileHelper.listFiles(fileName);
-				files.addAll(toAdd);
+			while (!files.isEmpty()) {
+				
+				FileOrDirectory file = files.remove(0);
+				String fileName = file.getFullPath();
+				
+				if (!file.isDirectory() && fileName.toUpperCase().endsWith(fileExtension.toUpperCase())) {
+					_sounds.put(fileName, new Sound(fileName));
+				} else if (file.isDirectory()) {
+					// Recurse. But add directory tree.
+					LinkedList<FileOrDirectory> toAdd = FileHelper.listFiles(fileName);
+					files.addAll(toAdd);
+				}
 			}
 		}
+	}
+
+	public static void disable() {
+		_enabled = false;
+	}
+	
+	public static boolean isEnabled() {
+		return _enabled;
 	}
 
 }
