@@ -201,12 +201,12 @@ public class Screen {
 		return b;
 	}
 
-	public ImageCheckbox addImageCheckbox() {
-		return this.addImageCheckbox(false);
+	public ImageCheckbox addImageCheckbox(String fileName) {
+		return this.addImageCheckbox(fileName, false);
 	}
 
-	public ImageCheckbox addImageCheckbox(boolean isChecked) {
-		ImageCheckbox c = new ImageCheckbox("content/images/radiobutton.png");
+	public ImageCheckbox addImageCheckbox(String fileName, boolean isChecked) {
+		ImageCheckbox c = new ImageCheckbox(fileName);
 		c.setIsChecked(isChecked);
 		this._imageCheckBoxes.add(c);
 		return c;

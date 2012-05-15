@@ -1,5 +1,6 @@
 package com.deengames.findtheharf.screens;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.TimerTask;
 
@@ -28,6 +29,7 @@ public class CoreGameScreen extends Screen {
 	int _numWrong = 0;
 	
 	boolean _showJumboLetters;
+	boolean _shuffleLetters;
 	int _firstLetter;
 	int _lastLetter;
 	
@@ -40,11 +42,11 @@ public class CoreGameScreen extends Screen {
 		"qaaf", "kaaf", "laam", "meem", "noon", "ha", "waw", "ya"
 	};
 	
-	private String[] _colours = new String[] {
+	private String[] _rawColours = new String[] {
 		"red", "orange", "yellow", "green", "blue", "purple", "pink",
 		"red", "orange", "yellow", "green", "blue", "purple", "pink",
 		"red", "orange", "yellow", "green", "blue", "purple", "pink",
-		"red", "orange", "yellow", "green", "blue", "purple", "pink"
+		"red", "orange", "yellow", "green", "blue", "purple", "pink"	
 	};
 	
 	String[] _praises = new String[] {
@@ -56,6 +58,7 @@ public class CoreGameScreen extends Screen {
 	
 	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
 	HashMap<String, Sprite> _xs = new HashMap<String, Sprite>();
+	HashMap<String, String> _colours = new HashMap<String, String>();
 	
 	Sprite _halfBlackout;
 	Sprite _jumboLetter;
@@ -79,6 +82,7 @@ public class CoreGameScreen extends Screen {
 		this.fadeOutImmediately();
 		
 		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);		
+		_shuffleLetters = PersistentStorage.getBoolean(Constants.SHUFFLE_LETTERS, false);
 		_firstLetter = PersistentStorage.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
 		_lastLetter = PersistentStorage.getInt(Constants.LAST_HARF_TO_SHOW, 27);
 		
@@ -87,14 +91,22 @@ public class CoreGameScreen extends Screen {
 		String screenSize = screenWidth + "x" + screenHeight;
 		
 		FlurryHelper.logEvent("Core Game Screen", "Screen Size", screenSize, "Show Jumbo Letters", Boolean.toString(_showJumboLetters));
+
+		for (int i = 0; i < _letters.length; i++) {
+			String letter = _letters[i];
+			_colours.put(letter, _rawColours[i]);
+		}
 		
 		// Show only letters in the range [_firstLetter, _lastLetter]
 		// Easiest solution: hack up the arrays (letters/colours)
 		int startIndex = Math.min(_firstLetter, _lastLetter);
-		int endIndex = Math.max(_firstLetter, _lastLetter);
-		
+		int endIndex = Math.max(_firstLetter, _lastLetter);		
+
 		_letters = ArrayTools.slice(_letters, startIndex, endIndex);
-		_colours = ArrayTools.slice(_colours, startIndex, endIndex);
+		
+		if (_shuffleLetters) {
+			ArrayTools.shuffleArray(_letters);
+		}
 		
 		_letterSprites = new Sprite[_letters.length];
 		
@@ -114,6 +126,7 @@ public class CoreGameScreen extends Screen {
 
 			@Override
 			public void onClick(Clickable clickable) {
+				FlurryHelper.logEvent("Help Button", "Letter", _letterToFind);
 				AudioController.abortAndClearQueue();
 				tellMeWhatToFind();				
 			}
@@ -237,9 +250,8 @@ public class CoreGameScreen extends Screen {
 		return -1;
 	}
 	
-	String getColour(String letter) {
-		int index = getIndex(letter);
-		return _colours[index];
+	String getColour(String letter) {		
+		return _colours.get(letter);
 	}
 	
 	void findANewLetter() {

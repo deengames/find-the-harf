@@ -26,21 +26,23 @@ import com.flurry.android.FlurryAgent;
 public class OptionsScreen extends Screen {
 
 	private final int PADDING = 8;
-	int OFFSET = 32;
-	boolean _showJumboLetter = true;
+	int OFFSET = 32;	
 
 	int _firstLetter = 0;
 	int _lastLetter = 27;
-
-	ImageCheckbox _showCheckbox;
-	ImageCheckbox _hideCheckbox;
+	
 	Sprite _background;
 	ImageButton _goButton;
 	Text _options;
-	Text _showJumboLetters;
-	Text _show;
-	Text _hide;
+	
+	boolean _showJumboLetters = true;
+	Text _showLetters;
+	ImageCheckbox _jumboLettersCheckbox;
 
+	boolean _shouldShuffleLetters = false;
+	Text _shuffleLetters;
+	ImageCheckbox _shuffleLettersCheckbox;
+	
 	Text _showLettersBetween;
 	Text _to;
 
@@ -61,30 +63,6 @@ public class OptionsScreen extends Screen {
 	HashMap<String, ImageButton> _letterOverlays = new HashMap<String, ImageButton>();
 	Sprite _halfBlackout;
 
-	private ClickListener radioButtonGroup = new ClickListener() {
-
-		@Override
-		public void onClick(Clickable clickable) {
-
-			// Only change state if we clicked on the other checkbox.
-			if ((clickable == _showCheckbox && !_showJumboLetter)
-					|| (clickable == _hideCheckbox && _showJumboLetter)) {
-				_showJumboLetter = !_showJumboLetter;
-
-				if (_showJumboLetter) {
-					_hideCheckbox.setIsChecked(false);
-
-				} else {
-					_showCheckbox.setIsChecked(false);
-				}
-			} else {
-				// Possible both are unchecked. Blah.
-				_showCheckbox.setIsChecked(_showJumboLetter);
-				_hideCheckbox.setIsChecked(!_showJumboLetter);
-			}
-		}
-	};
-
 	// Allows overlays to trap clicks
 	private ClickListener emptyClickListener = new ClickListener() {
 		@Override
@@ -99,10 +77,9 @@ public class OptionsScreen extends Screen {
 
 		this.fadeOutImmediately();
 
-		_showJumboLetter = PersistentStorage.getBoolean(
-				Constants.SHOW_JUMBO_LETTERS, true);
-		_firstLetter = PersistentStorage
-				.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
+		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
+		_shouldShuffleLetters = PersistentStorage.getBoolean(Constants.SHUFFLE_LETTERS, true);
+		_firstLetter = PersistentStorage.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
 		_lastLetter = PersistentStorage.getInt(Constants.LAST_HARF_TO_SHOW, 27);
 
 		_background = this.addSprite("content/images/background.jpg");
@@ -127,26 +104,31 @@ public class OptionsScreen extends Screen {
 		_options.setFontSize(48);
 		_options.setFont("elliotsix");
 
-		_showJumboLetters = this.addText("Jumbo Letter:");
-		_showJumboLetters.setFontSize(24);
-		_showJumboLetters.setFont("elliotsix");
+		_showLetters = this.addText("Show Jumbo Letter");
+		_showLetters.setFontSize(24);
+		_showLetters.setFont("elliotsix");
 
-		_showCheckbox = this.addImageCheckbox(_showJumboLetter);
-		_showCheckbox.setScale(0.5f);
-
-		_show = this.addText("Show");
-		_show.setFontSize(24);
-		_show.setFont("elliotsix");
-
-		_hideCheckbox = this.addImageCheckbox(!_showJumboLetter);
-		_hideCheckbox.setScale(0.5f);
-
-		_hide = this.addText("Hide");
-		_hide.setFontSize(24);
-		_hide.setFont("elliotsix");
-
-		_showCheckbox.setClickListener(radioButtonGroup);
-		_hideCheckbox.setClickListener(radioButtonGroup);
+		_jumboLettersCheckbox = this.addImageCheckbox("content/images/checkmark.png", _showJumboLetters);
+		_jumboLettersCheckbox.setScale(0.5f);
+		_jumboLettersCheckbox.setClickListener(new ClickListener() {
+			@Override
+			public void onClick(Clickable clickable) {
+				_showJumboLetters = (_jumboLettersCheckbox.getIsChecked());
+			}
+		});
+		
+		_shuffleLetters = this.addText("Shuffle Letters");
+		_shuffleLetters.setFontSize(24);
+		_shuffleLetters.setFont("elliotsix");
+		
+		_shuffleLettersCheckbox = this.addImageCheckbox("content/images/checkmark.png", _shouldShuffleLetters);
+		_shuffleLettersCheckbox.setScale(0.5f);
+		_shuffleLettersCheckbox.setClickListener(new ClickListener() {
+			@Override
+			public void onClick(Clickable clickable) {
+				_shouldShuffleLetters = (_shuffleLettersCheckbox.getIsChecked());
+			}
+		});
 
 		_showLettersBetween = this.addText("Show Letters:");
 		_showLettersBetween.setFontSize(24);
@@ -273,43 +255,29 @@ public class OptionsScreen extends Screen {
 		_options.setX((this.getWidth() - _options.getWidth()) / 2);
 		_options.setY(8);
 
-		_showJumboLetters.setX(PADDING);
-		_showJumboLetters.setY(_options.getHeight() + OFFSET);
+		_showLetters.setX(_jumboLettersCheckbox.getScaledWidth());
+		_showLetters.setY(_options.getHeight() + OFFSET);
 
-		_showCheckbox.setX(32);
-		_showCheckbox.setY(_showJumboLetters.getY() + 16);
+		_jumboLettersCheckbox.setX(-_jumboLettersCheckbox.getScaledHeight() / 2);
+		_jumboLettersCheckbox.setY(_showLetters.getY() - (_jumboLettersCheckbox.getScaledHeight() / 2) - (_showLetters.getHeight() / 2));
 
-		_show.setX(_showCheckbox.getX() + _showCheckbox.getScaledWidth()
-				+ (4 * PADDING));
-		_show.setY(_showCheckbox.getY()
-				+ (int) (_showCheckbox.getScaledHeight() * .5f));
+		_shuffleLetters.setX(_shuffleLettersCheckbox.getScaledWidth());
+		_shuffleLetters.setY(_jumboLettersCheckbox.getY() + (_jumboLettersCheckbox.getScaledHeight() * 2) - (OFFSET / 2));
 
-		_hideCheckbox.setX(32);
-		_hideCheckbox.setY(_showCheckbox.getY() + (2 * OFFSET));
-
-		_hide.setX(_hideCheckbox.getX() + _hideCheckbox.getScaledWidth()
-				+ (4 * PADDING));
-		_hide.setY(_hideCheckbox.getY()
-				+ (int) (_hideCheckbox.getScaledHeight() * .5f));
-
-		if (this.getHeight() <= 320) {
-			_showJumboLetters.setFontSize(24);
-			_showLettersBetween.setFontSize(24);
-			_showLettersBetween.setX(this.getWidth() - (int)(1.5 * _showLettersBetween.getWidth()) - PADDING);
-			_showLettersBetween.setY(_showJumboLetters.getY());
-		} else {
-			_showLettersBetween.setX(PADDING);
-			_showLettersBetween.setY(_hide.getY() + _hide.getHeight() + 2 * OFFSET);
-		}
-	
+		_shuffleLettersCheckbox.setX(-_shuffleLettersCheckbox.getScaledHeight() / 2);
+		_shuffleLettersCheckbox.setY(_shuffleLetters.getY() - (_shuffleLettersCheckbox.getScaledHeight() / 2) - (_shuffleLetters.getHeight() / 2));
+		
+		_showLettersBetween.setX(PADDING);
+		_showLettersBetween.setY(_shuffleLetters.getY() + _shuffleLetters.getHeight() + OFFSET);
+		
 		_to.setX(_showLettersBetween.getX() + (_showLettersBetween.getWidth()) / 2);
 		_to.setY(_showLettersBetween.getY() + _showLettersBetween.getHeight() + OFFSET);
 
 		_firstLetterSprite.setX(_to.getX() - _firstLetterSprite.getWidth() - 8);
-		_firstLetterSprite.setY(_to.getY() - (_firstLetterSprite.getHeight() / 4));
+		_firstLetterSprite.setY(_to.getY() - (_firstLetterSprite.getHeight() / 3));
 
 		_lastLetterSprite.setX(_to.getX() + _to.getWidth() + 8);
-		_lastLetterSprite.setY(_to.getY() - (_lastLetterSprite.getHeight() / 4));
+		_lastLetterSprite.setY(_to.getY() - (_lastLetterSprite.getHeight() / 3));
 		
 		this.fitToScreen(_halfBlackout);
 
@@ -357,9 +325,14 @@ public class OptionsScreen extends Screen {
 		super.destroy();
 
 		// Save options
-		PersistentStorage.store(Constants.SHOW_JUMBO_LETTERS, _showJumboLetter);
+		PersistentStorage.store(Constants.SHOW_JUMBO_LETTERS, _showJumboLetters);
+		PersistentStorage.store(Constants.SHUFFLE_LETTERS, _shouldShuffleLetters);
 		PersistentStorage.store(Constants.FIRST_HARF_TO_SHOW, _firstLetter);
 		PersistentStorage.store(Constants.LAST_HARF_TO_SHOW, _lastLetter);
+		
+		if (_shouldShuffleLetters) {
+			FlurryHelper.logEvent("Shuffle Letters");
+		}
 	}
 
 	void pickLetter(LetterToPick target) {
