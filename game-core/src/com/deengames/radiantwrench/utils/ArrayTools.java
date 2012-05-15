@@ -1,6 +1,7 @@
 package com.deengames.radiantwrench.utils;
 
 import java.lang.reflect.Array;
+import java.util.Random;
 
 public class ArrayTools {
 
@@ -21,4 +22,18 @@ public class ArrayTools {
 		return toReturn;		
 	}
 	
+	// Implementing Fisher–Yates shuffle
+	// From: http://stackoverflow.com/a/1520212/210780
+	public static void shuffleArray(String[] array)
+	{
+		Random random = new Random();
+		for (int i = array.length - 1; i >= 0; i--)
+		{
+			int index = random.nextInt(i + 1);
+			//Simple swap
+			String value = array[index];
+			array[index] = array[i];
+			array[i] = value;
+		}
+	}	
 }

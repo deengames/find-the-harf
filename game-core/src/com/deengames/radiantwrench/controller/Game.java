@@ -101,7 +101,8 @@ public class Game implements ApplicationListener, InputProcessor {
 		try {
 			AudioController.tick();			
 		} catch (NullPointerException e) {
-			AudioController.disable();			
+			//AudioController.disable();
+			FlurryHelper.logEvent("AudioController Error");
 		}
 		
 		ArrayList<Drawable> drawables = new ArrayList<Drawable>();
