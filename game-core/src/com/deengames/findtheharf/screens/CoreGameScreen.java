@@ -72,8 +72,7 @@ public class CoreGameScreen extends Screen {
 	// Used for sprites to trap clicks, but do nothing.
 	ClickListener _emptyClickListener = new ClickListener() {
 		@Override
-		public void onClick(Clickable clickable) {
-		}
+		public void onClick(Clickable clickable) { }
 	};
 	
 	@Override
@@ -135,7 +134,7 @@ public class CoreGameScreen extends Screen {
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
 			
-			Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
+			final Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
 			s.setZ(s.getZ() + 1); // over overlay
 			s.setPassThroughClick(true); // So the image button gets the click too!
 			_letterSprites[i] = s;
@@ -152,7 +151,11 @@ public class CoreGameScreen extends Screen {
 					
 						AudioController.abortAndClearQueue();
 						
-						if (_letterToFind != "" && _letterToFind == letter) {
+						// Reassign letter based on sprite. We shuffle.
+						String imageFile = s.getFileName();
+						String letter = imageFile.substring(imageFile.lastIndexOf('/') + 1, imageFile.lastIndexOf('.'));
+						
+						if (_letterToFind != "" && _letterToFind.equals(letter)) {
 							
 							FlurryHelper.logEvent("Correct Letter", "letter", _letterToFind);
 							String praise =  _praises[MathUtils.random(_praises.length - 1)];
@@ -164,6 +167,7 @@ public class CoreGameScreen extends Screen {
 									"content/audio/speech/now.ogg",
 									});
 							
+							reshuffleLetters();
 							findANewLetter();
 						} else {
 							_numWrong++;
@@ -216,6 +220,7 @@ public class CoreGameScreen extends Screen {
 							} else {
 								FlurryHelper.logEvent("Failed to Find Letter", "letter", _letterToFind);
 								AudioController.playInSerial(new String[] {"content/audio/speech/sorry-try-again.ogg"});
+								reshuffleLetters();
 								findANewLetter();
 							}
 						}
@@ -412,6 +417,16 @@ public class CoreGameScreen extends Screen {
 		
 		if (this._jumboLetter != null) {
 			scaleJumboLetter();
+		}
+	}
+	
+	void reshuffleLetters() {
+		ArrayTools.shuffleArray(_letters);
+		
+		for (int i = 0; i < this._letterSprites.length; i++) {
+			Sprite s = this._letterSprites[i];
+			String letter = this._letters[i];
+			s.setImage("content/images/letters/" + letter + ".png");
 		}
 	}
 	
