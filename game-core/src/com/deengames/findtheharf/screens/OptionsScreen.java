@@ -78,7 +78,7 @@ public class OptionsScreen extends Screen {
 		this.fadeOutImmediately();
 
 		_showJumboLetters = PersistentStorage.getBoolean(Constants.SHOW_JUMBO_LETTERS, true);
-		_shouldShuffleLetters = PersistentStorage.getBoolean(Constants.SHUFFLE_LETTERS, true);
+		_shouldShuffleLetters = PersistentStorage.getBoolean(Constants.SHUFFLE_LETTERS, false);
 		_firstLetter = PersistentStorage.getInt(Constants.FIRST_HARF_TO_SHOW, 0);
 		_lastLetter = PersistentStorage.getInt(Constants.LAST_HARF_TO_SHOW, 27);
 
@@ -116,6 +116,7 @@ public class OptionsScreen extends Screen {
 				_showJumboLetters = (_jumboLettersCheckbox.getIsChecked());
 			}
 		});
+		_jumboLettersCheckbox.setIsChecked(_showJumboLetters);
 		
 		_shuffleLetters = this.addText("Shuffle Letters");
 		_shuffleLetters.setFontSize(24);
@@ -129,6 +130,7 @@ public class OptionsScreen extends Screen {
 				_shouldShuffleLetters = (_shuffleLettersCheckbox.getIsChecked());
 			}
 		});
+		_shuffleLettersCheckbox.setIsChecked(_shouldShuffleLetters);
 
 		_showLettersBetween = this.addText("Show Letters:");
 		_showLettersBetween.setFontSize(24);
@@ -138,8 +140,7 @@ public class OptionsScreen extends Screen {
 		_to.setFontSize(24);
 		_to.setFont("elliotsix");
 
-		_firstLetterSprite = this.addSprite("content/images/letters/"
-				+ _letters[_firstLetter] + ".png");
+		_firstLetterSprite = this.addSprite("content/images/letters/" + _letters[_firstLetter] + ".png");
 		_firstLetterSprite.setScale(96f / _firstLetterSprite.getWidth());
 		_firstLetterSprite.setClickListener(new ClickListener() {
 			@Override
@@ -148,8 +149,7 @@ public class OptionsScreen extends Screen {
 			}
 		});
 
-		_lastLetterSprite = this.addSprite("content/images/letters/"
-				+ _letters[_lastLetter] + ".png");
+		_lastLetterSprite = this.addSprite("content/images/letters/" + _letters[_lastLetter] + ".png");
 		_lastLetterSprite.setScale(_firstLetterSprite.getScale());
 		_lastLetterSprite.setClickListener(new ClickListener() {
 			@Override
@@ -168,16 +168,13 @@ public class OptionsScreen extends Screen {
 		for (int i = 0; i < this._letters.length; i++) {
 			final String letter = this._letters[i];
 
-			final Sprite s = this.addSprite("content/images/letters/" + letter
-					+ ".png");
-			s.setPassThroughClick(true); // So the image button gets the click
-											// too!
+			final Sprite s = this.addSprite("content/images/letters/" + letter + ".png");
+			s.setPassThroughClick(true); // So the image button gets the click too!
 			s.setZ(HALF_BLACKOUT_Z + 2);
 			_letterSprites[i] = s;
 			s.setAlpha(0);
 
-			ImageButton overlay = this
-					.addImageButton("content/images/onPress.png");
+			ImageButton overlay = this.addImageButton("content/images/onPress.png");
 			overlay.setZ(s.getZ() - 1);
 
 			_letterOverlays.put(letter, overlay);
@@ -191,8 +188,7 @@ public class OptionsScreen extends Screen {
 
 						for (int i = 0; i < _letterSprites.length; i++) {
 							_letterSprites[i].setAlphaRate(-LETTER_FADE_RATE);
-							_letterOverlays.get(_letters[i]).setClickListener(
-									null);
+							_letterOverlays.get(_letters[i]).setClickListener(null);
 						}
 
 						// Find out index of letter we clicked on
@@ -208,33 +204,22 @@ public class OptionsScreen extends Screen {
 
 						// More sanity checking
 						if (clickedIndex == -1) {
-							throw new RuntimeException(
-									"Can't find index of the letter for "
-											+ s.getFileName());
+							throw new RuntimeException("Can't find index of the letter for " + s.getFileName());
 						}
 
 						if (_letterToPick == null) {
-							throw new RuntimeException(
-									"Picking a letter when _letterToPick is null");
+							throw new RuntimeException("Picking a letter when _letterToPick is null");
 						}
 
 						// Pick the letter
 						if (_letterToPick == LetterToPick.From) {
 							_firstLetter = clickedIndex;
-							_firstLetterSprite
-									.setImage("content/images/letters/"
-											+ _letters[clickedIndex] + ".png");
-							FlurryHelper.logEvent(
-									"Options: Picked First Letter", "letter",
-									_letters[clickedIndex]);
+							_firstLetterSprite.setImage("content/images/letters/" + _letters[clickedIndex] + ".png");
+							FlurryHelper.logEvent("Options: Picked First Letter", "letter", _letters[clickedIndex]);
 						} else {
 							_lastLetter = clickedIndex;
-							_lastLetterSprite
-									.setImage("content/images/letters/"
-											+ _letters[clickedIndex] + ".png");
-							FlurryHelper.logEvent(
-									"Options: Picked Last Letter", "letter",
-									_letters[clickedIndex]);
+							_lastLetterSprite.setImage("content/images/letters/" + _letters[clickedIndex] + ".png");
+							FlurryHelper.logEvent("Options: Picked Last Letter", "letter", _letters[clickedIndex]);
 						}
 					}
 				}
@@ -345,8 +330,7 @@ public class OptionsScreen extends Screen {
 
 		for (String letter : this._letters) {
 			// Enable click-trapping
-			this._letterOverlays.get(letter).setClickListener(
-					emptyClickListener);
+			this._letterOverlays.get(letter).setClickListener(emptyClickListener);
 		}
 	}
 

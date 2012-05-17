@@ -24,14 +24,14 @@ public class ArrayTools {
 	
 	// Implementing Fisher–Yates shuffle
 	// From: http://stackoverflow.com/a/1520212/210780
-	public static void shuffleArray(String[] array)
+	public static void shuffleArray(Object[] array)
 	{
 		Random random = new Random();
 		for (int i = array.length - 1; i >= 0; i--)
 		{
 			int index = random.nextInt(i + 1);
 			//Simple swap
-			String value = array[index];
+			Object value = array[index];
 			array[index] = array[i];
 			array[i] = value;
 		}

@@ -79,7 +79,7 @@ public class AudioController {
 
 	public static void abortAndClearQueue() {
 		if (_enabled) {
-			if (_currentSound != null) {
+			if (_currentSound != null) {				
 				_currentSound.stop();
 			}
 			_soundQueue.clear();

@@ -43,6 +43,11 @@ public class Sound {
 			loadSource();
 		}
 		
-		this._source.stop();
+		// Dunno how, but it can fail
+		try {
+			this._source.stop();
+		} catch (Exception e) {
+			FlurryHelper.logEvent("Stop Sound Crash", "Message", e.getMessage());
+		}
 	}
 }
