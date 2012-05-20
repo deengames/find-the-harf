@@ -14,8 +14,9 @@ import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.thirdparty.FlurryHelper;
 import com.deengames.radiantwrench.utils.Action;
 import com.deengames.radiantwrench.utils.ArrayTools;
-import com.deengames.radiantwrench.utils.ClickListener;
-import com.deengames.radiantwrench.utils.Clickable;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+
 import com.deengames.radiantwrench.utils.PersistentStorage;
 import com.deengames.radiantwrench.utils.Timer;
 import com.deengames.radiantwrench.view.ImageButton;
@@ -72,7 +73,7 @@ public class CoreGameScreen extends Screen {
 	// Used for sprites to trap clicks, but do nothing.
 	ClickListener _emptyClickListener = new ClickListener() {
 		@Override
-		public void onClick(Clickable clickable) { }
+		public void click(Actor arg0, float arg1, float arg2) { }
 	};
 	
 	@Override
@@ -122,12 +123,11 @@ public class CoreGameScreen extends Screen {
 		
 		_helpButton = this.addImageButton("content/images/help.png");
 		_helpButton.setClickListener(new ClickListener() {
-
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor arg0, float arg1, float arg2) {
 				FlurryHelper.logEvent("Help Button", "Letter", _letterToFind);
 				AudioController.abortAndClearQueue();
-				tellMeWhatToFind();				
+				tellMeWhatToFind();		
 			}
 		});
 		
@@ -146,7 +146,7 @@ public class CoreGameScreen extends Screen {
 			_letterOverlays.put(letter, overlay);
 			
 			s.setClickListener(new ClickListener() {
-				public void onClick(Clickable clickable) {
+				public void click(Actor arg0, float arg1, float arg2) {
 					if (_halfBlackout.getAlpha() == 0) {
 					
 						AudioController.abortAndClearQueue();
@@ -308,7 +308,7 @@ public class CoreGameScreen extends Screen {
 		this._halfBlackout.setClickListener(new ClickListener() {
 
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				fadeOutJumboLetter();
 			}
 		});

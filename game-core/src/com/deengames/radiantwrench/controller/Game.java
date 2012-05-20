@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.deengames.radiantwrench.thirdparty.FlurryHelper;
+
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 import com.deengames.radiantwrench.utils.ZTypeOrderComparator;
@@ -128,22 +129,22 @@ public class Game implements ApplicationListener, InputProcessor {
 		
 		for (Drawable d : drawables) {
 			if (d instanceof SpriteSheet) {
-				((SpriteSheet)d).draw(_spriteBatch);
+				((SpriteSheet)d).draw(_spriteBatch, 1);
 			} else if (d instanceof Sprite) {
-				((Sprite)d).draw(_spriteBatch);
+				((Sprite)d).draw(_spriteBatch, 1);
 			} else if (d instanceof Text) {
-				((Text)d).draw(_spriteBatch);
+				((Text)d).draw(_spriteBatch, 1);
 			} else if (d instanceof ImageButton) {
-				((ImageButton)d).rwDraw(_spriteBatch);
+				((ImageButton)d).draw(_spriteBatch, 1);
 			} else if (d instanceof ImageCheckbox) {
-				((ImageCheckbox)d).rwDraw(_spriteBatch);
+				((ImageCheckbox)d).draw(_spriteBatch, 1);
 			} else {
 				throw new RadiantWrenchException("Not sure how to draw a " + d.getClass().getName());
 			}
 		}
 		
 		// Always draw on top
-		this._blackout.draw(this._spriteBatch);
+		this._blackout.draw(this._spriteBatch, 1);
 			
 		_spriteBatch.end();
 		

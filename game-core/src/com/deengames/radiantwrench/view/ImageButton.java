@@ -4,15 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.actors.Image;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.deengames.radiantwrench.controller.Game;
 
-import com.deengames.radiantwrench.utils.ClickListener;
+
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 
 // Adapted from http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=2168&sid=a5ac07a6f80769c1b8405b8ba181e913#p11486
-public class ImageButton extends Image implements Clickable, Drawable {
+public class ImageButton extends Actor implements Clickable, Drawable {
 	
 	private TextureRegion _down;
 	private TextureRegion _up;
@@ -21,13 +23,14 @@ public class ImageButton extends Image implements Clickable, Drawable {
 	private boolean _wasClicked = false;
 	private int _z = 0;
 	private int _orderAdded = 0;
+	private TextureRegion _region;
 
 	private ClickListener _clickListener;
 
 	private static int nextOrderAdded = 0;
 	
 	public ImageButton(String fileName) {
-		super("Button");
+		super();
 		this._fileName = fileName;
 		
 		this.loadTexture();
@@ -38,12 +41,21 @@ public class ImageButton extends Image implements Clickable, Drawable {
 		
 		this.setUpRegion(new TextureRegion(t, 0, 0, halfWidth, t.getHeight()));
 		this.setDownRegion(new TextureRegion(t, halfWidth, 0, halfWidth, t.getHeight()));
+		this._region = this._up;
 		
 		this.originX = width;
 		this.originY = height;
 		
 		this._orderAdded = nextOrderAdded;
 		nextOrderAdded++;
+	}
+	
+	public void setRegion(TextureRegion region) {
+		this._region = region;
+	}
+	
+	public TextureRegion getRegion() {
+		return this._region;
 	}
 	
 	public void setScale(float scale) {
@@ -71,7 +83,7 @@ public class ImageButton extends Image implements Clickable, Drawable {
 				yFromTop >= this.y && yFromTop <= this.y + this.getHeight());
 		
 		if (touchDown) {
-			this.region  = this._down;
+			this.setRegion (this._down);
 			this._wasClicked = true;
 		}
 
@@ -80,16 +92,20 @@ public class ImageButton extends Image implements Clickable, Drawable {
 
 	@Override
 	public void touchUp(float x, float y, int pointer) {
-		this.region = this._up;
+		this.setRegion(this._up);
 		super.touchUp(x, y, pointer);
 		
 		if (this._wasClicked) {
 			if (this._clickListener != null) {
-				this._clickListener.onClick(this);
+				this._clickListener.click(this, x, y);
 			}
 			
 			this._wasClicked = false;
 		}
+	}
+	
+	public void setClickListener(ClickListener clickListener) {
+		this._clickListener = clickListener;
 	}
 
 	public void loadTexture() {
@@ -108,18 +124,18 @@ public class ImageButton extends Image implements Clickable, Drawable {
 
 	public void setUpRegion(TextureRegion up) {
 		this._up = up;
-		if (this.region != null) {
-			this.region.setRegion(this._up);			
+		if (this.getRegion() != null) {
+			this.setRegion(this._up);			
 		}
 	}
 
-	public void setClickListener(ClickListener c) {
+	/*public void setClickListener(ClickListener c) {
 		this._clickListener = c;
-	}
+	}*/
 	
 	private void verifyRegionIsSet() {
-		if (this.region == null) {
-			this.region = this._up;
+		if (this.getRegion() == null) {
+			this.setRegion(this._up);
 		}
 	}
 	
@@ -176,16 +192,22 @@ public class ImageButton extends Image implements Clickable, Drawable {
 	}
 
 	// There's already a draw from our inherited class. Sigh. RW = Radiant Wrench
-	public void rwDraw(SpriteBatch spriteBatch) {
+	public void draw(SpriteBatch spriteBatch, float parentAlpha) {
 		verifyRegionIsSet();
 		
 		// Calculating Y is complicated (inverted Y). Sigh. Just accept it, it's experimentally derived.
-		spriteBatch.draw(this.region, this.x,
+		spriteBatch.draw(this.getRegion(), this.x,
 				Game.getCurrentScreen().getHeight() - this.y - this.getHeight(),
 				this.getWidth(), this.getHeight());	 // Already scaled
 	}
 	
 	public void destroy() {
 		this._texture.dispose();
+	}
+
+	@Override
+	public Actor hit(float arg0, float arg1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

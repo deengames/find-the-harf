@@ -7,13 +7,15 @@ import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.deengames.findtheharf.model.Constants;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.thirdparty.FlurryHelper;
 import com.deengames.radiantwrench.utils.Action;
-import com.deengames.radiantwrench.utils.ClickListener;
-import com.deengames.radiantwrench.utils.Clickable;
+
+
 import com.deengames.radiantwrench.utils.PersistentStorage;
 import com.deengames.radiantwrench.view.Colour;
 import com.deengames.radiantwrench.view.ImageButton;
@@ -66,8 +68,7 @@ public class OptionsScreen extends Screen {
 	// Allows overlays to trap clicks
 	private ClickListener emptyClickListener = new ClickListener() {
 		@Override
-		public void onClick(Clickable clickable) {
-		}
+		public void click(Actor clickable, float x, float y) { }
 	};
 
 	@Override
@@ -89,7 +90,7 @@ public class OptionsScreen extends Screen {
 
 		_goButton.setClickListener(new ClickListener() {
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				fadeOut();
 				addFadeOutListener(new Action() {
 					public void invoke() {
@@ -112,7 +113,7 @@ public class OptionsScreen extends Screen {
 		_jumboLettersCheckbox.setScale(0.5f);
 		_jumboLettersCheckbox.setClickListener(new ClickListener() {
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				_showJumboLetters = (_jumboLettersCheckbox.getIsChecked());
 			}
 		});
@@ -126,7 +127,7 @@ public class OptionsScreen extends Screen {
 		_shuffleLettersCheckbox.setScale(0.5f);
 		_shuffleLettersCheckbox.setClickListener(new ClickListener() {
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				_shouldShuffleLetters = (_shuffleLettersCheckbox.getIsChecked());
 			}
 		});
@@ -144,7 +145,7 @@ public class OptionsScreen extends Screen {
 		_firstLetterSprite.setScale(96f / _firstLetterSprite.getWidth());
 		_firstLetterSprite.setClickListener(new ClickListener() {
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				pickLetter(LetterToPick.From);
 			}
 		});
@@ -153,7 +154,7 @@ public class OptionsScreen extends Screen {
 		_lastLetterSprite.setScale(_firstLetterSprite.getScale());
 		_lastLetterSprite.setClickListener(new ClickListener() {
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				pickLetter(LetterToPick.To);
 			}
 		});
@@ -180,7 +181,7 @@ public class OptionsScreen extends Screen {
 			_letterOverlays.put(letter, overlay);
 
 			s.setClickListener(new ClickListener() {
-				public void onClick(Clickable clickable) {
+				public void click(Actor clickable, float x, float y) {
 					// Sanity check
 					if (_halfBlackout.getAlpha() > 0 && s.getAlpha() > 0) {
 
