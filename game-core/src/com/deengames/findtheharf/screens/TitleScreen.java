@@ -3,11 +3,13 @@ package com.deengames.findtheharf.screens;
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.AudioDevice;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.deengames.radiantwrench.controller.AudioController;
 import com.deengames.radiantwrench.controller.Game;
 import com.deengames.radiantwrench.utils.Action;
-import com.deengames.radiantwrench.utils.ClickListener;
-import com.deengames.radiantwrench.utils.Clickable;
+
+
 import com.deengames.radiantwrench.view.Screen;
 import com.deengames.radiantwrench.view.Sprite;
 
@@ -24,7 +26,7 @@ public class TitleScreen extends Screen {
 		this.fadeOutImmediately();
 		_background = this.addSprite("content/images/title-screen.png");
 		_background.setClickListener(new ClickListener() {
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				fadeOut();
 				addFadeOutListener(new Action() {
 					public void invoke() {
@@ -39,7 +41,7 @@ public class TitleScreen extends Screen {
 		_optionsIcon = this.addSprite("content/images/options.png");
 		_optionsIcon.setClickListener(new ClickListener() {
 			@Override
-			public void onClick(Clickable clickable) {
+			public void click(Actor clickable, float x, float y) {
 				fadeOut();
 				addFadeOutListener(new Action() {
 					public void invoke() {
@@ -55,7 +57,7 @@ public class TitleScreen extends Screen {
 		} else {
 			_audioError.setClickListener(new ClickListener() {
 				@Override
-				public void onClick(Clickable clickable) {
+				public void click(Actor clickable, float x, float y) {
 					_audioError.setAlphaRate(-2);
 				}
 			});

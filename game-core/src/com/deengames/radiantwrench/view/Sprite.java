@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.deengames.radiantwrench.controller.Game;
-
-import com.deengames.radiantwrench.utils.ClickListener;
 import com.deengames.radiantwrench.utils.Clickable;
 
-public class Sprite implements Drawable, Clickable {
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+
+
+public class Sprite extends Actor implements Drawable, Clickable {
 	
 	protected int _x = 0;
 	protected int _y = 0;
@@ -186,8 +188,8 @@ public class Sprite implements Drawable, Clickable {
 		return Math.round(this.getTexture().getWidth() * this._scaleWidth);
 	}
 	
-	public void setClickListener(ClickListener c) {
-		this._clickListener = c;
+	public void setClickListener(ClickListener clickListener) {
+		this._clickListener = clickListener;
 	}
 	
 	public boolean touchDown(float x, float y, int pointer) {
@@ -215,7 +217,7 @@ public class Sprite implements Drawable, Clickable {
 	public void touchUp(float x, float y, int pointer) {
 		if (this._wasClicked) {
 			if (this._clickListener != null) {
-				this._clickListener.onClick(this);
+				this._clickListener.click(this, x, y);
 			}
 			
 			this._wasClicked  = false;
@@ -226,7 +228,7 @@ public class Sprite implements Drawable, Clickable {
 		return this._orderAdded;
 	}
 	
-	public void draw(SpriteBatch spriteBatch) {
+	public void draw(SpriteBatch spriteBatch, float parentAlpha) {
 		int screenHeight = Game.getCurrentScreen().getHeight();
 		Texture t = this._texture;
 		
@@ -248,5 +250,11 @@ public class Sprite implements Drawable, Clickable {
 
 	public void disableTextureFiltering() {
 		this._texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+	}
+
+	@Override
+	public Actor hit(float arg0, float arg1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

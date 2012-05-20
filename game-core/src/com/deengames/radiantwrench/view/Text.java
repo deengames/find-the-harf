@@ -10,13 +10,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.deengames.radiantwrench.controller.Game;
 
-import com.deengames.radiantwrench.utils.ClickListener;
+
+
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 
-public class Text implements Drawable, Clickable {
+public class Text extends Actor implements Drawable, Clickable {
 	
 	private static String _defaultColour = "white";
 	
@@ -83,7 +86,7 @@ public class Text implements Drawable, Clickable {
 		
 		if (this._wasDown) {
 			if (this._clickListener != null) {
-				this._clickListener.onClick(this);
+				this._clickListener.click(this, x, y);
 			}
 			
 			this._wasDown = false;
@@ -221,7 +224,7 @@ public class Text implements Drawable, Clickable {
 		return this._orderAdded;
 	}
 	
-	public void draw(SpriteBatch spriteBatch) {
+	public void draw(SpriteBatch spriteBatch, float parentAlpha) {
 		if (this._isVisible == true) {
 			if (this._maxWidth == Integer.MAX_VALUE) {
 				this._font.draw(spriteBatch, this._text,
@@ -240,5 +243,11 @@ public class Text implements Drawable, Clickable {
 	
 	public void destroy() {
 		this._font.dispose();
+	}
+
+	@Override
+	public Actor hit(float arg0, float arg1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

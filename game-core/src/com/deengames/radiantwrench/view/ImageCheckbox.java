@@ -4,15 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.actors.Image;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.deengames.radiantwrench.controller.Game;
 
-import com.deengames.radiantwrench.utils.ClickListener;
+
+
 import com.deengames.radiantwrench.utils.Clickable;
 import com.deengames.radiantwrench.utils.RadiantWrenchException;
 
 // Adapted from http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=2168&sid=a5ac07a6f80769c1b8405b8ba181e913#p11486
-public class ImageCheckbox extends Image implements Clickable, Drawable {
+public class ImageCheckbox extends Actor implements Clickable, Drawable {
 	
 	private TextureRegion _unchecked;
 	private TextureRegion _checked;
@@ -20,6 +23,7 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 	private String _fileName;
 	private int _z = 0;
 	private int _orderAdded = 0;
+	private TextureRegion _region;
 	
 	private boolean _isChecked = false;
 
@@ -28,7 +32,7 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 	private static int nextOrderAdded = 0;
 
 	public ImageCheckbox(String fileName) {
-		super("Checkbox");
+		super();
 		this._fileName = fileName;
 		
 		this.loadTexture();
@@ -40,8 +44,18 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 		this.setUncheckedRegion(new TextureRegion(t, 0, 0, halfWidth, t.getHeight()));
 		this.setCheckedRegion(new TextureRegion(t, halfWidth, 0, halfWidth, t.getHeight()));
 	
+		this._region = this._checked;
+		
 		this._orderAdded = nextOrderAdded;
 		nextOrderAdded++;
+	}
+	
+	public void setRegion(TextureRegion region) {
+		this._region = region;
+	}
+	
+	public TextureRegion getRegion() {
+		return this._region;
 	}
 	
 	public void setScale(float scale) {
@@ -76,13 +90,13 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 			this._isChecked = !this._isChecked;
 			
 			if (this._isChecked) {
-				this.region = this._checked;
+				this.setRegion(this._checked);
 			} else {
-				this.region = this._unchecked;
+				this.setRegion(this._unchecked);
 			}
 			
 			if (this._clickListener != null) {
-				this._clickListener.onClick(this);
+				this._clickListener.click(this, x, y);
 			}
 		}
 
@@ -102,16 +116,16 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 	public void setUncheckedRegion(TextureRegion unchecked) {
 		this._unchecked = unchecked;
 		
-		if (this.region != null) {
-			this.region.setRegion(this._unchecked);			
+		if (this.getRegion() != null) {
+			this.setRegion(this._unchecked);			
 		}
 	}
 
 	public void setCheckedRegion(TextureRegion checked) {
 		this._checked = checked;
 		
-		if (this.region != null) {
-			this.region.setRegion(this._checked);			
+		if (this.getRegion() != null) {
+			this.setRegion(this._checked);			
 		}
 	}
 
@@ -122,9 +136,9 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 	public void setIsChecked(boolean value) {
 		this._isChecked = value;
 		if (this._isChecked) {
-			this.region = this._checked;			
+			this.setRegion(this._checked);			
 		} else {
-			this.region = this._unchecked;
+			this.setRegion(this._unchecked);
 		}
 	}
 	
@@ -137,8 +151,8 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 	}
 
 	private void verifyRegionIsSet() {
-		if (this.region == null) {
-			this.region = this._unchecked;
+		if (this.getRegion() == null) {
+			this.setRegion(this._unchecked);
 		}
 	}
 	
@@ -190,8 +204,7 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 		return this._orderAdded;
 	}
 	
-	// There's already a draw from our inherited class. Sigh. RW = Radiant Wrench
-	public void rwDraw(SpriteBatch spriteBatch) {
+	public void draw(SpriteBatch spriteBatch, float parentAlpha) {
 		verifyRegionIsSet();
 		
 		int frameIndex = (this._isChecked == true ? 1 : 0);		
@@ -212,5 +225,11 @@ public class ImageCheckbox extends Image implements Clickable, Drawable {
 	
 	public void destroy() {
 		this._texture.dispose();
+	}
+
+	@Override
+	public Actor hit(float arg0, float arg1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
