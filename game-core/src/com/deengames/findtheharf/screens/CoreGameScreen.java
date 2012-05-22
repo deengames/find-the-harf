@@ -167,7 +167,10 @@ public class CoreGameScreen extends Screen {
 									"content/audio/speech/now.ogg",
 									});
 							
-							reshuffleLetters();
+							if (_shuffleLetters) {
+								reshuffleLetters();
+							}
+							
 							findANewLetter();
 						} else {
 							_numWrong++;
