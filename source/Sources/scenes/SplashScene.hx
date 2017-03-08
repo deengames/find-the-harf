@@ -16,14 +16,11 @@ class SplashScene extends BaseScene
         this.loadAssets(function() {
             logo = Assets.images.dg_logo;
             blackout = Assets.images.blackout;
-            this.font = Assets.fonts.arial;
         });
     }
 
     override function onRender(g:Graphics):Void
     {        
-        g.font = this.font;
-        
         if (this.initialized) {
             var alpha:Float = Math.cos(Scheduler.time());
             // map alpha from [-1..1] to [0..1]

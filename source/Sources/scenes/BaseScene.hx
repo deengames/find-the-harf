@@ -83,7 +83,10 @@ class BaseScene
         if (initialized)
         {
             var g = backbuffer.g2;
-            g.font = this.font;
+
+            if (this.font != null) {
+                g.font = this.font;
+            }
             
             // clear our backbuffer using graphics2
             g.begin(true, Color.Black);
