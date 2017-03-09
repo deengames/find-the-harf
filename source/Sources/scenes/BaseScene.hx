@@ -89,7 +89,7 @@ class BaseScene
     ///// End protected/internal functions \\\\\
 
     ///// Absolutely ridiculous fluent functions /////
-    private function after(numSeconds:Int, callback:Void->Void):BaseScene
+    private function after(numSeconds:Float, callback:Void->Void):BaseScene
     {
         // Possible but extremely likely to get two functions with the
         // same value of relativeTime. We can't ignore that possibility.
