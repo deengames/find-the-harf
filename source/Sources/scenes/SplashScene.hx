@@ -13,10 +13,15 @@ class SplashScene extends BaseScene
 
     public function new() {
         super();
+        
         this.loadAssets(function() {
             logo = Assets.images.dg_logo;
             blackout = Assets.images.blackout;
         });
+
+        this.after(1, function() { trace("1s"); });
+        this.after(2, function() { trace("2s"); });
+        this.after(2, function() { trace("222s"); });
     }
 
     override function onRender(g:Graphics):Void

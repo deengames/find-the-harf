@@ -18,6 +18,10 @@ class BaseScene
     private var initialized(default, null):Bool = false;
     private var lastUpdateTime:Float = 0;
 
+    // Float (time) to callback. Since we can't keep a flat as a key,
+    // we instead substitute an int (float * 1000)
+    private var delayFunctions = new Map<Int, Void->Void>();
+
     public function new()
     {
         System.notifyOnRender(render);
@@ -44,6 +48,12 @@ class BaseScene
 
     private function update():Void
     {
+        for (time in this.delayFunctions.keys()) {
+            if (Scheduler.time() * 1000 >= time) {
+                this.delayFunctions[time]();
+                this.delayFunctions.remove(time);
+            }
+        }
         this.onUpdate();
     }
 
@@ -77,6 +87,20 @@ class BaseScene
     }
 
     ///// End protected/internal functions \\\\\
+
+    ///// Absolutely ridiculous fluent functions /////
+    private function after(numSeconds:Int, callback:Void->Void):Void
+    {
+        // Possible but extremely likely to get two functions with the
+        // same value of relativeTime. We can't ignore that possibility.
+        // So, offset by a small fractional amount of time if this happens.
+        var relativeTime:Int = Std.int(1000 * (Scheduler.time() + numSeconds));
+        while (this.delayFunctions.exists(relativeTime)) {
+            relativeTime += 1;
+        }
+        this.delayFunctions[relativeTime] = callback;
+    }
+    ///// End Absolutely ridiculous fluent functions /////
 
     private function render(frameBuffer:Framebuffer):Void
     {
