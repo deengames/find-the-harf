@@ -89,7 +89,7 @@ class BaseScene
     ///// End protected/internal functions \\\\\
 
     ///// Absolutely ridiculous fluent functions /////
-    private function after(numSeconds:Int, callback:Void->Void):Void
+    private function after(numSeconds:Int, callback:Void->Void):BaseScene
     {
         // Possible but extremely likely to get two functions with the
         // same value of relativeTime. We can't ignore that possibility.
@@ -99,6 +99,7 @@ class BaseScene
             relativeTime += 1;
         }
         this.delayFunctions[relativeTime] = callback;
+        return this;
     }
     ///// End Absolutely ridiculous fluent functions /////
 

@@ -10,6 +10,11 @@ class SplashScene extends BaseScene
 {
     private var logo:Image;
     private var blackout:Image;
+    private var logoAlpha:Float = 0;
+    private var blackoutAlpha:Float = 1;
+
+    private var state:String = "fade in"; // fade in, giggle, fade out
+    private var stateStartTime:Float;
 
     public function new() {
         super();
@@ -17,20 +22,38 @@ class SplashScene extends BaseScene
         this.loadAssets(function() {
             logo = Assets.images.dg_logo;
             blackout = Assets.images.blackout;
-        });
 
-        this.after(1, function() { trace("1s"); });
-        this.after(2, function() { trace("2s"); });
-        this.after(2, function() { trace("222s"); });
+            stateStartTime = Scheduler.time();
+            trace("Start");
+
+            this.after(1, function() {
+                this.state = "giggle";
+                this.stateStartTime = Scheduler.time();
+                trace("Giggling");
+            }).after(4, function() {
+                this.state = "fade out";
+                this.stateStartTime = Scheduler.time();
+                trace("Fading out");
+            }).after(5, function() {
+                trace("DONE!!!!!!");
+            });
+        });
     }
 
     override function onRender(g:Graphics):Void
     {        
         if (this.initialized) {
-            var alpha:Float = Math.cos(Scheduler.time());
-            // map alpha from [-1..1] to [0..1]
-            alpha = (1 + alpha) / 2;
-            this.drawImage(this.logo, 0, 0, alpha);
+
+            this.drawImage(logo, 0, 0);
+
+            if (this.state == "fade in") {
+                blackoutAlpha = 1 - (Scheduler.time() - this.stateStartTime);
+                this.drawImage(blackout, 0, 0, blackoutAlpha);
+            } else if (this.state == "fade out") {
+                blackoutAlpha = (Scheduler.time() - stateStartTime);
+                this.drawImage(blackout, 0, 0, blackoutAlpha);
+            }
+            
         }
     }
 }
