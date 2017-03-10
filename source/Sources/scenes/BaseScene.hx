@@ -71,8 +71,6 @@ class BaseScene
         g.opacity = 1.0; // reset alpha
     }
 
-    
-
     private function drawText(text:String, x:Int, y:Int, fontSize:Int = 36):Void
     {
         if (!initialized)
