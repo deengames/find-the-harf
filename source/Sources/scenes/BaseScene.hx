@@ -18,6 +18,8 @@ class BaseScene
     private var initialized(default, null):Bool = false;
     private var lastUpdateTime:Float = 0;
 
+    private var timeTaskId:Int;
+
     // Float (time) to callback. Since we can't keep a flat as a key,
     // we instead substitute an int (float * 1000)
     private var delayFunctions = new Map<Int, Void->Void>();
@@ -25,7 +27,7 @@ class BaseScene
     public function new()
     {
         System.notifyOnRender(render);
-		Scheduler.addTimeTask(update, 0, 1 / 60);
+		this.timeTaskId = Scheduler.addTimeTask(update, 0, 1 / 60);
 
 		backbuffer = Image.createRenderTarget(Main.GAME_WIDTH, Main.GAME_HEIGHT);
     }
@@ -39,6 +41,12 @@ class BaseScene
             initialized = true;
             callback();
         });
+    }
+
+    private function destroy():Void
+    {
+        System.removeRenderListener(render);
+        Scheduler.removeTimeTask(this.timeTaskId);
     }
 
     // Virtual functions to override

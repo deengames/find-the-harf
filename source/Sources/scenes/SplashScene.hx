@@ -36,12 +36,13 @@ class SplashScene extends BaseScene
                 this.stateStartTime = Scheduler.time();
             }).after(5, function() {
                 new TitleScene();
+                this.destroy();
             });
         });
     }
 
     override function onRender(g:Graphics):Void
-    {        
+    {    
         if (this.initialized) {
 
             this.drawImage(logo, 0, 0);
@@ -54,7 +55,5 @@ class SplashScene extends BaseScene
                 this.drawImage(blackout, 0, 0, blackoutAlpha);
             }
         }
-
-        trace("splash");
     }
 }

@@ -28,8 +28,6 @@ class TitleScene extends BaseScene
 
     override function onRender(g:Graphics):Void
     {        
-        trace("title");
-
         if (this.initialized) {
             this.drawImage(image, 0, 0);
             if (this.state == "fade in") {
