@@ -2,12 +2,12 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
+import quasar.core.QuasarState;
 
-class PlayState extends FlxState
+class PlayState extends QuasarState
 {
 	override public function create():Void
 	{
