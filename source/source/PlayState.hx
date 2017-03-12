@@ -22,6 +22,8 @@ class PlayState extends QuasarState
 	{
 		super.create();
 
+		this.addSprite("assets/images/background.jpg");
+
 		var groupXOffset = (this.width - (LETTERS_ACROSS * LETTER_SIZE)) / 2;
 		var groupYOffset = (this.height - (LETTERS_DOWN * LETTER_SIZE)) / 2;
 		trace('${groupXOffset} = ${this.width} - (4*${LETTER_SIZE}) / 2');
