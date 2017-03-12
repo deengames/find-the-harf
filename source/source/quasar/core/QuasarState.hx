@@ -1,6 +1,7 @@
 package quasar.core;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxState;
 
 class QuasarState extends FlxState {
@@ -14,5 +15,17 @@ class QuasarState extends FlxState {
 
     public function get_height():Int {
         return FlxG.stage.stageHeight;
+    }
+
+    public function addSprite(filename:String):FlxSprite
+    {
+        if (filename.indexOf('.') == -1) {
+            filename = '${filename}.png';
+        }
+
+        var sprite = new FlxSprite();
+        sprite.loadGraphic(filename);
+        this.add(sprite);
+        return sprite;
     }
 }
