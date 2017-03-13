@@ -36,7 +36,7 @@ class PlayState extends QuasarState
 			sprite.onMouseClick(function() { trace('Clicked on ${letter}!'); }, false);
 			sprite.setGraphicSize(LETTER_SIZE, LETTER_SIZE);
 			sprite.updateHitbox();
-			sprite.x = ((LETTERS_ACROSS - (i % LETTERS_ACROSS)) * sprite.width) - sprite.width + groupXOffset;
+			sprite.x = ((i % LETTERS_ACROSS) * sprite.width) + groupXOffset;
 			sprite.y = (Math.floor(i / LETTERS_ACROSS) * sprite.height) + groupYOffset;
 		}
 
