@@ -1,7 +1,6 @@
 package;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
@@ -33,11 +32,11 @@ class PlayState extends QuasarState
 
 		for (i in 0...letters.length) {
 			var letter = letters[i];
-			var sprite = this.addSprite('assets/images/letters/${letter}.png');
+			var sprite = this.addSprite('assets/images/letters/${letter}.png', function() { trace('Clicked on ${letter}!'); }, false);
 			sprite.setGraphicSize(LETTER_SIZE, LETTER_SIZE);
 			sprite.updateHitbox();
 			sprite.x = ((LETTERS_ACROSS - (i % LETTERS_ACROSS)) * sprite.width) - sprite.width + groupXOffset;
-			sprite.y = (Math.floor(i / LETTERS_ACROSS) * sprite.height) + groupYOffset;	
+			sprite.y = (Math.floor(i / LETTERS_ACROSS) * sprite.height) + groupYOffset;
 		}
 
 		this.selectNewTarget();

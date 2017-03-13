@@ -1,30 +1,32 @@
 package quasar.core;
 
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.FlxState;
+import quasar.core.QuasarSprite;
 
 class QuasarState extends FlxState {
 
     public var width(get, null):Int = 0;
     public var height(get, null):Int = 0;
 
-    public function get_width():Int {
+    public function get_width():Int
+    {
         return FlxG.stage.stageWidth;
     }
 
-    public function get_height():Int {
+    public function get_height():Int
+    {
         return FlxG.stage.stageHeight;
     }
 
-    public function addSprite(filename:String):FlxSprite
+    function addSprite(filename:String, mouseClickCallback:Void->Void = null, usePixelPerfectCollisions:Bool = true):QuasarSprite
     {
-        if (filename.indexOf('.') == -1) {
+        if (filename.indexOf('.') == -1)
+        {
             filename = '${filename}.png';
         }
 
-        var sprite = new FlxSprite();
-        sprite.loadGraphic(filename);
+        var sprite = new QuasarSprite(filename, mouseClickCallback, usePixelPerfectCollisions);
         this.add(sprite);
         return sprite;
     }
