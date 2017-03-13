@@ -19,14 +19,14 @@ class QuasarState extends FlxState {
         return FlxG.stage.stageHeight;
     }
 
-    function addSprite(filename:String, mouseClickCallback:Void->Void = null, usePixelPerfectCollisions:Bool = true):QuasarSprite
+    function addSprite(filename:String):QuasarSprite
     {
         if (filename.indexOf('.') == -1)
         {
             filename = '${filename}.png';
         }
 
-        var sprite = new QuasarSprite(filename, mouseClickCallback, usePixelPerfectCollisions);
+        var sprite = new QuasarSprite(filename);
         this.add(sprite);
         return sprite;
     }

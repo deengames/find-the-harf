@@ -9,16 +9,17 @@ class QuasarSprite extends FlxSprite
     private var isMouseDown:Bool = false;
     private var mouseClickCallback:Void->Void = null;
 
-    public function new(filename:String, mouseClickCallback:Void->Void = null, usePixelPerfectCollisions:Bool = true)
+    public function new(filename:String)
     {
         super();
         this.loadGraphic(filename);
+    }
 
-        if (mouseClickCallback != null)
-        {
-            this.mouseClickCallback = mouseClickCallback;
-            FlxMouseEventManager.add(this, this.onMouseDown, this.onMouseUp, null, null, false, true, usePixelPerfectCollisions);
-        }
+    // If false, uses the bounding-box as the clickable area
+    public function onMouseClick(mouseClickCallback:Void->Void, usePixelPerfectCollisions:Bool = true)
+    {
+        this.mouseClickCallback = mouseClickCallback;
+        FlxMouseEventManager.add(this, this.onMouseDown, this.onMouseUp, null, null, false, true, usePixelPerfectCollisions);
     }
 
     private function onMouseDown(obj:FlxObject):Void
