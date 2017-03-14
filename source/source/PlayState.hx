@@ -6,9 +6,15 @@ import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
 import flixel.math.FlxRandom;
 import quasar.core.QuasarState;
+import quasar.core.QuasarSprite;
 
 class PlayState extends QuasarState
 {
+	private static inline var LETTERS_ACROSS = 4;
+	private static inline var LETTERS_DOWN = 7;
+	private static inline var LETTER_SIZE:Int = 128;
+	private static inline var JUMBO_LETTER_SIZE = 512;
+
 	private var letters:Array<String> = ["alif", "ba", "ta", "tha", "jeem", "7a", "kha",
 		"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
 		"daad", "taw", "thaw", "ayn", "ghayn", "fa",
@@ -16,10 +22,8 @@ class PlayState extends QuasarState
 
 	private var random:FlxRandom = new FlxRandom();
 	private var currentTarget:String;
-
-	private static inline var LETTERS_ACROSS = 4;
-	private static inline var LETTERS_DOWN = 7;
-	private static inline var LETTER_SIZE:Int = 128;
+	private var whiteout:QuasarSprite;
+	private var jumboLetter:QuasarSprite;
 
 	override public function create():Void
 	{
@@ -34,13 +38,14 @@ class PlayState extends QuasarState
 			var letter = letters[i];
 			var sprite = this.addSprite('assets/images/letters/${letter}.png');
 			sprite.onMouseClick(function() { trace('Clicked on ${letter}!'); }, false);
-			sprite.setGraphicSize(LETTER_SIZE, LETTER_SIZE);
-			sprite.updateHitbox();
+			sprite.scaleTo(LETTER_SIZE, LETTER_SIZE);
 			sprite.x = ((i % LETTERS_ACROSS) * sprite.width) + groupXOffset;
 			sprite.y = (Math.floor(i / LETTERS_ACROSS) * sprite.height) + groupYOffset;
 		}
 
-		this.selectNewTarget();
+		this.whiteout = this.addSprite("assets/images/whiteout.jpg");
+
+		this.selectAndDisplayNewTarget();
 	}
 
 	override public function update(elapsed:Float):Void
@@ -48,7 +53,7 @@ class PlayState extends QuasarState
 		super.update(elapsed);
 	}
 
-	private function selectNewTarget():Void
+	private function selectAndDisplayNewTarget():Void
 	{
 		var next = this.currentTarget;
 		while (next == this.currentTarget)
@@ -56,7 +61,13 @@ class PlayState extends QuasarState
 			next = this.random.getObject(this.letters);
 		}
 		
-		trace('New target: ${next}');
+		this.whiteout.alpha = 0.75;
+
+		jumboLetter = this.addSprite('assets/images/letters/${next}.png');
+		jumboLetter.scaleTo(JUMBO_LETTER_SIZE, JUMBO_LETTER_SIZE);
+		jumboLetter.x = (this.width - jumboLetter.width) / 2;
+		jumboLetter.y = (this.height - jumboLetter.height) / 2;
+		
 		this.currentTarget = next;
 	}
 }

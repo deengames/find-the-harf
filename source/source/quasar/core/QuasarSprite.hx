@@ -22,6 +22,12 @@ class QuasarSprite extends FlxSprite
         FlxMouseEventManager.add(this, this.onMouseDown, this.onMouseUp, null, null, false, true, usePixelPerfectCollisions);
     }
 
+    public function scaleTo(width:Int, height:Int):Void
+    {
+        this.setGraphicSize(width, height);
+        this.updateHitbox();
+    }
+
     private function onMouseDown(obj:FlxObject):Void
     {
         this.isMouseDown = true;
