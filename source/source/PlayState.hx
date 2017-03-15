@@ -83,5 +83,10 @@ class PlayState extends QuasarState
 		this.jumboLetter.alphaVelocity = 1;
 		
 		this.currentTarget = next;
+
+		this.after(3, function() {
+			this.whiteout.alphaVelocity = -1;
+			this.jumboLetter.alphaVelocity = -1;
+		});
 	}
 }

@@ -33,6 +33,15 @@ class QuasarSprite extends FlxSprite
     {
         super.update(elapsedSeconds);
         this.alpha += (this.alphaVelocity * elapsedSeconds);
+        
+        if (this.alpha < 0)
+        {
+            this.alpha = 0;
+        }
+        else if (this.alpha > 1)
+        {
+            this.alpha = 1;
+        }
     }
 
     private function onMouseDown(obj:FlxObject):Void
