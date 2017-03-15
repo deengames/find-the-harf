@@ -8,6 +8,7 @@ class QuasarSprite extends FlxSprite
 {
     private var isMouseDown:Bool = false;
     private var mouseClickCallback:Void->Void = null;
+    public var alphaVelocity(default, default):Float = 0; // Change in alpha per second
 
     public function new(filename:String)
     {
@@ -26,6 +27,12 @@ class QuasarSprite extends FlxSprite
     {
         this.setGraphicSize(width, height);
         this.updateHitbox();
+    }
+
+    override public function update(elapsedSeconds:Float):Void
+    {
+        super.update(elapsedSeconds);
+        this.alpha += (this.alphaVelocity * elapsedSeconds);
     }
 
     private function onMouseDown(obj:FlxObject):Void

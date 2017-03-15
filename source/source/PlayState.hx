@@ -14,6 +14,7 @@ class PlayState extends QuasarState
 	private static inline var LETTERS_DOWN = 7;
 	private static inline var LETTER_SIZE:Int = 128;
 	private static inline var JUMBO_LETTER_SIZE = 512;
+	private static inline var WHITEOUT_ALPHA:Float = 0.75;
 
 	private var letters:Array<String> = ["alif", "ba", "ta", "tha", "jeem", "7a", "kha",
 		"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
@@ -51,6 +52,16 @@ class PlayState extends QuasarState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+
+		this.whiteout.update(elapsed);
+		this.jumboLetter.update(elapsed);
+
+		if (this.whiteout.alpha > WHITEOUT_ALPHA) {
+			this.whiteout.alpha = WHITEOUT_ALPHA;
+			this.whiteout.alphaVelocity = 0;			
+			this.jumboLetter.alpha = 1;
+			this.jumboLetter.alphaVelocity = 0;
+		}
 	}
 
 	private function selectAndDisplayNewTarget():Void
@@ -60,13 +71,16 @@ class PlayState extends QuasarState
 		{
 			next = this.random.getObject(this.letters);
 		}
-		
-		this.whiteout.alpha = 0.75;
 
 		jumboLetter = this.addSprite('assets/images/letters/${next}.png');
 		jumboLetter.scaleTo(JUMBO_LETTER_SIZE, JUMBO_LETTER_SIZE);
 		jumboLetter.x = (this.width - jumboLetter.width) / 2;
 		jumboLetter.y = (this.height - jumboLetter.height) / 2;
+
+		this.whiteout.alpha = 0;
+		this.whiteout.alphaVelocity = 1;
+		this.jumboLetter.alpha = 0;
+		this.jumboLetter.alphaVelocity = 1;
 		
 		this.currentTarget = next;
 	}
