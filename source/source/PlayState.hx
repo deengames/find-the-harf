@@ -39,8 +39,14 @@ class PlayState extends QuasarState
 		{
 			var letter = letters[i];
 			var sprite = this.addSprite('assets/images/letters/${letter}.png');
-			sprite.onMouseClick(function() { 
-				if (letter == currentTarget)
+			sprite.onMouseClick(function() {
+				// If jumbo is visible, fade out real fast.
+				if (jumboLetter.alpha > 0)
+				{
+					jumboLetter.alphaVelocity = -2;
+					whiteout.alphaVelocity = -2;
+				}				
+				else if (letter == currentTarget)
 				{
 					selectAndDisplayNewTarget();
 				}
@@ -72,6 +78,15 @@ class PlayState extends QuasarState
 
 	private function selectAndDisplayNewTarget():Void
 	{
+		// this.afterCallbacks.clear();
+		// Without this, if you click really rapidly on the correct letter, and
+		// dismiss the jumbo letter, the current jumbo letter might disappear
+		// really fast because of a callback queued a few letters ago.
+		for (key in this.afterCallbacks.keys())
+		{
+			this.afterCallbacks.remove(key);
+		}
+
 		var next = this.currentTarget;
 		while (next == this.currentTarget)
 		{
