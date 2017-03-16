@@ -32,6 +32,15 @@ class PlayState extends QuasarState
 
 		this.addSprite("assets/images/background.jpg");
 
+		var help = this.addSprite("assets/images/help.png").onMouseClick(function() {
+			trace("Help?");
+		}, false);
+
+		var x = this.addSprite("assets/images/x.png");
+		x.move(this.width - x.width, 0).onMouseClick(function() {
+			trace("X");
+		}, false);
+
 		var groupXOffset = (this.width - (LETTERS_ACROSS * LETTER_SIZE)) / 2;
 		var groupYOffset = (this.height - (LETTERS_DOWN * LETTER_SIZE)) / 2;
 

@@ -17,23 +17,32 @@ class QuasarSprite extends FlxSprite
     }
 
     // If false, uses the bounding-box as the clickable area
-    public function onMouseClick(mouseClickCallback:Void->Void, usePixelPerfectCollisions:Bool = true)
+    public function onMouseClick(mouseClickCallback:Void->Void, usePixelPerfectCollisions:Bool = true):QuasarSprite
     {
         this.mouseClickCallback = mouseClickCallback;
         FlxMouseEventManager.add(this, this.onMouseDown, this.onMouseUp, null, null, false, true, usePixelPerfectCollisions);
+        return this;
     }
 
-    public function scaleTo(width:Int, height:Int):Void
+    public function scaleTo(width:Int, height:Int):QuasarSprite
     {
         this.setGraphicSize(width, height);
         this.updateHitbox();
+        return this;
+    }
+
+    public function move(x:Float, y:Float):QuasarSprite
+    {
+        this.x = x;
+        this.y = y;
+        return this;
     }
 
     override public function update(elapsedSeconds:Float):Void
     {
         super.update(elapsedSeconds);
         this.alpha += (this.alphaVelocity * elapsedSeconds);
-        
+
         if (this.alpha < 0)
         {
             this.alpha = 0;
