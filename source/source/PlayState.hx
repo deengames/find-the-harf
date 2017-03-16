@@ -35,10 +35,16 @@ class PlayState extends QuasarState
 		var groupXOffset = (this.width - (LETTERS_ACROSS * LETTER_SIZE)) / 2;
 		var groupYOffset = (this.height - (LETTERS_DOWN * LETTER_SIZE)) / 2;
 
-		for (i in 0...letters.length) {
+		for (i in 0...letters.length)
+		{
 			var letter = letters[i];
 			var sprite = this.addSprite('assets/images/letters/${letter}.png');
-			sprite.onMouseClick(function() { trace('Clicked on ${letter}!'); }, false);
+			sprite.onMouseClick(function() { 
+				if (letter == currentTarget)
+				{
+					selectAndDisplayNewTarget();
+				}
+			}, false); // Use bounding-box for clicks
 			sprite.scaleTo(LETTER_SIZE, LETTER_SIZE);
 			sprite.x = ((i % LETTERS_ACROSS) * sprite.width) + groupXOffset;
 			sprite.y = (Math.floor(i / LETTERS_ACROSS) * sprite.height) + groupYOffset;
