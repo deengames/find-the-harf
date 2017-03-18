@@ -2,6 +2,7 @@ package quasar.core;
 
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.util.FlxColor;
 import quasar.core.QuasarSprite;
 
 class QuasarState extends FlxState
@@ -9,7 +10,17 @@ class QuasarState extends FlxState
 
     public var width(get, null):Int = 0;
     public var height(get, null):Int = 0;
+
     private var afterCallbacks = new Map<Date, Void->Void>();
+    private var blackout:QuasarSprite;
+
+    private static inline var FADE_DURATION_SECONDS:Float = 0.5;
+
+    override public function create():Void
+    {
+        super.create();
+        this.blackout = this.addSprite("assets/images/blackout.jpg");                
+    }    
 
     public function get_width():Int
     {
@@ -37,11 +48,19 @@ class QuasarState extends FlxState
     {
         var now = Date.now();
         var then = Date.fromTime(now.getTime() + (1000 * numSeconds));
-        if (this.afterCallbacks.exists(then)) {
+        if (this.afterCallbacks.exists(then))
+        {
             throw 'Can\'t have multiple callbacks for the same time; duplicate was ${numSeconds}';
         }
         this.afterCallbacks[then] =  callback;
         return this;
+    }
+
+    public function fadeOutInstantly():Void
+    {
+        this.remove(this.blackout);
+        this.insert(this.members.length, this.blackout); // add to the top
+        this.blackout.alpha = 1;
     }
 
     override public function update(elapsedSeconds:Float):Void

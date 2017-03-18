@@ -1,4 +1,4 @@
-package;
+package deengames.findtheharf;
 
 import flixel.FlxG;
 import flixel.text.FlxText;
