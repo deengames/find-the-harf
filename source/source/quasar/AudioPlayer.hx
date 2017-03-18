@@ -1,7 +1,8 @@
 package quasar;
 
 import flixel.FlxG;
-import flixel.system.FlxSound;
+
+import openfl.Assets;
 
 class AudioPlayer
 {
@@ -9,10 +10,10 @@ class AudioPlayer
 
     private static inline var SOUND_EXT = "ogg";    
 
-    public static function loadAndPlay(audioFilename:String):Void
+    public static function loadAndPlay(audioFileName:String):Void
     {
-        var audio:FlxSound = FlxG.sound.load('${audioFilename}.${SOUND_EXT}');
+        // FlxSound doesn't work on HTML5. This does.
+        var audio:openfl.media.Sound = Assets.getSound('${audioFileName}.${SOUND_EXT}');
         audio.play();
-        trace('Playing ${audioFilename}.${SOUND_EXT}');
     }
 }
