@@ -12,6 +12,7 @@ import flixel.util.FlxColor;
 
 import quasar.core.QuasarState;
 import quasar.core.QuasarSprite;
+import quasar.AudioPlayer;
 
 // Loads from startup screen.
 class SplashState extends QuasarState
@@ -27,32 +28,36 @@ class SplashState extends QuasarState
     var title:QuasarSprite = this.addSprite('assets/images/logo-vertical');
     title.move((this.width - title.width) / 2, (this.height - title.height) / 2);
 
-    //this.loadAndPlay('assets/sounds/giggle');
+    AudioPlayer.loadAndPlay('assets/sounds/giggle');
 
-    startTime = Date.now().getTime();
+    startTime = this.totalStateTime;
     this.fadeOutInstantly();
   }
 
   override public function update(elapsed:Float):Void
   {
       super.update(elapsed);      
-      var timeDelta = Date.now().getTime() - startTime;
-      trace(timeDelta);
+      var timeDelta = this.totalStateTime - startTime;
 
       // 500ms => half-a-second to fade in
-      if (timeDelta <= 500)
+      if (timeDelta < 0.5)
       {
-          this.blackout.alpha = (500 - timeDelta) / 500;
+          this.blackout.alpha = (0.5 - timeDelta) / 0.5;
+      }
+      else if (timeDelta >= 0.5 && timeDelta < 3.5)
+      {
+          this.blackout.alpha = 0;
       }
       // 3.5s total (3s after fade-in) to show the logo
       // After 3.5s, start fading out.
-      else if (timeDelta >= 3500 && timeDelta < 4000)
+      else if (timeDelta >= 3.5 && timeDelta < 4)
       {
-          this.blackout.alpha = (timeDelta - 3500) / 500;
+          this.blackout.alpha = (timeDelta - 3.5) / 0.5;
       // After 4s, move to the next screen
-      } else if (timeDelta >= 4000) {
+      }
+      else if (timeDelta >= 4)
+      {
           FlxG.switchState(new PlayState());
       }
-
   }
 }

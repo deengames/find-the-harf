@@ -7,9 +7,13 @@ import quasar.core.QuasarSprite;
 
 class QuasarState extends FlxState
 {
-
     public var width(get, null):Int = 0;
     public var height(get, null):Int = 0;
+
+    // Granularity on Neko and some platforms is second-by-second only.
+    // To get around this, track the total amount of time we see (elapsed)
+    // in calls to update().
+    public var totalStateTime(default, null):Float = 0;
 
     private var afterCallbacks = new Map<Date, Void->Void>();
     private var blackout:QuasarSprite;
@@ -66,6 +70,8 @@ class QuasarState extends FlxState
     override public function update(elapsedSeconds:Float):Void
     {
         super.update(elapsedSeconds);
+        this.totalStateTime += elapsedSeconds;
+        
         for (date in afterCallbacks.keys())
         {
             if (Date.now().getTime() >= date.getTime())
