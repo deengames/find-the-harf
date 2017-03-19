@@ -28,10 +28,21 @@ class AudioPlayer
 
     public static function update():Void
     {
+        // Null if this is the first file in a series; not playing if it's done
         if (audioFilesQueue.length > 0 && (lastSound == null || !lastSound.playing))
         {
             var fileName = audioFilesQueue.shift(); // take first element
-            AudioPlayer.lastSound = loadAndPlay(fileName);
+            AudioPlayer.lastSound = AudioPlayer.loadAndPlay(fileName);
         }
+    }
+
+    public static function stopAndEmptyQueue():Void
+    {
+        if (AudioPlayer.lastSound != null)
+        {
+            AudioPlayer.lastSound.stop();
+        }
+
+        AudioPlayer.audioFilesQueue = new Array<String>();
     }
 }

@@ -58,6 +58,7 @@ class PlayState extends QuasarState
 				}				
 				else if (letter == currentTarget)
 				{
+					AudioPlayer.stopAndEmptyQueue();
 					selectAndDisplayNewTarget();
 				}
 			}, false); // Use bounding-box for clicks
@@ -78,7 +79,8 @@ class PlayState extends QuasarState
 		this.whiteout.update(elapsed);
 		this.jumboLetter.update(elapsed);
 
-		if (this.whiteout.alpha > WHITEOUT_ALPHA) {
+		if (this.whiteout.alpha > WHITEOUT_ALPHA)
+		{
 			this.whiteout.alpha = WHITEOUT_ALPHA;
 			this.whiteout.alphaVelocity = 0;			
 			this.jumboLetter.alpha = 1;
