@@ -33,6 +33,7 @@ class PlayState extends QuasarState
 	private var whiteout:QuasarSprite;
 	private var jumboLetter:QuasarSprite;
 	private var wrongPicks = new Array<String>();
+	private var letterXs = new Array<QuasarSprite>();
 
 	override public function create():Void
 	{
@@ -73,46 +74,23 @@ class PlayState extends QuasarState
 				}				
 				else if (letter == this.currentTarget)
 				{
-					wrongPicks = new Array<String>();
-					AudioPlayer.stopAndEmptyQueue();
-					var praise = this.random.getObject(this.praises);
-					AudioPlayer.queueAndPlaySerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
-					selectAndDisplayNewTarget();
+					this.pickedCorrectLetter();
 				}
-				else
+				// Never picked this wrong letter before
+				else if (wrongPicks.indexOf(letter) == -1)
 				{
-					AudioPlayer.stopAndEmptyQueue();					
-					wrongPicks.push(letter);
-
-					if (wrongPicks.length <= 2)
-					{
-						// That's not <x>. That's, <y>. The harf <x> ...
-						AudioPlayer.queueAndPlaySerially(['assets/sounds/wrong/thats-not', 'assets/sounds/letters/${this.currentTarget}', "assets/sounds/wrong/thats", 'assets/sounds/letters/${letter}',
-							"assets/sounds/wrong/the-letter", 'assets/sounds/letters/${this.currentTarget}']);
-
-						if (wrongPicks.length == 1)
-						{
-							// ... comes after/before <y>!
-							var afterOrBefore = LETTERS.indexOf(this.currentTarget) < LETTERS.indexOf(letter) ? "before" : "after";
-							AudioPlayer.queueAndPlaySerially(["assets/sounds/wrong/comes", 'assets/sounds/wrong/${afterOrBefore}', 'assets/sounds/letters/${letter}']);
-						}
-						else if (wrongPicks.length == 2)
-						{
-							// ... is <colour>!
-							var colour = this.letterMap[this.currentTarget];
-							AudioPlayer.queueAndPlaySerially(["assets/sounds/wrong/is", 'assets/sounds/colours/${colour}']);
-						}
-					}
-					else
-					{
-						AudioPlayer.stopLastSound();
-						AudioPlayer.play("assets/sounds/wrong/sorry-try-again");
-					}
+					this.pickedWrongLetter(letter);
 				}
 			}, false); // Use bounding-box for clicks
 			sprite.scaleTo(LETTER_SIZE, LETTER_SIZE);
 			sprite.x = ((i % LETTERS_ACROSS) * sprite.width) + groupXOffset;
 			sprite.y = (Math.floor(i / LETTERS_ACROSS) * sprite.height) + groupYOffset;
+
+			var spriteCrossOut = this.addSprite("assets/images/letterX.png");
+			spriteCrossOut.x = sprite.x;
+			spriteCrossOut.y = sprite.y;
+			spriteCrossOut.alpha = 0;
+			this.letterXs.push(spriteCrossOut);
 		}
 
 		this.whiteout = this.addSprite("assets/images/whiteout.jpg");
@@ -176,5 +154,52 @@ class PlayState extends QuasarState
 	private function playFindCurrentLetterAudio():Void
 	{
 		AudioPlayer.queueAndPlaySerially(["assets/sounds/find-the-letter", 'assets/sounds/letters/${this.currentTarget}']);		
+	}
+
+	private function pickedWrongLetter(letter:String):Void
+	{
+		AudioPlayer.stopAndEmptyQueue();					
+		this.wrongPicks.push(letter);
+		var letterIndex = LETTERS.indexOf(letter);
+		this.letterXs[letterIndex].alpha = 1;
+
+		if (wrongPicks.length <= 2)
+		{
+			// That's not <x>. That's, <y>. The harf <x> ...
+			AudioPlayer.queueAndPlaySerially(['assets/sounds/wrong/thats-not', 'assets/sounds/letters/${this.currentTarget}', "assets/sounds/wrong/thats", 'assets/sounds/letters/${letter}',
+				"assets/sounds/wrong/the-letter", 'assets/sounds/letters/${this.currentTarget}']);
+
+			if (wrongPicks.length == 1)
+			{
+				// ... comes after/before <y>!
+				var afterOrBefore = LETTERS.indexOf(this.currentTarget) < LETTERS.indexOf(letter) ? "before" : "after";
+				AudioPlayer.queueAndPlaySerially(["assets/sounds/wrong/comes", 'assets/sounds/wrong/${afterOrBefore}', 'assets/sounds/letters/${letter}']);
+			}
+			else if (wrongPicks.length == 2)
+			{
+				// ... is <colour>!
+				var colour = this.letterMap[this.currentTarget];
+				AudioPlayer.queueAndPlaySerially(["assets/sounds/wrong/is", 'assets/sounds/colours/${colour}']);
+			}
+		}
+		else
+		{
+			AudioPlayer.stopLastSound();
+			AudioPlayer.play("assets/sounds/wrong/sorry-try-again");
+		}
+	}
+
+	private function pickedCorrectLetter():Void
+	{
+		for (x in this.letterXs)
+		{
+			x.alpha = 0;
+		}
+
+		wrongPicks = new Array<String>();
+		AudioPlayer.stopAndEmptyQueue();
+		var praise = this.random.getObject(this.praises);
+		AudioPlayer.queueAndPlaySerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
+		selectAndDisplayNewTarget();
 	}
 }
