@@ -8,7 +8,6 @@ Simplifications in v2:
 - You can only see the entire alphabet; no subset of letters.
 - The big letter isn't optional any more.
 - Only the most positive encouragement phrases!
-- Doesn't automatically go to the next letter if wrong 3+ times.
 
 # Quasar
 
