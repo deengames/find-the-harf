@@ -17,10 +17,14 @@ class PlayState extends QuasarState
 	private static inline var JUMBO_LETTER_SIZE = 512;
 	private static inline var WHITEOUT_ALPHA:Float = 0.75;
 
-	private var letters:Array<String> = ["alif", "ba", "ta", "tha", "jeem", "7a", "kha",
+	private static var LETTERS = ["alif", "ba", "ta", "tha", "jeem", "7a", "kha",
 		"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
 		"daad", "taw", "thaw", "ayn", "ghayn", "fa",
 		"qaaf", "kaaf", "laam", "meem", "noon", "ha", "waw", "ya"];
+
+	private static var COLOURS = ["red", "orange", "yellow", "green", "blue", "purple", "pink"];
+
+	private var letterMap = new Map<String, String>();	
 
 	private var praises:Array<String> = ["awesome", "great-job", "hurray"];
 
@@ -32,7 +36,14 @@ class PlayState extends QuasarState
 
 	override public function create():Void
 	{
-		super.create();
+		super.create();		
+
+		for (i in 0 ... LETTERS.length)
+		{
+			var letter = LETTERS[i];
+			var colour = COLOURS[i % COLOURS.length];
+			letterMap.set(letter, colour);
+		}
 
 		this.addSprite("assets/images/background.jpg");
 
@@ -49,9 +60,9 @@ class PlayState extends QuasarState
 		var groupXOffset = (this.width - (LETTERS_ACROSS * LETTER_SIZE)) / 2;
 		var groupYOffset = (this.height - (LETTERS_DOWN * LETTER_SIZE)) / 2;
 
-		for (i in 0...letters.length)
+		for (i in 0...LETTERS.length)
 		{
-			var letter = letters[i];
+			var letter = LETTERS[i];
 			var sprite = this.addSprite('assets/images/letters/${letter}.png');
 			sprite.onMouseClick(function() {
 				// If jumbo is visible, fade out real fast.
@@ -82,12 +93,14 @@ class PlayState extends QuasarState
 						if (numberWrong == 1)
 						{
 							// ... comes after/before <y>!
-							var afterOrBefore = letters.indexOf(this.currentTarget) < letters.indexOf(letter) ? "before" : "after";
+							var afterOrBefore = LETTERS.indexOf(this.currentTarget) < LETTERS.indexOf(letter) ? "before" : "after";
 							AudioPlayer.playSerially(["assets/sounds/wrong/comes", 'assets/sounds/wrong/${afterOrBefore}', 'assets/sounds/letters/${letter}']);
 						}
 						else // numberWrong == 2
 						{
 							// ... is <colour>!
+							var colour = this.letterMap[this.currentTarget];
+							AudioPlayer.playSerially(["assets/sounds/wrong/is", 'assets/sounds/colours/${colour}']);
 						}
 					}
 				}
@@ -132,7 +145,7 @@ class PlayState extends QuasarState
 		var next = this.currentTarget;
 		while (next == this.currentTarget)
 		{
-			next = this.random.getObject(this.letters);
+			next = this.random.getObject(PlayState.LETTERS);
 		}
 
 		jumboLetter = this.addSprite('assets/images/letters/${next}.png');
