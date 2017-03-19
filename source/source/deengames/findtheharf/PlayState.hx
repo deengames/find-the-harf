@@ -32,7 +32,7 @@ class PlayState extends QuasarState
 	private var currentTarget:String;
 	private var whiteout:QuasarSprite;
 	private var jumboLetter:QuasarSprite;
-	private var numberWrong = 0;
+	private var wrongPicks = new Array<String>();
 
 	override public function create():Void
 	{
@@ -73,7 +73,7 @@ class PlayState extends QuasarState
 				}				
 				else if (letter == this.currentTarget)
 				{
-					numberWrong = 0;
+					wrongPicks = new Array<String>();
 					AudioPlayer.stopAndEmptyQueue();
 					var praise = this.random.getObject(this.praises);
 					AudioPlayer.queueAndPlaySerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
@@ -82,21 +82,21 @@ class PlayState extends QuasarState
 				else
 				{
 					AudioPlayer.stopAndEmptyQueue();					
-					numberWrong += 1;
+					wrongPicks.push(letter);
 
-					if (numberWrong <= 2)
+					if (wrongPicks.length <= 2)
 					{
 						// That's not <x>. That's, <y>. The harf <x> ...
 						AudioPlayer.queueAndPlaySerially(['assets/sounds/wrong/thats-not', 'assets/sounds/letters/${this.currentTarget}', "assets/sounds/wrong/thats", 'assets/sounds/letters/${letter}',
 							"assets/sounds/wrong/the-letter", 'assets/sounds/letters/${this.currentTarget}']);
 
-						if (numberWrong == 1)
+						if (wrongPicks.length == 1)
 						{
 							// ... comes after/before <y>!
 							var afterOrBefore = LETTERS.indexOf(this.currentTarget) < LETTERS.indexOf(letter) ? "before" : "after";
 							AudioPlayer.queueAndPlaySerially(["assets/sounds/wrong/comes", 'assets/sounds/wrong/${afterOrBefore}', 'assets/sounds/letters/${letter}']);
 						}
-						else if (numberWrong == 2)
+						else if (wrongPicks.length == 2)
 						{
 							// ... is <colour>!
 							var colour = this.letterMap[this.currentTarget];

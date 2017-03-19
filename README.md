@@ -4,8 +4,11 @@ Learn the Arabic alphabet, with proper pronunciation (mahkaarij) for tajweed! Re
 
 Simplifications in v2:
 
+- Redesigned the UI to be left-to-right, not right-to-left
 - You can only see the entire alphabet; no subset of letters.
-- Less praise phrases (but the most positive ones!)
+- The big letter isn't optional any more.
+- Only the most positive encouragement phrases!
+- Doesn't automatically go to the next letter if wrong 3+ times.
 
 # Quasar
 
