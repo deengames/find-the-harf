@@ -34,12 +34,13 @@ class PlayState extends QuasarState
 		this.addSprite("assets/images/background.jpg");
 
 		var help = this.addSprite("assets/images/help.png").onMouseClick(function() {
-			trace("Help?");
+			AudioPlayer.stopAndEmptyQueue();
+			this.playFindCurrentLetterAudio();
 		}, false);
 
 		var x = this.addSprite("assets/images/x.png");
 		x.move(this.width - x.width, 0).onMouseClick(function() {
-			trace("X");
+			AudioPlayer.stopAndEmptyQueue();
 		}, false);
 
 		var groupXOffset = (this.width - (LETTERS_ACROSS * LETTER_SIZE)) / 2;
@@ -56,7 +57,7 @@ class PlayState extends QuasarState
 					jumboLetter.alphaVelocity = -2;
 					whiteout.alphaVelocity = -2;
 				}				
-				else if (letter == currentTarget)
+				else if (letter == this.currentTarget)
 				{
 					AudioPlayer.stopAndEmptyQueue();
 					selectAndDisplayNewTarget();
@@ -122,6 +123,11 @@ class PlayState extends QuasarState
 			this.jumboLetter.alphaVelocity = -1;
 		});
 
-		AudioPlayer.playSerially(["assets/sounds/find-the-letter", 'assets/sounds/letters/${next}']);
+		this.playFindCurrentLetterAudio();
+	}
+
+	private function playFindCurrentLetterAudio():Void
+	{
+		AudioPlayer.playSerially(["assets/sounds/find-the-letter", 'assets/sounds/letters/${this.currentTarget}']);		
 	}
 }
