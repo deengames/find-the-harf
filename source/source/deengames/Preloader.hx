@@ -18,15 +18,14 @@ class Preloader extends FlxPreloader
 	private static inline var FADE_FROM_PERCENT = 0.75;
 	private static inline var ROTATIONS_PER_SECOND = 2;
 	
-	private var degreesToRotatePerUpdate:Int;
+	private var degreesToRotatePerUpdate:Float;
 
 	var logo:Sprite = new Sprite();
 
 	public function new(minDisplayTime:Float = 0.25, ?allowedUrls:Array<String>)
 	{
 		super(minDisplayTime, allowedUrls);
-		degreesToRotatePerUpdate = Std.int(360 * ROTATIONS_PER_SECOND / 60); // 60FPS
-		trace(degreesToRotatePerUpdate);
+		degreesToRotatePerUpdate = 360 * ROTATIONS_PER_SECOND / 60; // 60FPS
 	}
 
 	override private function create():Void
