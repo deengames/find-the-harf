@@ -28,6 +28,7 @@ class PlayState extends QuasarState
 	private var currentTarget:String;
 	private var whiteout:QuasarSprite;
 	private var jumboLetter:QuasarSprite;
+	private var numberWrong = 0;
 
 	override public function create():Void
 	{
@@ -61,10 +62,34 @@ class PlayState extends QuasarState
 				}				
 				else if (letter == this.currentTarget)
 				{
+					numberWrong = 0;
 					AudioPlayer.stopAndEmptyQueue();
 					var praise = this.random.getObject(this.praises);
 					AudioPlayer.playSerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
 					selectAndDisplayNewTarget();
+				}
+				else
+				{
+					AudioPlayer.stopAndEmptyQueue();					
+					numberWrong += 1;
+
+					if (numberWrong <= 2)
+					{
+						// That's not <x>. That's, <y>. The harf <x> ...
+						AudioPlayer.playSerially(['assets/sounds/wrong/thats-not', 'assets/sounds/letters/${this.currentTarget}', "assets/sounds/wrong/thats", 'assets/sounds/letters/${letter}',
+							"assets/sounds/wrong/the-letter", 'assets/sounds/letters/${this.currentTarget}']);
+
+						if (numberWrong == 1)
+						{
+							// ... comes after/before <y>!
+							var afterOrBefore = letters.indexOf(this.currentTarget) < letters.indexOf(letter) ? "before" : "after";
+							AudioPlayer.playSerially(["assets/sounds/wrong/comes", 'assets/sounds/wrong/${afterOrBefore}', 'assets/sounds/letters/${letter}']);
+						}
+						else // numberWrong == 2
+						{
+							// ... is <colour>!
+						}
+					}
 				}
 			}, false); // Use bounding-box for clicks
 			sprite.scaleTo(LETTER_SIZE, LETTER_SIZE);
@@ -95,10 +120,10 @@ class PlayState extends QuasarState
 
 	private function selectAndDisplayNewTarget():Void
 	{
-		// this.afterCallbacks.clear();
 		// Without this, if you click really rapidly on the correct letter, and
 		// dismiss the jumbo letter, the current jumbo letter might disappear
 		// really fast because of a callback queued a few letters ago.
+		// this.afterCallbacks.clear();
 		for (key in this.afterCallbacks.keys())
 		{
 			this.afterCallbacks.remove(key);
