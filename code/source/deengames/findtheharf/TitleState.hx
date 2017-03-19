@@ -14,8 +14,13 @@ import quasar.core.QuasarState;
 import quasar.core.QuasarSprite;
 import quasar.AudioPlayer;
 
+import openfl.net.URLRequest;
+import openfl.Lib;
+
 class TitleState extends QuasarState
 {
+    private static inline var BADGE_PADDING:Int = 16;
+
     private var startTime:Float = 0;
     private var fade:String = "in";
     
@@ -25,13 +30,32 @@ class TitleState extends QuasarState
         var title:QuasarSprite = this.addSprite('assets/images/titlescreen.png');
         title.onMouseClick(function()
         {
-            fade = "out";
-            startTime = this.totalStateTime;
+            // prevent multiple clicks restarting fade
+            if (fade != "out")
+            {
+                fade = "out";
+                startTime = this.totalStateTime;
+            }
         });
 
         AudioPlayer.play('assets/sounds/titlescreen');        
         startTime = this.totalStateTime;
-        this.fadeOutInstantly();
+
+        var facebook = this.addSprite("assets/images/facebook.png");
+        facebook.move(BADGE_PADDING, this.height - facebook.height - BADGE_PADDING);
+        facebook.onMouseClick(function()
+        {
+            Lib.getURL(new URLRequest("http://facebook.com/deengames"));
+        });
+
+        var patreon = this.addSprite("assets/images/patreon.png");
+        patreon.move(this.width - patreon.width - BADGE_PADDING, this.height - patreon.height - BADGE_PADDING);
+        patreon.onMouseClick(function()
+        {
+            Lib.getURL(new URLRequest("http://patreon.com/deengames"));
+        });
+
+        this.fadeOutInstantly();        
     }
 
     override public function update(elapsed:Float):Void
