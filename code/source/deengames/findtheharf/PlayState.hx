@@ -35,6 +35,8 @@ class PlayState extends QuasarState
 	private var wrongPicks = new Array<String>();
 	private var letterXs = new Array<QuasarSprite>();
 
+	private var fadeOutStartTime:Float = 0;
+
 	override public function create():Void
 	{
 		super.create();		
@@ -56,6 +58,8 @@ class PlayState extends QuasarState
 		var x = this.addSprite("assets/images/x.png");
 		x.move(this.width - x.width, 0).onClick(function() {
 			AudioPlayer.stopAndEmptyQueue();
+			this.fadeOutInstantly(); // move to top
+			this.fadeOutStartTime  = this.totalStateTime;
 		}, false);
 
 		var groupXOffset = (this.width - (LETTERS_ACROSS * LETTER_SIZE)) / 2;
@@ -111,6 +115,17 @@ class PlayState extends QuasarState
 			this.whiteout.alphaVelocity = 0;			
 			this.jumboLetter.alpha = 1;
 			this.jumboLetter.alphaVelocity = 0;
+		}
+
+		if (this.fadeOutStartTime > 0)
+		{
+			var delta = this.totalStateTime - this.fadeOutStartTime;
+			this.blackout.alpha = delta / 0.5; // 0.5s
+
+			if (delta >= 0.5)
+			{
+				FlxG.switchState(new TitleState());
+			}
 		}
 	}
 
