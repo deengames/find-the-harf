@@ -22,6 +22,8 @@ class PlayState extends QuasarState
 		"daad", "taw", "thaw", "ayn", "ghayn", "fa",
 		"qaaf", "kaaf", "laam", "meem", "noon", "ha", "waw", "ya"];
 
+	private var praises:Array<String> = ["awesome", "great-job", "hurray"];
+
 	private var random:FlxRandom = new FlxRandom();
 	private var currentTarget:String;
 	private var whiteout:QuasarSprite;
@@ -60,6 +62,8 @@ class PlayState extends QuasarState
 				else if (letter == this.currentTarget)
 				{
 					AudioPlayer.stopAndEmptyQueue();
+					var praise = this.random.getObject(this.praises);
+					AudioPlayer.playSerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
 					selectAndDisplayNewTarget();
 				}
 			}, false); // Use bounding-box for clicks
