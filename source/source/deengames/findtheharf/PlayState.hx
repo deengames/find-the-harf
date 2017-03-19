@@ -7,6 +7,7 @@ import flixel.math.FlxMath;
 import flixel.math.FlxRandom;
 import quasar.core.QuasarState;
 import quasar.core.QuasarSprite;
+import quasar.AudioPlayer;
 
 class PlayState extends QuasarState
 {
@@ -118,5 +119,7 @@ class PlayState extends QuasarState
 			this.whiteout.alphaVelocity = -1;
 			this.jumboLetter.alphaVelocity = -1;
 		});
+
+		AudioPlayer.playSerially(["assets/sounds/find-the-letter", 'assets/sounds/letters/${next}']);
 	}
 }

@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 import quasar.core.QuasarSprite;
+import quasar.AudioPlayer;
 
 class QuasarState extends FlxState
 {
@@ -81,5 +82,7 @@ class QuasarState extends FlxState
                 afterCallbacks.remove(date);
             }
         }
+
+        AudioPlayer.update();
     }
 }
