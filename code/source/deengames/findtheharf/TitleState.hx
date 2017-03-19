@@ -13,9 +13,7 @@ import flixel.util.FlxColor;
 import quasar.core.QuasarState;
 import quasar.core.QuasarSprite;
 import quasar.AudioPlayer;
-
-import openfl.net.URLRequest;
-import openfl.Lib;
+import quasar.web.Browser;
 
 class TitleState extends QuasarState
 {
@@ -27,6 +25,7 @@ class TitleState extends QuasarState
     override public function create():Void
     {
         super.create();
+
         var title:QuasarSprite = this.addSprite('assets/images/titlescreen.png');
         title.onMouseClick(function()
         {
@@ -45,14 +44,14 @@ class TitleState extends QuasarState
         facebook.move(BADGE_PADDING, this.height - facebook.height - BADGE_PADDING);
         facebook.onMouseClick(function()
         {
-            Lib.getURL(new URLRequest("http://facebook.com/deengames"));
+            Browser.openUrl("http://facebook.com/deengames");
         });
 
         var patreon = this.addSprite("assets/images/patreon.png");
         patreon.move(this.width - patreon.width - BADGE_PADDING, this.height - patreon.height - BADGE_PADDING);
         patreon.onMouseClick(function()
         {
-            Lib.getURL(new URLRequest("http://patreon.com/deengames"));
+            Browser.openUrl("http://patreon.com/deengames");
         });
 
         this.fadeOutInstantly();        
