@@ -30,7 +30,7 @@ class AudioPlayer
     {
         if (audioFilesQueue.length > 0 && (lastSound == null || !lastSound.playing))
         {
-            var fileName = audioFilesQueue.shift(); // take top element
+            var fileName = audioFilesQueue.shift(); // take first element
             AudioPlayer.lastSound = loadAndPlay(fileName);
         }
     }
