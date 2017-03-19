@@ -13,7 +13,7 @@ class Browser
     public static function openUrl(url:String):Void
     {
         #if js
-        js.Browser.location.assign(url);
+        js.Browser.window.open(url, "_blank");
         #else
         Lib.getURL(new URLRequest(url));
         #end
