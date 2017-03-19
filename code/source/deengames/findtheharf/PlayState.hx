@@ -125,6 +125,13 @@ class PlayState extends QuasarState
 			this.afterCallbacks.remove(key);
 		}
 
+		for (x in this.letterXs)
+		{
+			x.alpha = 0;
+		}
+
+		wrongPicks = new Array<String>();
+
 		var next = this.currentTarget;
 		while (next == this.currentTarget)
 		{
@@ -186,17 +193,12 @@ class PlayState extends QuasarState
 		{
 			AudioPlayer.stopLastSound();
 			AudioPlayer.play("assets/sounds/wrong/sorry-try-again");
+			this.selectAndDisplayNewTarget();
 		}
 	}
 
 	private function pickedCorrectLetter():Void
 	{
-		for (x in this.letterXs)
-		{
-			x.alpha = 0;
-		}
-
-		wrongPicks = new Array<String>();
 		AudioPlayer.stopAndEmptyQueue();
 		var praise = this.random.getObject(this.praises);
 		AudioPlayer.queueAndPlaySerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
