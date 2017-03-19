@@ -11,14 +11,13 @@ class AudioPlayer
     private static var lastSound:FlxSound;
     private static var audioFilesQueue = new Array<String>();
 
-    public static function loadAndPlay(audioFileName:String):FlxSound
+    public static function play(audioFileName:String):Void
     {
-        var sound = FlxG.sound.load('${audioFileName}.${SOUND_EXT}');
-        sound.play();
-        return sound;
+        lastSound = FlxG.sound.load('${audioFileName}.${SOUND_EXT}');
+        lastSound.play();        
     }
 
-    public static function playSerially(audioFiles:Array<String>):Void
+    public static function queueAndPlaySerially(audioFiles:Array<String>):Void
     {
         for (i in 0 ... audioFiles.length)
         {
@@ -32,17 +31,21 @@ class AudioPlayer
         if (audioFilesQueue.length > 0 && (lastSound == null || !lastSound.playing))
         {
             var fileName = audioFilesQueue.shift(); // take first element
-            AudioPlayer.lastSound = AudioPlayer.loadAndPlay(fileName);
+            AudioPlayer.play(fileName);
         }
     }
 
-    public static function stopAndEmptyQueue():Void
+    public static function stopLastSound():Void
     {
         if (AudioPlayer.lastSound != null)
         {
             AudioPlayer.lastSound.stop();
         }
+    }
 
+    public static function stopAndEmptyQueue():Void
+    {
+        AudioPlayer.stopLastSound();
         AudioPlayer.audioFilesQueue = new Array<String>();
     }
 }

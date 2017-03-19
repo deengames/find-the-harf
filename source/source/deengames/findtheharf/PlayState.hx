@@ -76,7 +76,7 @@ class PlayState extends QuasarState
 					numberWrong = 0;
 					AudioPlayer.stopAndEmptyQueue();
 					var praise = this.random.getObject(this.praises);
-					AudioPlayer.playSerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
+					AudioPlayer.queueAndPlaySerially(['assets/sounds/correct', 'assets/sounds/praise/${praise}', "assets/sounds/praise/mashaAllah", "assets/sounds/now"]);
 					selectAndDisplayNewTarget();
 				}
 				else
@@ -87,21 +87,26 @@ class PlayState extends QuasarState
 					if (numberWrong <= 2)
 					{
 						// That's not <x>. That's, <y>. The harf <x> ...
-						AudioPlayer.playSerially(['assets/sounds/wrong/thats-not', 'assets/sounds/letters/${this.currentTarget}', "assets/sounds/wrong/thats", 'assets/sounds/letters/${letter}',
+						AudioPlayer.queueAndPlaySerially(['assets/sounds/wrong/thats-not', 'assets/sounds/letters/${this.currentTarget}', "assets/sounds/wrong/thats", 'assets/sounds/letters/${letter}',
 							"assets/sounds/wrong/the-letter", 'assets/sounds/letters/${this.currentTarget}']);
 
 						if (numberWrong == 1)
 						{
 							// ... comes after/before <y>!
 							var afterOrBefore = LETTERS.indexOf(this.currentTarget) < LETTERS.indexOf(letter) ? "before" : "after";
-							AudioPlayer.playSerially(["assets/sounds/wrong/comes", 'assets/sounds/wrong/${afterOrBefore}', 'assets/sounds/letters/${letter}']);
+							AudioPlayer.queueAndPlaySerially(["assets/sounds/wrong/comes", 'assets/sounds/wrong/${afterOrBefore}', 'assets/sounds/letters/${letter}']);
 						}
-						else // numberWrong == 2
+						else if (numberWrong == 2)
 						{
 							// ... is <colour>!
 							var colour = this.letterMap[this.currentTarget];
-							AudioPlayer.playSerially(["assets/sounds/wrong/is", 'assets/sounds/colours/${colour}']);
+							AudioPlayer.queueAndPlaySerially(["assets/sounds/wrong/is", 'assets/sounds/colours/${colour}']);
 						}
+					}
+					else
+					{
+						AudioPlayer.stopLastSound();
+						AudioPlayer.play("assets/sounds/wrong/sorry-try-again");
 					}
 				}
 			}, false); // Use bounding-box for clicks
@@ -170,6 +175,6 @@ class PlayState extends QuasarState
 
 	private function playFindCurrentLetterAudio():Void
 	{
-		AudioPlayer.playSerially(["assets/sounds/find-the-letter", 'assets/sounds/letters/${this.currentTarget}']);		
+		AudioPlayer.queueAndPlaySerially(["assets/sounds/find-the-letter", 'assets/sounds/letters/${this.currentTarget}']);		
 	}
 }

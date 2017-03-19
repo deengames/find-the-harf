@@ -28,7 +28,7 @@ class SplashState extends QuasarState
     var title:QuasarSprite = this.addSprite('assets/images/logo-vertical');
     title.move((this.width - title.width) / 2, (this.height - title.height) / 2);
 
-    AudioPlayer.loadAndPlay('assets/sounds/giggle');    
+    AudioPlayer.play('assets/sounds/giggle');    
 
     startTime = this.totalStateTime;
     this.fadeOutInstantly();
