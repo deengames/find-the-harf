@@ -7,7 +7,7 @@ import flixel.input.mouse.FlxMouseEventManager;
 class QuasarSprite extends FlxSprite 
 {
     private var isMouseDown:Bool = false;
-    private var mouseClickCallback:Void->Void = null;
+    private var onClickCallback:Void->Void = null;
     public var alphaVelocity(default, default):Float = 0; // Change in alpha per second
 
     public function new(filename:String)
@@ -17,9 +17,9 @@ class QuasarSprite extends FlxSprite
     }
 
     // If false, uses the bounding-box as the clickable area
-    public function onMouseClick(mouseClickCallback:Void->Void, usePixelPerfectCollisions:Bool = true):QuasarSprite
+    public function onClick(onClickCallback:Void->Void, usePixelPerfectCollisions:Bool = true):QuasarSprite
     {
-        this.mouseClickCallback = mouseClickCallback;
+        this.onClickCallback = onClickCallback;
         FlxMouseEventManager.add(this, this.onMouseDown, this.onMouseUp, null, null, false, true, usePixelPerfectCollisions);
         return this;
     }
@@ -62,9 +62,9 @@ class QuasarSprite extends FlxSprite
     {
         if (this.isMouseDown)
         {
-            if (this.mouseClickCallback != null)
+            if (this.onClickCallback != null)
             {
-                this.mouseClickCallback();
+                this.onClickCallback();
             }
 
             this.isMouseDown = false;

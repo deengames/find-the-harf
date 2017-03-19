@@ -48,13 +48,13 @@ class PlayState extends QuasarState
 
 		this.addSprite("assets/images/background.jpg");
 
-		var help = this.addSprite("assets/images/help.png").onMouseClick(function() {
+		var help = this.addSprite("assets/images/help.png").onClick(function() {
 			AudioPlayer.stopAndEmptyQueue();
 			this.playFindCurrentLetterAudio();
 		}, false);
 
 		var x = this.addSprite("assets/images/x.png");
-		x.move(this.width - x.width, 0).onMouseClick(function() {
+		x.move(this.width - x.width, 0).onClick(function() {
 			AudioPlayer.stopAndEmptyQueue();
 		}, false);
 
@@ -65,7 +65,7 @@ class PlayState extends QuasarState
 		{
 			var letter = LETTERS[i];
 			var sprite = this.addSprite('assets/images/letters/${letter}.png');
-			sprite.onMouseClick(function() {
+			sprite.onClick(function() {
 				// If jumbo is visible, fade out real fast.
 				if (jumboLetter.alpha > 0)
 				{

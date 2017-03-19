@@ -27,7 +27,7 @@ class TitleState extends QuasarState
         super.create();
 
         var title:QuasarSprite = this.addSprite('assets/images/titlescreen.png');
-        title.onMouseClick(function()
+        title.onClick(function()
         {
             // prevent multiple clicks restarting fade
             if (fade != "out")
@@ -42,17 +42,17 @@ class TitleState extends QuasarState
 
         var facebook = this.addSprite("assets/images/facebook.png");
         facebook.move(BADGE_PADDING, this.height - facebook.height - BADGE_PADDING);
-        facebook.onMouseClick(function()
+        facebook.onClick(function()
         {
             Browser.openUrl("http://facebook.com/deengames");
-        });
+        }, false);
 
         var patreon = this.addSprite("assets/images/patreon.png");
         patreon.move(this.width - patreon.width - BADGE_PADDING, this.height - patreon.height - BADGE_PADDING);
-        patreon.onMouseClick(function()
+        patreon.onClick(function()
         {
             Browser.openUrl("http://patreon.com/deengames");
-        });
+        }, false);
 
         this.fadeOutInstantly();        
     }
