@@ -13,7 +13,6 @@ import flixel.util.FlxColor;
 import quasar.core.QuasarState;
 import quasar.core.QuasarSprite;
 import quasar.AudioPlayer;
-import quasar.web.Browser;
 
 class TitleState extends QuasarState
 {
@@ -27,15 +26,7 @@ class TitleState extends QuasarState
         super.create();
 
         var title:QuasarSprite = this.addSprite('assets/images/titlescreen.png');
-        title.onClick(function()
-        {
-            // prevent multiple clicks restarting fade
-            if (fade != "out")
-            {
-                fade = "out";
-                startTime = this.totalStateTime;
-            }
-        });
+        title.onClick(startGame);
 
         AudioPlayer.play('assets/sounds/titlescreen');        
         startTime = this.totalStateTime;
@@ -44,15 +35,19 @@ class TitleState extends QuasarState
         facebook.move(BADGE_PADDING, this.height - facebook.height - BADGE_PADDING);
         facebook.onClick(function()
         {
-            Browser.openUrl("http://facebook.com/deengames");
+            FlxG.openURL("http://facebook.com/deengames");
         }, false);
 
         var patreon = this.addSprite("assets/images/patreon.png");
         patreon.move(this.width - patreon.width - BADGE_PADDING, this.height - patreon.height - BADGE_PADDING);
         patreon.onClick(function()
         {
-            Browser.openUrl("http://patreon.com/deengames");
+            FlxG.openURL("http://patreon.com/deengames");
         }, false);
+
+        var begin:QuasarSprite = this.addSprite("assets/images/begin.png");
+        begin.move((this.width - begin.width) / 2, (this.height - begin.height) / 2);         
+        begin.y += begin.height; 
 
         this.fadeOutInstantly();        
     }
@@ -77,6 +72,16 @@ class TitleState extends QuasarState
             {
                 FlxG.switchState(new PlayState());
             }
+        }
+    }
+
+    private function startGame():Void
+{
+        // prevent multiple clicks restarting fade
+        if (fade != "out")
+        {
+            fade = "out";
+            startTime = this.totalStateTime;
         }
     }
 }
