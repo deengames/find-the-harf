@@ -16,6 +16,8 @@ class PlayState extends QuasarState
 	private static inline var LETTER_SIZE:Int = 128;
 	private static inline var JUMBO_LETTER_SIZE = 512;
 	private static inline var WHITEOUT_ALPHA:Float = 0.75;
+	private static inline var BUTTON_PADDING:Int = 16;
+	private static inline var FOOTER_HEIGHT:Int = 128;
 
 	private static var LETTERS = ["alif", "ba", "ta", "tha", "jeem", "7a", "kha",
 		"daal", "thaal", "ra", "za", "seen", "sheen", "saad",
@@ -48,22 +50,23 @@ class PlayState extends QuasarState
 			letterMap.set(letter, colour);
 		}
 
-		this.addSprite("assets/images/background.jpg");
+		this.addSprite("assets/images/background.png");
 
-		var help = this.addSprite("assets/images/help.png").onClick(function() {
+		var help = this.addSprite("assets/images/help.png");
+		help.move(BUTTON_PADDING, this.height - help.height - BUTTON_PADDING).onClick(function() {
 			AudioPlayer.stopAndEmptyQueue();
 			this.playFindCurrentLetterAudio();
 		}, false);
 
 		var x = this.addSprite("assets/images/x.png");
-		x.move(this.width - x.width, 0).onClick(function() {
+		x.move(this.width - x.width - BUTTON_PADDING, this.height - x.height - BUTTON_PADDING).onClick(function() {
 			AudioPlayer.stopAndEmptyQueue();
 			this.fadeOutInstantly(); // move to top
 			this.fadeOutStartTime  = this.totalStateTime;
 		}, false);
 
 		var groupXOffset = (this.width - (LETTERS_ACROSS * LETTER_SIZE)) / 2;
-		var groupYOffset = (this.height - (LETTERS_DOWN * LETTER_SIZE)) / 2;
+		var groupYOffset = (this.height - FOOTER_HEIGHT - (LETTERS_DOWN * LETTER_SIZE)) / 2;
 
 		for (i in 0...LETTERS.length)
 		{
