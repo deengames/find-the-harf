@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Find the Harf" file="FindTheHarf" main="Main" version="2.0" company="Deen Games" package="com.deengames.findtheharf" />
+	<app title="Find the Harf" file="FindTheHarf" main="Main" version="2.0.0" company="Deen Games" package="com.deengames.findtheharf" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
