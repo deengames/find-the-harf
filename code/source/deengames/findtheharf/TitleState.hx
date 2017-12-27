@@ -31,20 +31,6 @@ class TitleState extends QuasarState
         AudioPlayer.play('assets/sounds/titlescreen');        
         startTime = this.totalStateTime;
 
-        var facebook = this.addSprite("assets/images/facebook.png");
-        facebook.move(BADGE_PADDING, this.height - facebook.height - BADGE_PADDING);
-        facebook.onClick(function()
-        {
-            FlxG.openURL("http://facebook.com/deengames");
-        }, false);
-
-        var patreon = this.addSprite("assets/images/patreon.png");
-        patreon.move(this.width - patreon.width - BADGE_PADDING, this.height - patreon.height - BADGE_PADDING);
-        patreon.onClick(function()
-        {
-            FlxG.openURL("http://patreon.com/deengames");
-        }, false);
-
         var begin:QuasarSprite = this.addSprite("assets/images/begin.png");
         begin.move((this.width - begin.width) / 2, (this.height - begin.height) / 2);         
         begin.y += begin.height; 

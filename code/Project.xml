@@ -81,8 +81,5 @@
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 	<icon path="kha.png" />
 
-		<certificate
-			path="Keystore.dat"
-			alias="deengamesproductionkey"
-			if="android" />
+  <certificate path="Keystore.dat" alias="deengamesproductionkey" if="android" />
 </project>
